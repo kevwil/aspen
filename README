@@ -1,0 +1,59 @@
+aspen
+    by Kevin Williams
+    http://kevwil.github.com/
+
+== DESCRIPTION:
+
+Aspen is a web server engine for JRuby. The design is very similar to Thin,
+except using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets
+and Scala for the concurrent Actor model.
+
+== FEATURES/PROBLEMS:
+
+* truly concurrent socket model
+* Rack interface support
+
+== SYNOPSIS:
+
+  FIXME (code sample of usage)
+
+== REQUIREMENTS:
+
+* JRuby >= 1.2
+* Rack
+
+== INSTALL:
+
+	# From Rubyforge ...
+	$ (sudo) jruby -S gem install aspen
+
+*OR*
+
+	# From Github ...
+	$ (sudo) jruby -S gem sources -a http://gems.github.com (only need to do this once)
+	$ (sudo) jruby -S gem install kevwil-aspen
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2009 Kevin Williams
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
