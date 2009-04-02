@@ -1,4 +1,4 @@
-package com.github.kevwil
+package com.github.kevwil.aspen
 
 /**
  * Hello world!

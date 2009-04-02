@@ -1,10 +1,9 @@
-package com.github.kevwil
+package com.github.kevwil.aspen
 
 import org.specs._
 import org.specs.runner.{ConsoleRunner, JUnit4}
 
 class MySpecTest extends JUnit4(MySpec)
-//class MySpecSuite extends ScalaTestSuite(MySpec)
 object MySpecRunner extends ConsoleRunner(MySpec)
 
 object MySpec extends Specification {
