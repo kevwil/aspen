@@ -7,12 +7,29 @@ package com.github.kevwil.aspen
 class AspenServer(conf:ServerConfig)
 {
     private var r:Boolean = false
+    private var i:Boolean = false
     
     def running = r
-    def running_= (isRunning:Boolean) = r = isRunning
+
+    def init()
+    {
+        i = true
+    }
     
     def stop
     {
+        if(!i) throw new IllegalStateException("server not initialized")
         r = false
+    }
+
+    def start
+    {
+        if(!i) throw new IllegalStateException("server not initialized")
+        r = true
+    }
+
+    def kill
+    {
+        stop
     }
 }
