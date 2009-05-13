@@ -8,7 +8,7 @@
   <url>http://kevwil.github.com/aspen</url>
 
   <properties>
-    <scala.version>2.7.3</scala.version>
+    <scala.version>2.7.4</scala.version>
   </properties>
 
   <repositories>
@@ -126,13 +126,13 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.4</version>
+      <version>4.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.specs</groupId>
+      <groupId>org.specs</groupId><!--groupId>org.scala-tools.testing</groupId-->
       <artifactId>specs</artifactId>
-      <version>1.4.3</version>
+      <version>1.4.3</version><!--version>1.4.4</version-->
       <scope>test</scope>
     </dependency>
     <dependency>

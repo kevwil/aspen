@@ -18,12 +18,14 @@ class AspenServer(conf:ServerConfig)
     
     def stop
     {
+        if(!r) return null
         if(!i) throw new IllegalStateException("server not initialized")
         r = false
     }
 
     def start
     {
+        if(r) return null
         if(!i) throw new IllegalStateException("server not initialized")
         r = true
     }
