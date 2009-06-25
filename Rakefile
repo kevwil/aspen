@@ -16,7 +16,7 @@ end
 ensure_in_path 'lib'
 require 'aspen'
 
-task :default => 'spec:run'
+task :default => ['java:build','spec:run']
 
 PROJ.name = 'aspen'
 PROJ.authors = ['Kevin Williams']
@@ -30,5 +30,29 @@ PROJ.ignore_file = '.gitignore'
 PROJ.spec.opts << '--color'
 PROJ.rcov.opts << ['--exclude', 'rcov']
 PROJ.rcov.opts << ['--exclude', 'mocha']
+
+
+require 'fileutils'
+
+namespace :java do
+
+  desc "clean up java tool output"
+  task :clean do
+
+    system "mvn --offline clean"
+    FileUtils.rm Dir.glob('lib/*.jar')
+  end
+
+  desc "build java code and copy jars to lib folder"
+  task :build => :clean do
+
+    system "mvn --offline package"
+
+    FileUtils.cp Dir.glob('target/*.jar'), 'lib'
+    FileUtils.mv Dir.glob('lib/aspen*.jar').first, 'lib/aspen.jar'
+
+  end
+
+end
 
 # EOF
