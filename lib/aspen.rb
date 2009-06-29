@@ -42,8 +42,19 @@ module Aspen
     Dir.glob(search_me).sort.each {|rb| require rb}
   end
 
+  def self.require_java_natives
+    begin
+      require 'java'
+      $LOAD_PATH << libpath unless $LOAD_PATH.include? libpath
+      require 'aspen-j.jar'
+    rescue LoadError
+      puts "aspen lib failed to load aspen-j.jar"
+    end
+  end
+
 end  # module Aspen
 
 Aspen.require_all_libs_relative_to(__FILE__)
+Aspen.require_java_natives
 
 # EOF
