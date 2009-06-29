@@ -11,7 +11,6 @@ import java.io.IOException;
 public class AspenService
 implements BasicLibraryService
 {
-    @Override
     public boolean basicLoad( final Ruby runtime ) throws IOException
     {
         try
@@ -21,7 +20,7 @@ implements BasicLibraryService
         }
         catch( Exception e )
         {
-            e.printStackTrace();
+            e.printStackTrace( System.err );
             return false;
         }
     }

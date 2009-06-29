@@ -24,7 +24,6 @@ extends RubyObject
     {
         public IRubyObject allocate( final Ruby runtime, final RubyClass klass )
         {
-            //System.out.println( "allocating new AspenServer" );
             return new AspenServer( runtime, klass );
         }
     };
@@ -38,7 +37,7 @@ extends RubyObject
         }
         catch( Exception e )
         {
-            e.printStackTrace();
+            e.printStackTrace( System.err );
         }
     }
 

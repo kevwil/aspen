@@ -18,6 +18,13 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
@@ -26,7 +33,7 @@
             <!--<manifest>
               <addClasspath>true</addClasspath>
             </manifest>-->
-            <!--manifestFile>src/main/resources/jar-manifest.txt</manifestFile-->
+            <manifestFile>src/main/resources/jar-manifest.txt</manifestFile>
           </archive>
         </configuration>
       </plugin>
