@@ -50,7 +50,7 @@ extends RubyObject
     private ChannelFactory _channelFactory;
     private IRubyObject _rackAdapter;
 
-    public AspenServer( Ruby runtime, RubyClass klass )
+    public AspenServer( final Ruby runtime, final RubyClass klass )
     {
         super( runtime, klass );
         _host = "0.0.0.0";
@@ -117,7 +117,7 @@ extends RubyObject
         catch( Exception e )
         {
             // TODO: throw a proper Ruby error for the app
-            e.printStackTrace();
+            e.printStackTrace( System.err );
         }
         return getRuntime().getNil();
     }
@@ -137,7 +137,7 @@ extends RubyObject
             catch( Exception e )
             {
                 // TODO: throw a proper Ruby error for the app
-                e.printStackTrace();
+                e.printStackTrace( System.err );
             }
         }
         else

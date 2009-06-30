@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author kevinw
  * @since Jun 25, 2009
  */
-public class AspenService
+public class AspenJService
 implements BasicLibraryService
 {
     public boolean basicLoad( final Ruby runtime ) throws IOException

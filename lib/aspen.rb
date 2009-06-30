@@ -46,9 +46,9 @@ module Aspen
     begin
       require 'java'
       $LOAD_PATH << libpath unless $LOAD_PATH.include? libpath
-      require 'aspen-j.jar'
+      require 'aspenj.jar'
     rescue LoadError
-      puts "aspen lib failed to load aspen-j.jar"
+      puts "aspen lib failed to load aspenj.jar"
     end
   end
 

@@ -49,7 +49,7 @@ namespace :java do
     system "mvn --offline package"
 
     FileUtils.cp Dir.glob('target/*.jar'), 'lib'
-    FileUtils.mv Dir.glob('lib/aspen-j*.jar').first, 'lib/aspen-j.jar'
+    FileUtils.mv Dir.glob('lib/aspenj*.jar').first, 'lib/aspenj.jar'
 
   end
 
