@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
  * @author kevinw
  * @since Jul 1, 2009
  */
-public class AspenJavaServer
+public class AspenServer
 {
     private String _host;
     private int _port;
@@ -21,7 +21,7 @@ public class AspenJavaServer
     private ChannelGroup _allChannels;
     private ChannelFactory _channelFactory;
 
-    public AspenJavaServer( final String host, final int port )
+    public AspenServer( final String host, final int port )
     {
         _host = host;
         _port = port;
