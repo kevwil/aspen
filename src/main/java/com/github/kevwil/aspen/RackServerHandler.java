@@ -13,12 +13,12 @@ import org.jboss.netty.handler.codec.http.*;
 public class RackServerHandler
 extends SimpleChannelUpstreamHandler
 {
-    private AspenServer _aspen;
-
-    public RackServerHandler( final AspenServer aspenServer )
-    {
-        _aspen = aspenServer;
-    }
+//    private AspenServer _aspen;
+//
+//    public RackServerHandler( final AspenServer aspenServer )
+//    {
+//        _aspen = aspenServer;
+//    }
 
     @Override
     public void messageReceived( final ChannelHandlerContext ctx, final MessageEvent e )

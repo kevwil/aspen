@@ -11,6 +11,7 @@ module Aspen
   # A valid Rack adapter (application) must respond to <tt>call(env#Hash)</tt> and
   # return an array of <tt>[status, headers, body]</tt>.
   class Server
+    include Logging
     
     # default values
     DEFAULT_HOST = "0.0.0.0"
@@ -19,6 +20,14 @@ module Aspen
     # Application (Rack adapter) called with the request that produces the response.
     attr_accessor :app
     
+    # IP address of to bind sockets to, usually the address of the host,
+    # the loopback address (127.0.0.1), or the 'all' binding address
+    # of 0.0.0.0 (which is the default).
+    attr_accessor :host
+    
+    # port number for the server to listen on
+    attr_accessor :port
+    
     def initialize(*args, &block)
       host, port, options = DEFAULT_HOST, DEFAULT_PORT, {}
       
@@ -26,8 +35,8 @@ module Aspen
       # received in any order
       args.each do |arg|
         case arg
-        when Fixnum, /^\d+$/  then port = arg.to_i
-        when String           then host = arg
+        when Fixnum, /^\d+$/  then @port = arg.to_i
+        when String           then @host = arg
         when Hash             then options = arg
         else
           @app = arg if arg.respond_to?(:call)

@@ -11,21 +11,21 @@ import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 public class RackHttpServerPipelineFactory
 implements ChannelPipelineFactory
 {
-    private AspenServer _server;
+//    private AspenServer _server;
+//
+//    public RackHttpServerPipelineFactory( final AspenServer server )
+//    {
+//        _server = server;
+//    }
 
-    public RackHttpServerPipelineFactory( final AspenServer server )
-    {
-        _server = server;
-    }
-
-    @Override
     public ChannelPipeline getPipeline() throws Exception
     {
         ChannelPipeline pipeline = Channels.pipeline();
         pipeline.addLast( "decoder", new HttpRequestDecoder() );
         pipeline.addLast( "encoder", new HttpResponseEncoder() );
         pipeline.addLast( "chunkedWriter", new ChunkedWriteHandler() );
-        pipeline.addLast( "handler", new RackServerHandler( _server ) );
+//        pipeline.addLast( "handler", new RackServerHandler( _server ) );
+        pipeline.addLast( "handler", new RackServerHandler() );
         return pipeline;
     }
 }

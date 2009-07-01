@@ -16,7 +16,8 @@ end
 ensure_in_path 'lib'
 require 'aspen'
 
-task :default => ['java:build','spec:run']
+# task :default => ['java:build','spec:run']
+task :default => ['spec:run']
 
 PROJ.name = 'aspen'
 PROJ.authors = ['Kevin Williams']
