@@ -30,6 +30,8 @@ public class AspenServer
                 Executors.newCachedThreadPool(),
                 Executors.newCachedThreadPool() );
         _bootstrap = new ServerBootstrap( _channelFactory );
+        _bootstrap.setOption("child.tcpNoDelay", true);
+        _bootstrap.setOption("child.keepAlive", true);
         _bootstrap.setPipelineFactory( new RackHttpServerPipelineFactory() );
     }
 
