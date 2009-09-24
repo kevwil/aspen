@@ -14,7 +14,7 @@ rescue LoadError
 end
 
 ensure_in_path 'lib'
-require 'aspen'
+require 'aspen/version'
 
 # task :default => ['java:build','spec:run']
 task :default => ['spec:run']
@@ -40,16 +40,16 @@ namespace :java do
   desc "clean up java tool output"
   task :clean do
 
-    system "mvn --offline clean"
+    system "cd javalib;mvn --offline clean;cd .."
     FileUtils.rm Dir.glob('lib/*.jar')
   end
 
   desc "build java code and copy jars to lib folder"
   task :build => :clean do
 
-    system "mvn --offline package"
+    system "cd javalib;mvn --offline package;cd .."
 
-    FileUtils.cp Dir.glob('target/*.jar'), 'lib'
+    FileUtils.cp Dir.glob('javalib/target/*.jar'), 'lib'
     FileUtils.mv Dir.glob('lib/aspenj*.jar').first, 'lib/aspenj.jar'
 
   end

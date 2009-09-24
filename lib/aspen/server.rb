@@ -1,3 +1,5 @@
+require 'logging'
+
 module Aspen
   
   # the Server is the launching point and core of Aspen.
@@ -47,7 +49,7 @@ module Aspen
       @app = Rack::Builder.new(&block).to_app if block
       
       # If in debug mode, wrap in logger adapter
-      @app = Rack::CommonLogger.new(@app) if Logging.debug?
+      @app = Rack::CommonLogger.new(@app)
     end
     
     # Lil' shortcut to turn this:
