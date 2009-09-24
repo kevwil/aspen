@@ -46,7 +46,7 @@ module Aspen
       require 'java'
       $LOAD_PATH << libpath unless $LOAD_PATH.include? libpath
       # require 'aspenj.jar'
-      require 'netty-3.1.0.CR1.jar'
+      require 'netty-3.1.3.GA.jar'
     rescue LoadError
       # puts "aspen lib failed to load aspenj.jar"
       puts "failed to load netty - cannot continue"
