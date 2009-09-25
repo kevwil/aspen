@@ -4,29 +4,34 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.http.*;
+import org.jruby.RubyArray;
+import org.jruby.runtime.builtin.IRubyObject;
 
 /**
- * @author kevinw
+ * @author kevwil
  * @since Jun 25, 2009
  */
 @ChannelPipelineCoverage("one")
 public class RackServerHandler
 extends SimpleChannelUpstreamHandler
 {
-//    private AspenServer _aspen;
-//
-//    public RackServerHandler( final AspenServer aspenServer )
-//    {
-//        _aspen = aspenServer;
-//    }
+    private IRubyObject _app;
+
+    public RackServerHandler( final IRubyObject app )
+    {
+        _app = app;
+    }
 
     @Override
     public void messageReceived( final ChannelHandlerContext ctx, final MessageEvent e )
     throws Exception
     {
-        // TODO if _aspen.isVerbose() then do logging
-        // TODO pass to _aspen.getRackAdapter()
-        super.messageReceived( ctx, e );
+        IRubyObject env = RackEnvironmentMaker.build( (HttpRequest)e.getMessage() );
+        RubyArray rackOutput =
+                _app.callMethod(env.getRuntime().getCurrentContext(), "call", env)
+                .convertToArray();
+        HttpResponse response = RackResponseTranslator.translate(rackOutput);
+        e.getChannel().write(response).addListener(ChannelFutureListener.CLOSE);
     }
 
     @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})

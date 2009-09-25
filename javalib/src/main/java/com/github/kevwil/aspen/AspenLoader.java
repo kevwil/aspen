@@ -3,7 +3,7 @@
 //import org.jruby.*;
 //
 ///**
-// * @author kevinw
+// * @author kevwil
 // * @since Jun 25, 2009
 // */
 //public final class AspenLoader
