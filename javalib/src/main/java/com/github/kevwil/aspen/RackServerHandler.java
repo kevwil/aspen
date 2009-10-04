@@ -4,6 +4,7 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.http.*;
+import org.jruby.Ruby;
 import org.jruby.RubyArray;
 import org.jruby.runtime.builtin.IRubyObject;
 
@@ -26,9 +27,10 @@ extends SimpleChannelUpstreamHandler
     public void messageReceived( final ChannelHandlerContext ctx, final MessageEvent e )
     throws Exception
     {
-        IRubyObject env = RackEnvironmentMaker.build( (HttpRequest)e.getMessage() );
+        Ruby runtime = _app.getRuntime();
+        IRubyObject env = RackEnvironmentMaker.build( (HttpRequest)e.getMessage(), runtime );
         RubyArray rackOutput =
-                _app.callMethod(env.getRuntime().getCurrentContext(), "call", env)
+                _app.callMethod(runtime.getCurrentContext(), "call", env)
                 .convertToArray();
         HttpResponse response = RackResponseTranslator.translate(rackOutput);
         e.getChannel().write(response).addListener(ChannelFutureListener.CLOSE);
