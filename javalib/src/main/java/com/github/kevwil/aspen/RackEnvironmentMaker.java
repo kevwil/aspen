@@ -1,15 +1,12 @@
 package com.github.kevwil.aspen;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jruby.Ruby;
-import org.jruby.RubyArray;
-import org.jruby.RubyHash;
+import org.jruby.*;
 import org.jruby.runtime.builtin.IRubyObject;
+
+import java.net.*;
+import java.util.*;
 
 /**
  *
@@ -52,7 +49,7 @@ public class RackEnvironmentMaker
     throws RackException
     {
         String path = uri.getPath();
-        if (!path.isEmpty() && !path.startsWith("/"))
+        if (path.length() > 0 && !path.startsWith("/"))
         {
             throw new RackException("invalid path, must start with '/'");
         }
