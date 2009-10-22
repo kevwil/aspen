@@ -4,10 +4,10 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.group.*;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.jruby.runtime.builtin.IRubyObject;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
-import org.jruby.runtime.builtin.IRubyObject;
 
 /**
  * @author kevwil
@@ -21,13 +21,11 @@ public class AspenServer
     private ServerBootstrap _bootstrap;
     private ChannelGroup _allChannels;
     private ChannelFactory _channelFactory;
-    private IRubyObject _app;
 
     public AspenServer( final String host, final int port, final IRubyObject app )
     {
         _host = host;
         _port = port;
-        _app = app;
         _allChannels = new DefaultChannelGroup( "aspen-server" );
         _channelFactory = new NioServerSocketChannelFactory(
                 Executors.newCachedThreadPool(),
@@ -35,7 +33,7 @@ public class AspenServer
         _bootstrap = new ServerBootstrap( _channelFactory );
         _bootstrap.setOption("child.tcpNoDelay", true);
         _bootstrap.setOption("child.keepAlive", true);
-        _bootstrap.setPipelineFactory( new RackHttpServerPipelineFactory( _app ) );
+        _bootstrap.setPipelineFactory( new RackHttpServerPipelineFactory( app ) );
     }
 
     public void start()

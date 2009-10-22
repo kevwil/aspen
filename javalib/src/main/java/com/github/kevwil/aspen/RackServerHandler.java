@@ -28,7 +28,8 @@ extends SimpleChannelUpstreamHandler
     throws Exception
     {
         Ruby runtime = _app.getRuntime();
-        IRubyObject env = RackEnvironmentMaker.build( (HttpRequest)e.getMessage(), runtime );
+        HttpRequest request = (HttpRequest)e.getMessage();
+        IRubyObject env = RackEnvironmentMaker.build( request, runtime );
         RubyArray rackOutput =
                 _app.callMethod(runtime.getCurrentContext(), "call", env)
                 .convertToArray();

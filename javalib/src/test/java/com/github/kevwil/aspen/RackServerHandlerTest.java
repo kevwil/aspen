@@ -1,6 +1,7 @@
 package com.github.kevwil.aspen;
 
 import org.jboss.netty.channel.*;
+import org.jboss.netty.channel.local.DefaultLocalServerChannelFactory;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.Ruby;
 import org.jruby.runtime.builtin.IRubyObject;
@@ -21,15 +22,17 @@ public class RackServerHandlerTest
         IRubyObject app = createProc(200, "Hello World");
         RackServerHandler handler = new RackServerHandler(app);
         /* set up args for callback */
-        ChannelPipeline pipeline = new DefaultChannelPipeline();
+        ChannelPipeline pipeline = Channels.pipeline();
         pipeline.addLast( "rack", handler );
         ChannelHandlerContext ctx = pipeline.getContext(handler);
-        HttpRequest r = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/");
+        Channel channel = new DefaultLocalServerChannelFactory().newChannel( pipeline );
+        HttpRequest r = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/");
         MessageEvent e = new UpstreamMessageEvent(
-                ctx.getChannel(), r, new InetSocketAddress(54321));
+                channel, r, new InetSocketAddress(54321));
 
         /* make callback call */
-        handler.messageReceived(ctx, e);
+        pipeline.sendUpstream( e );
+        //handler.messageReceived(ctx, e);
         assertTrue(true);
     }
 
