@@ -31,10 +31,10 @@ extends SimpleChannelUpstreamHandler
         HttpRequest request = (HttpRequest)e.getMessage();
         IRubyObject env = RackEnvironmentMaker.build( request, runtime );
         RubyArray rackOutput =
-                _app.callMethod(runtime.getCurrentContext(), "call", env)
+                _app.callMethod( runtime.getCurrentContext(), "call", env )
                 .convertToArray();
-        HttpResponse response = RackResponseTranslator.translate(rackOutput);
-        e.getChannel().write(response).addListener(ChannelFutureListener.CLOSE);
+        HttpResponse response = RackResponseTranslator.translate( rackOutput );
+        e.getChannel().write( response ).addListener( ChannelFutureListener.CLOSE );
     }
 
     @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
@@ -46,7 +46,7 @@ extends SimpleChannelUpstreamHandler
         Throwable cause = e.getCause();
         if( cause instanceof TooLongFrameException )
         {
-            sendError(ctx, HttpResponseStatus.BAD_REQUEST);
+            sendError( ctx, HttpResponseStatus.BAD_REQUEST );
             return;
         }
         cause.printStackTrace();

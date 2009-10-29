@@ -6,8 +6,22 @@ package com.github.kevwil.aspen;
  */
 public class RackException extends Exception
 {
-    RackException(String message)
+    public RackException()
     {
-        super(message);
+    }
+
+    RackException( String message )
+    {
+        super( message );
+    }
+
+    public RackException( final String message, final Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    public RackException( final Throwable cause )
+    {
+        super( cause );
     }
 }
