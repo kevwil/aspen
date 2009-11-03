@@ -5,6 +5,7 @@ import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.group.*;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jruby.runtime.builtin.IRubyObject;
+import org.slf4j.*;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -15,6 +16,7 @@ import java.util.concurrent.Executors;
  */
 public class AspenServer
 {
+    private static final Logger log = LoggerFactory.getLogger( AspenServer.class );
     private String _host;
     private int _port;
     private Boolean _running;
@@ -36,6 +38,9 @@ public class AspenServer
         _bootstrap.setPipelineFactory( new RackHttpServerPipelineFactory( app ) );
     }
 
+    /**
+     * begin listening on the given socket address
+     */
     public void start()
     {
         try
@@ -46,10 +51,15 @@ public class AspenServer
         }
         catch( Exception e )
         {
+            log.error( "error starting Netty channel", e );
             e.printStackTrace( System.err );
         }
     }
 
+    /**
+     * stop all channels
+     */
+    @SuppressWarnings({"ThrowableInstanceNeverThrown"})
     public void stop()
     {
         if( _running )
@@ -63,12 +73,15 @@ public class AspenServer
             }
             catch( Exception e )
             {
+                log.error( "error stopping Netty channels", e );
                 e.printStackTrace( System.err );
             }
         }
         else
         {
-            throw new RuntimeException( "cannot stop, not running" );
+            RackException ex = new RackException( "cannot stop, not running" );
+            log.info( "stop called when server not running", ex );
+            throw new RuntimeException( ex );
         }
     }
 }

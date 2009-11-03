@@ -10,7 +10,7 @@ public class RackException extends Exception
     {
     }
 
-    RackException( String message )
+    RackException( final String message )
     {
         super( message );
     }

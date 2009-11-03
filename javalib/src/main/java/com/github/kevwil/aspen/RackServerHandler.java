@@ -9,6 +9,8 @@ import org.jruby.RubyArray;
 import org.jruby.runtime.builtin.IRubyObject;
 
 /**
+ * This is the Netty callback handler,
+ * used by the socket listener.
  * @author kevwil
  * @since Jun 25, 2009
  */
@@ -32,7 +34,7 @@ extends SimpleChannelUpstreamHandler
         IRubyObject env = RackEnvironmentMaker.build( request, runtime );
         RubyArray rackOutput =
                 _app.callMethod( runtime.getCurrentContext(), "call", env )
-                .convertToArray();
+                    .convertToArray();
         HttpResponse response = RackResponseTranslator.translate( rackOutput );
         e.getChannel().write( response ).addListener( ChannelFutureListener.CLOSE );
     }

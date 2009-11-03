@@ -6,6 +6,7 @@ import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 import org.jruby.runtime.builtin.IRubyObject;
 
 /**
+ * Creates the pipeline of Netty middleware and RackServerHandler
  * @author kevwil
  * @since Jun 25, 2009
  */

@@ -27,9 +27,9 @@ public class RackResponseTranslatorTest
         String message = "Hello World!";
         RubyArray rack_response = createRackResponse( 200, new HashMap<String,String>(), message );
 
-        HttpResponse response = RackResponseTranslator.translate(rack_response);
+        HttpResponse response = RackResponseTranslator.translate( rack_response );
 
-        assertEquals(HttpResponseStatus.OK, response.getStatus() );
+        assertEquals( HttpResponseStatus.OK, response.getStatus() );
         assertTrue( response.getHeaderNames().isEmpty() );
         assertEquals( message, response.getContent().toString( "UTF-8" ) );
     }
@@ -42,14 +42,14 @@ public class RackResponseTranslatorTest
         headers.put( "CONTENT_TYPE", "text/css" );
         RubyArray rack_response = createRackResponse( 200, headers, message );
 
-        HttpResponse response = RackResponseTranslator.translate(rack_response);
+        HttpResponse response = RackResponseTranslator.translate( rack_response );
 
-        assertEquals(HttpResponseStatus.OK, response.getStatus());
+        assertEquals( HttpResponseStatus.OK, response.getStatus() );
         assertTrue( response.getHeaderNames().contains( "CONTENT_TYPE" ) );
         assertEquals( message, response.getContent().toString( "UTF-8" ) );
     }
 
-    private RubyArray createRackResponse(int status, Map<String,String> headers, String body)
+    private RubyArray createRackResponse( int status, Map<String,String> headers, String body )
     {
         RubyHash hash = RubyHash.newHash( runtime );
         for( String key : headers.keySet() )

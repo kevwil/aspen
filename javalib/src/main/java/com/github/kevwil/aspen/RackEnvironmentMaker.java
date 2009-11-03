@@ -10,35 +10,43 @@ import java.net.*;
 import java.util.*;
 
 /**
- *
+ * Create a Rack environment to pass out to Rack middleware.
  * @author kevwil
+ * @since Jul 1, 2009
  */
 public final class RackEnvironmentMaker
 {
-    private static final List<String> allowedSchemes = Arrays.asList("http","https");
+    private static final List<String> allowedSchemes = Arrays.asList( "http","https" );
     private static final Logger log = LoggerFactory.getLogger( RackEnvironmentMaker.class );
 
-    static IRubyObject build(HttpRequest httpRequest, Ruby runtime)
+    /**
+     * build up a Ruby hash from the request
+     * @param httpRequest the Netty request
+     * @param runtime the current JRuby runtime
+     * @return a Ruby hash instance
+     * @throws RackException if there's a problem
+     */
+    public static IRubyObject build( HttpRequest httpRequest, Ruby runtime )
     throws RackException
     {
-        RubyHash env = new RubyHash(runtime);
-        env.put("rack.version", getRackVersion(runtime));
-        URI uri = getUri(httpRequest);
-        log.debug("built Java URI from request: " + uri);
-        assignUrlScheme(uri, env);
-        env.put("rack.multithread", runtime.getFalse());
-        env.put("rack.multiprocess", runtime.getFalse());
-        env.put("rack.run_once", runtime.getFalse());
-        env.put("REQUEST_METHOD", httpRequest.getMethod().toString());
-        env.put("SCRIPT_NAME", "");
-        assignPathInfo( uri, env);
-        env.put("QUERY_STRING", uri.getQuery());
-        env.put("SERVER_NAME", uri.getHost());
-        env.put("SERVER_PORT", uri.getPort());
-        parseHttpHeaders(httpRequest, env);
+        RubyHash env = new RubyHash( runtime );
+        env.put( "rack.version", getRackVersion( runtime ) );
+        URI uri = getUri( httpRequest );
+        log.debug( "built Java URI from request: " + uri );
+        assignUrlScheme( uri, env );
+        env.put( "rack.multithread", runtime.getFalse() );
+        env.put( "rack.multiprocess", runtime.getFalse() );
+        env.put( "rack.run_once", runtime.getFalse() );
+        env.put( "REQUEST_METHOD", httpRequest.getMethod().toString() );
+        env.put( "SCRIPT_NAME", "" );
+        assignPathInfo( uri, env );
+        env.put( "QUERY_STRING", uri.getQuery() );
+        env.put( "SERVER_NAME", uri.getHost() );
+        env.put( "SERVER_PORT", uri.getPort() );
+        parseHttpHeaders( httpRequest, env );
 
-        assignInputStream(httpRequest, env);
-        assignOutputStream(httpRequest, env);
+        assignInputStream( httpRequest, env );
+        assignOutputStream( httpRequest, env );
         /*
          * TODO:
          * NEED TO ASSIGN SESSION FROM APP FIRST,
@@ -48,27 +56,31 @@ public final class RackEnvironmentMaker
         return env;
     }
 
-    private static void assignPathInfo(URI uri, RubyHash env)
+    private static void assignPathInfo( URI uri, RubyHash env )
     throws RackException
     {
         String path = uri.getPath();
-        if (path.length() > 0 && !path.startsWith("/"))
+        if( path.length() > 0 && !path.startsWith("/") )
         {
-            throw new RackException("invalid path, must start with '/'");
+            RackException ex = new RackException( "invalid path, must start with '/'" );
+            log.error( "error assigning PATH_INFO", ex );
+            throw ex;
         }
         else
         {
-            env.put("PATH_INFO", path);
+            env.put( "PATH_INFO", path );
         }
     }
 
-    private static void assignUrlScheme(URI uri, RubyHash env)
+    private static void assignUrlScheme( URI uri, RubyHash env )
     throws RackException
     {
         String urlScheme = uri.getScheme();
         if( urlScheme == null )
         {
-            throw new RackException("no http url scheme found");
+            RackException ex = new RackException("no http url scheme found");
+            log.error( "error assigning url scheme", ex );
+            throw ex;
         }
         if( allowedSchemes.contains( urlScheme ) )
         {
@@ -76,7 +88,9 @@ public final class RackEnvironmentMaker
         }
         else
         {
-            throw new RackException( "invalid url scheme: " + urlScheme );
+            RackException ex = new RackException( "invalid url scheme: " + urlScheme );
+            log.error( "error assigning url scheme", ex );
+            throw ex;
         }
     }
 
@@ -97,14 +111,16 @@ public final class RackEnvironmentMaker
         catch( URISyntaxException ex )
         {
             log.error( "error parsing request URI", ex );
-            throw new RackException(ex);
+            throw new RackException( ex );
         }
     }
 
     private static String buildFullRequest( HttpRequest request )
     {
         StringBuilder sb = new StringBuilder();
-        sb.append( "http://" ); // will this ever support https? no idea
+        // will this ever support https?
+        // no idea how to extract correct info here
+        sb.append( "http://" );
         if( request.containsHeader( HttpHeaders.Names.HOST ) )
         {
             sb.append( request.getHeader( HttpHeaders.Names.HOST ) );
@@ -113,15 +129,15 @@ public final class RackEnvironmentMaker
         return sb.toString();
     }
 
-    private static void assignInputStream(HttpRequest httpRequest, RubyHash env)
+    private static void assignInputStream( HttpRequest httpRequest, RubyHash env )
     {
-        env.put("rack.input", new ChannelBufferInputStream(
-                httpRequest.getContent()));
+        env.put( "rack.input",
+                new ChannelBufferInputStream( httpRequest.getContent() ) );
     }
 
-    private static void assignOutputStream(HttpRequest httpRequest, RubyHash env)
+    private static void assignOutputStream( HttpRequest httpRequest, RubyHash env )
     {
-        env.put("rack.errors", env.getRuntime().getStandardError() );
+        env.put( "rack.errors", env.getRuntime().getStandardError() );
     }
 
     private static void parseHttpHeaders( HttpRequest request, RubyHash env )

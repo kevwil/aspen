@@ -9,8 +9,8 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 
 /**
- *
  * @author kevwil
+ * @since Jul 1, 2009
  */
 public class RackHttpServerPipelineFactoryTest
 {
@@ -28,10 +28,10 @@ public class RackHttpServerPipelineFactoryTest
     throws Exception
     {
         ChannelPipeline pipeline =
-                new RackHttpServerPipelineFactory(nil).getPipeline();
-        assertNotNull(pipeline);
+                new RackHttpServerPipelineFactory( nil ).getPipeline();
+        assertNotNull( pipeline );
         ChannelHandler handler = pipeline.getLast();
-        assertNotNull(handler);
-        assertTrue(handler instanceof RackServerHandler);
+        assertNotNull( handler );
+        assertTrue( handler instanceof RackServerHandler );
     }
 }
