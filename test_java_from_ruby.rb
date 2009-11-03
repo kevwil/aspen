@@ -1,5 +1,5 @@
 require 'java'
-require 'lib/aspenj.jar'
+require 'lib/aspen/aspenj.jar'
 import com.github.kevwil.aspen.AspenServer
 
 app = lambda { |env| [200, {'Content-Type'=>'text/html'}, 'Hello World'] }
