@@ -4,6 +4,7 @@ module Aspen
     
     class << self
       attr_reader :log
+      attr_writer :debug
       @log = ::Logging.logger['aspen']
       @log.add_appenders(::Logging::Appenders.stdout)
       @log.level = :info
@@ -14,6 +15,10 @@ module Aspen
       def error?; @log.level == 3 end
       def fatal?; @log.level == 4 end
       def off?; @log.level == 5 end
+      
+      def debug=(value)
+        @log.level = :debug if value
+      end
     end
     
   end

@@ -1,4 +1,7 @@
 require 'logging'
+require 'java'
+require 'aspenj.jar'
+import com.github.kevwil.aspen.AspenServer
 
 module Aspen
   
@@ -16,7 +19,7 @@ module Aspen
     include Logging
     
     # default values
-    DEFAULT_HOST = "0.0.0.0"
+    DEFAULT_HOST = '0.0.0.0'
     DEFAULT_PORT = 1169
     
     # Application (Rack adapter) called with the request that produces the response.
@@ -50,6 +53,8 @@ module Aspen
       
       # If in debug mode, wrap in logger adapter
       @app = Rack::CommonLogger.new(@app)
+      
+      @backend = AspenServer.new(@host,@port,@app)
     end
     
     # Lil' shortcut to turn this:
@@ -68,12 +73,11 @@ module Aspen
     def start
       raise ArgumentError, 'app required' unless @app
 
-      log   ">> Thin web server (v#{VERSION::STRING} codename #{VERSION::CODENAME})"
+      log   ">> Aspen web server (#{::Aspen.version}"
       debug ">> Debugging ON"
       trace ">> Tracing ON"
 
-      log ">> Maximum connections set to #{@backend.maximum_connections}"
-      log ">> Listening on #{@backend}, CTRL+C to stop"
+      log ">> Listening on #{@host}:#{@port}, CTRL+C to stop"
 
       @backend.start
     end
