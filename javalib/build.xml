@@ -2,7 +2,7 @@
 <project name="aspenj" default="jarjar">
 
   <target name="jarjar" description="merge jars into one">
-    <zip destfile="../lib/${ant.project.name}.jar">
+    <zip destfile="../lib/aspen/${ant.project.name}.jar">
       <zipgroupfileset dir="target" includes="*.jar"/>
     </zip>
   </target>
