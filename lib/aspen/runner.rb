@@ -8,6 +8,9 @@ module Aspen
     
     COMMANDS = %w(start stop restart config)
     
+    # Commands that wont load options from the config file
+    CONFIGLESS_COMMANDS = %w(config)
+    
     # Parsed options
     attr_accessor :options
     
@@ -108,9 +111,12 @@ module Aspen
     def run_command
       load_options_from_config_file! unless CONFIGLESS_COMMANDS.include?(@command)
       
+      ##############
+      # Thin is shelling out sub-processes - this doesn't translate to JRuby, does it?
+      ##############
       # PROGRAM_NAME is relative to the current directory, so make sure
       # we store and expand it before changing directory.
-      Command.script = File.expand_path($PROGRAM_NAME)
+      # Command.script = File.expand_path($PROGRAM_NAME)
       
       # Change the current directory ASAP so that all relative paths are
       # relative to this one.
@@ -124,7 +130,7 @@ module Aspen
       
       if server.respond_to?(@command)
         begin
-          controller.send(@command, *@arguments)
+          server.send(@command, *@arguments)
         rescue RunnerError => e
           abort e.message
         end
