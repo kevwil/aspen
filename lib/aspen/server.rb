@@ -1,6 +1,6 @@
 require 'logging'
 require 'java'
-require 'aspenj.jar'
+require File.dirname(__FILE__) + '/aspenj.jar'
 import com.github.kevwil.aspen.AspenServer
 
 module Aspen
