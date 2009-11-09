@@ -19,56 +19,27 @@ describe Aspen::Runner do
   
   it "should abort on unknow command" do
     runner = Aspen::Runner.new(%w(poop))
+    runner.stubs(:abort)
     
-    runner.should_receive(:abort)
+    runner.expects(:abort)
+    
     runner.run!
   end
   
   it "should exit on empty command" do
     runner = Aspen::Runner.new([])
+    runner.stubs(:exit)
     
-    runner.should_receive(:exit).with(1)
+    runner.expects(:exit).with(1)
     
     silence_stream(STDOUT) do
       runner.run!
     end
   end
-    # 
-    # it "should use Controller when controlling a single server" do
-    #   runner = Runner.new(%w(start))
-    #   
-    #   controller = mock('controller')
-    #   controller.should_receive(:start)
-    #   Controllers::Controller.should_receive(:new).and_return(controller)
-    #   
-    #   runner.run!
-    # end
-    # 
-    # it "should use Cluster controller when controlling multiple servers" do
-    #   runner = Runner.new(%w(start --servers 3))
-    #   
-    #   controller = mock('cluster')
-    #   controller.should_receive(:start)
-    #   Controllers::Cluster.should_receive(:new).and_return(controller)
-    #   
-    #   runner.run!
-    # end
-    # 
-    # it "should default to single server controller" do
-    #   Runner.new(%w(start)).should_not be_a_cluster
-    # end
-    # 
-    # it "should consider as a cluster with :servers option" do
-    #   Runner.new(%w(start --servers 3)).should be_a_cluster
-    # end
-    # 
-    # it "should consider as a cluster with :only option" do
-    #   Runner.new(%w(start --only 3000)).should be_a_cluster
-    # end
-    # 
+  
   it "should warn when require a rack config file" do
-    STDERR.stub!(:write)
-    STDERR.should_receive(:write).with(/WARNING:/)
+    STDERR.stubs(:write)
+    STDERR.expects(:write).with(/WARNING:/) # not getting hit?
     
     runner = Aspen::Runner.new(%w(start -r config.ru))
     runner.run! rescue nil

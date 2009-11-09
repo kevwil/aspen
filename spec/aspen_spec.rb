@@ -28,22 +28,16 @@ describe Aspen do
   it "should create instance with parameters" do
     host = '127.0.0.1'
     port = 8080
-    s = ::Aspen::Server.new(host, port)
+    app = lambda { |env| [200, {}, 'hello'] }
+    s = ::Aspen::Server.new(host, port, app)
     s.should_not be_nil
+    s.host.should_not be_nil
     s.host.should eql(host)
+    s.port.should_not be_nil
     s.port.should eql(port)
-  end
-
-  it "should have an adapter= method with one argument" do
-    m = ::Aspen::Server.instance_method("adapter=")
-    m.should_not be_nil
-    m.arity.should eql(1)
-  end
-
-  it "should have a verbose= method with one argument" do
-    m = ::Aspen::Server.instance_method("verbose=")
-    m.should_not be_nil
-    m.arity.should eql(1)
+    s.app.should_not be_nil
+    # proc can't be compared?
+    # s.app.should eql(app)
   end
 
   it "should have a start method" do

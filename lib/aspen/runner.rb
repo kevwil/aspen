@@ -35,7 +35,8 @@ module Aspen
         :address        => Server::DEFAULT_HOST,
         :port           => Server::DEFAULT_PORT,
         :log            => 'log/aspen.log',
-        :pid            => 'tmp/pids/aspen.pid'
+        :pid            => 'tmp/pids/aspen.pid',
+        :require        => []
       }
       
       parse!
@@ -79,7 +80,7 @@ module Aspen
 
         opts.on_tail("-r", "--require FILE", "require the library")                     { |file| @options[:require] << file }
         opts.on_tail("-D", "--debug", "Set debbuging on")                               { @options[:debug] = true }
-        # opts.on_tail("-V", "--trace", "Set tracing on (log raw request/response)")      { @options[:trace] = true }
+        opts.on_tail("-V", "--trace", "Set tracing on (log raw request/response)")      { @options[:trace] = true }
         opts.on_tail("-h", "--help", "Show this message")                               { puts opts; exit }
         opts.on_tail('-v', '--version', "Show version")                                 { puts Aspen::SERVER; exit }
       end
