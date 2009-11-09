@@ -1,16 +1,8 @@
-# Look in the tasks/setup.rb file for the various options that can be
-# configured in this Rakefile. The .rake files in the tasks directory
-# are where the options are used.
 
 begin
   require 'bones'
-  Bones.setup
 rescue LoadError
-  begin
-    load 'tasks/setup.rb'
-  rescue LoadError
-    raise RuntimeError, '### please install the "bones" gem ###'
-  end
+  abort '### Please install the "bones" gem ###'
 end
 
 ensure_in_path 'lib'
@@ -19,18 +11,26 @@ require 'aspen/version'
 # task :default => ['java:build','spec:run']
 task :default => ['spec:run']
 
-PROJ.name = 'aspen'
-PROJ.authors = ['Kevin Williams']
-PROJ.email = ['kevwil@gmail.com']
-PROJ.url = 'http://kevwil.github.com/aspen'
-PROJ.version = ENV['VERSION'] || Aspen::VERSION::STRING
-PROJ.rubyforge.name = 'aspen'
-PROJ.readme_file = 'README'
-PROJ.ignore_file = '.gitignore'
+Bones {
+  name 'aspen'
+  authors ['Kevin Williams']
+  email ['kevwil@gmail.com']
+  url 'http://kevwil.github.com/aspen'
+  version ENV['VERSION'] || Aspen::VERSION::STRING
+  rubyforge.name 'aspen'
+  readme_file 'README'
+  ignore_file '.gitignore'
+  depend_on 'rack', '1.0.0'
+  depend_on 'bones', :development => true
+  depend_on 'rspec', :development => true
+  depend_on 'mocha', :development => true
 
-PROJ.spec.opts << '--color'
-PROJ.rcov.opts << ['--exclude', 'rcov']
-PROJ.rcov.opts << ['--exclude', 'mocha']
+  ruby_opts << '-Ilib' << '-rubygems'
+  spec.opts << '--color'
+  rcov.opts << ['--exclude', 'rcov']
+  rcov.opts << ['--exclude', 'mocha']
+  # enable_sudo
+}
 
 
 require 'fileutils'
@@ -47,10 +47,10 @@ namespace :java do
   desc "build java code and copy jars to lib folder"
   task :build => :clean do
 
-    system "cd javalib;mvn --offline package;cd .."
+    system "cd javalib;mvn --offline package;ant;cd .."
 
-    FileUtils.cp Dir.glob('javalib/target/*.jar'), 'lib'
-    FileUtils.mv Dir.glob('lib/aspenj*.jar').first, 'lib/aspenj.jar'
+    # FileUtils.cp Dir.glob('javalib/target/*.jar'), 'lib'
+    # FileUtils.mv Dir.glob('lib/aspenj*.jar').first, 'lib/aspenj.jar'
 
   end
 

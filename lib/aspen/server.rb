@@ -51,6 +51,8 @@ module Aspen
       # Allow using Rack builder as a block
       @app = Rack::Builder.new(&block).to_app if block
       
+      raise ArgumentError, 'app required' unless @app
+      
       # If in debug mode, wrap in logger adapter
       @app = Rack::CommonLogger.new(@app)
       

@@ -1,12 +1,11 @@
 aspen
     by Kevin Williams
-    http://kevwil.github.com/
+    http://kevwil.github.com/aspen/
 
 == DESCRIPTION:
 
 Aspen is a web server engine for JRuby. The design is very similar to Thin,
-except using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets
-and Scala for the concurrent Actor model.
+except using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets.
 
 == FEATURES/PROBLEMS:
 
@@ -19,19 +18,13 @@ and Scala for the concurrent Actor model.
 
 == REQUIREMENTS:
 
-* JRuby >= 1.2
+* JRuby >= 1.4
 * Rack
 
 == INSTALL:
 
-	# From Rubyforge ...
+	# From Gemcutter / Rubyforge ...
 	$ (sudo) jruby -S gem install aspen
-
-*OR*
-
-	# From Github ...
-	$ (sudo) jruby -S gem sources -a http://gems.github.com (only need to do this once)
-	$ (sudo) jruby -S gem install kevwil-aspen
 
 == LICENSE:
 
