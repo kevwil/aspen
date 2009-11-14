@@ -2,6 +2,7 @@ package com.github.kevwil.aspen;
 
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.handler.codec.http.*;
+import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jruby.*;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.slf4j.*;
@@ -21,17 +22,18 @@ public final class RackEnvironmentMaker
 
     /**
      * build up a Ruby hash from the request
+     * @param ctx the request context
      * @param httpRequest the Netty request
      * @param runtime the current JRuby runtime
      * @return a Ruby hash instance
      * @throws RackException if there's a problem
      */
-    public static IRubyObject build( HttpRequest httpRequest, Ruby runtime )
+    public static IRubyObject build( final ChannelHandlerContext ctx, HttpRequest httpRequest, Ruby runtime )
     throws RackException
     {
         RubyHash env = new RubyHash( runtime );
         env.put( "rack.version", getRackVersion( runtime ) );
-        URI uri = getUri( httpRequest );
+        URI uri = getUri( ctx, httpRequest );
         log.debug( "built Java URI from request: " + uri );
         assignUrlScheme( uri, env );
         env.put( "rack.multithread", runtime.getFalse() );
@@ -42,11 +44,11 @@ public final class RackEnvironmentMaker
         assignPathInfo( uri, env );
         env.put( "QUERY_STRING", uri.getQuery() );
         env.put( "SERVER_NAME", uri.getHost() );
-        env.put( "SERVER_PORT", uri.getPort() );
+        env.put( "SERVER_PORT", uri.getPort() == -1 ? "80" : uri.getPort() );
         parseHttpHeaders( httpRequest, env );
 
         assignInputStream( httpRequest, env );
-        assignOutputStream( httpRequest, env );
+        assignOutputStream( env );
         /*
          * TODO:
          * NEED TO ASSIGN SESSION FROM APP FIRST,
@@ -102,11 +104,11 @@ public final class RackEnvironmentMaker
         return version;
     }
 
-    private static URI getUri( HttpRequest request ) throws RackException
+    private static URI getUri( ChannelHandlerContext ctx, HttpRequest request ) throws RackException
     {
         try
         {
-            return new URI( buildFullRequest( request ) );
+            return new URI( buildFullRequest( ctx, request ) );
         }
         catch( URISyntaxException ex )
         {
@@ -115,18 +117,33 @@ public final class RackEnvironmentMaker
         }
     }
 
-    private static String buildFullRequest( HttpRequest request )
+    private static String buildFullRequest( ChannelHandlerContext ctx, HttpRequest request )
     {
-        StringBuilder sb = new StringBuilder();
-        // will this ever support https?
-        // no idea how to extract correct info here
-        sb.append( "http://" );
-        if( request.containsHeader( HttpHeaders.Names.HOST ) )
+        if( request.getUri().contains( "://" ) )
         {
-            sb.append( request.getHeader( HttpHeaders.Names.HOST ) );
+            return request.getUri();
         }
-        sb.append( request.getUri() );
-        return sb.toString();
+        else
+        {
+            // TODO: Netty can do SSL, eventually will need to handle it
+
+            StringBuilder sb = new StringBuilder();
+            sb.append( "http://" );
+            if( request.containsHeader( HttpHeaders.Names.HOST ) )
+            {
+                sb.append( request.getHeader( HttpHeaders.Names.HOST ) );
+            }
+            else
+            {
+                InetSocketAddress serverSocket = (InetSocketAddress) ctx.getChannel().getLocalAddress();
+                sb.append( serverSocket.getHostName() );
+                sb.append( ":" );
+                sb.append( Integer.toString( serverSocket.getPort() ) );
+            }
+            sb.append( request.getUri() );
+            return sb.toString();
+        }
+
     }
 
     private static void assignInputStream( HttpRequest httpRequest, RubyHash env )
@@ -135,7 +152,7 @@ public final class RackEnvironmentMaker
                 new ChannelBufferInputStream( httpRequest.getContent() ) );
     }
 
-    private static void assignOutputStream( HttpRequest httpRequest, RubyHash env )
+    private static void assignOutputStream( RubyHash env )
     {
         env.put( "rack.errors", env.getRuntime().getStandardError() );
     }
