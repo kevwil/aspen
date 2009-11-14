@@ -41,16 +41,13 @@ namespace :java do
   task :clean do
 
     system "cd javalib;mvn --offline clean;cd .."
-    FileUtils.rm Dir.glob('lib/*.jar')
+    FileUtils.rm Dir.glob('lib/**/*.jar')
   end
 
   desc "build java code and copy jars to lib folder"
   task :build => :clean do
 
     system "cd javalib;mvn --offline package;ant;cd .."
-
-    # FileUtils.cp Dir.glob('javalib/target/*.jar'), 'lib'
-    # FileUtils.mv Dir.glob('lib/aspenj*.jar').first, 'lib/aspenj.jar'
 
   end
 
