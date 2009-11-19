@@ -40,6 +40,18 @@ public class RackEnvironmentMakerUriTest
         doTestHostHeaderProcessing( "http", "localhost", null, "/" );
     }
 
+    @Test
+    public void shouldIncludeQueryStringIfProvided() throws Exception
+    {
+        doTestGetProcessing( "http", "localhost", "80", "/search.pl?fname=kevin&lname=williams" );
+    }
+
+    @Test
+    public void shouldFulfilMinimumQueryStringRequirementsIfNotProvided() throws Exception
+    {
+        
+    }
+
     private void doTestHostHeaderProcessing( String protocol, String server, String port, String path )
     throws Exception
     {
@@ -96,7 +108,17 @@ public class RackEnvironmentMakerUriTest
             assertEquals( "80", ep );
         }
         String ep2 = (String) env.get( "PATH_INFO" );
-        assertEquals( path, ep2 );
+        if( path.contains( "?" ) )
+        {
+            String[] pathAndQuery = path.split( "\\?" );
+            assertEquals( pathAndQuery[0], ep2 );
+            String query = env.get( "QUERY_STRING" ).toString();
+            assertEquals( pathAndQuery[1], query );
+        }
+        else
+        {
+            assertEquals( path, ep2 );
+        }
     }
 
     private ChannelHandlerContext buildChannelHandlerContext( final String server, final String port )
