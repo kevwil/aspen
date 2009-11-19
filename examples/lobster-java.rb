@@ -1,5 +1,6 @@
 require File.expand_path(
-    File.join(File.dirname(__FILE__), %w[lib aspen]))
+    File.join(File.dirname(__FILE__), %w[.. lib aspen]))
+require 'rack/lobster'
 
 class SimpleAdapter
   def call(env)
