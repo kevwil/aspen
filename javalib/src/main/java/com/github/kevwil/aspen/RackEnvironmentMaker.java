@@ -42,7 +42,7 @@ public final class RackEnvironmentMaker
         env.put( "REQUEST_METHOD", httpRequest.getMethod().toString() );
         env.put( "SCRIPT_NAME", "" );
         assignPathInfo( uri, env );
-        env.put( "QUERY_STRING", uri.getQuery() );
+        env.put( "QUERY_STRING", uri.getQuery() == null ? "" : uri.getQuery() );
         env.put( "SERVER_NAME", uri.getHost() );
         env.put( "SERVER_PORT", uri.getPort() == -1 ? "80" : uri.getPort() );
         parseHttpHeaders( httpRequest, env );
