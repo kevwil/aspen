@@ -75,7 +75,7 @@ module Aspen
     def start
       raise ArgumentError, 'app required' unless @app
 
-      log   ">> Aspen web server (#{::Aspen.version}"
+      log   ">> Aspen web server (#{::Aspen::SERVER})"
       debug ">> Debugging ON"
       trace ">> Tracing ON"
 
