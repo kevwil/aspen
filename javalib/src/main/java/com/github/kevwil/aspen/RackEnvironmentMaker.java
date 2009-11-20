@@ -1,6 +1,5 @@
 package com.github.kevwil.aspen;
 
-import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
@@ -148,8 +147,9 @@ public final class RackEnvironmentMaker
 
     private static void assignInputStream( HttpRequest httpRequest, RubyHash env )
     {
-        env.put( "rack.input",
-                new RubyIO( env.getRuntime(), new ChannelBufferInputStream( httpRequest.getContent() ) ) );
+//        env.put( "rack.input",
+//                new RubyIO( env.getRuntime(), new ChannelBufferInputStream( httpRequest.getContent() ) ) );
+        env.put( "rack.input", new BufferedRackInput( env.getRuntime(), httpRequest.getContent() ) );
     }
 
     private static void assignOutputStream( RubyHash env )

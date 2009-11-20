@@ -60,11 +60,7 @@ public class RackEnvironmentMakerUriTest
     {
         RubyHash env = doTestGetProcessing( "http", "localhost", "80", "/" );
         Object input = env.get( "rack.input" );
-        assertTrue( input instanceof RubyIO );
-        assertTrue( ((IRubyObject)input).respondsTo( "gets" ) );
-        assertTrue( ((IRubyObject)input).respondsTo( "each" ) );
-        assertTrue( ((IRubyObject)input).respondsTo( "read" ) );
-        assertTrue( ((IRubyObject)input).respondsTo( "rewind" ) );
+        assertTrue( input instanceof RackInput );
         Object errors = env.get( "rack.errors" );
         assertTrue( errors instanceof RubyIO );
         assertTrue( ((IRubyObject)errors).respondsTo( "puts" ) );
