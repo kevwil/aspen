@@ -1,8 +1,8 @@
 package com.github.kevwil.aspen;
 
 import org.jboss.netty.buffer.ChannelBufferInputStream;
-import org.jboss.netty.handler.codec.http.*;
 import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.slf4j.*;
@@ -149,12 +149,13 @@ public final class RackEnvironmentMaker
     private static void assignInputStream( HttpRequest httpRequest, RubyHash env )
     {
         env.put( "rack.input",
-                new ChannelBufferInputStream( httpRequest.getContent() ) );
+                new RubyIO( env.getRuntime(), new ChannelBufferInputStream( httpRequest.getContent() ) ) );
     }
 
     private static void assignOutputStream( RubyHash env )
     {
-        env.put( "rack.errors", env.getRuntime().getStandardError() );
+        RubyIO stderr = new RubyIO( env.getRuntime(), env.getRuntime().getStandardError() );
+        env.put( "rack.errors", stderr );
     }
 
     private static void parseHttpHeaders( HttpRequest request, RubyHash env )

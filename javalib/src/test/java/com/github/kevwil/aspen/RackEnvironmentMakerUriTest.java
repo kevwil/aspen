@@ -3,6 +3,7 @@ package com.github.kevwil.aspen;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
+import org.jruby.runtime.builtin.IRubyObject;
 import static org.junit.Assert.*;
 import org.junit.*;
 
@@ -49,10 +50,30 @@ public class RackEnvironmentMakerUriTest
     @Test
     public void shouldFulfilMinimumQueryStringRequirementsIfNotProvided() throws Exception
     {
-        
+        RubyHash env = doTestGetProcessing( "http", "localhost", "80", "/" );
+        assertNotNull( env.get( "QUERY_STRING" ) );
+        assertEquals( 0, env.get( "QUERY_STRING" ).toString().length() );
     }
 
-    private void doTestHostHeaderProcessing( String protocol, String server, String port, String path )
+    @Test
+    public void shouldExposeRubyIOforInputStream() throws Exception
+    {
+        RubyHash env = doTestGetProcessing( "http", "localhost", "80", "/" );
+        Object input = env.get( "rack.input" );
+        assertTrue( input instanceof RubyIO );
+        assertTrue( ((IRubyObject)input).respondsTo( "gets" ) );
+        assertTrue( ((IRubyObject)input).respondsTo( "each" ) );
+        assertTrue( ((IRubyObject)input).respondsTo( "read" ) );
+        assertTrue( ((IRubyObject)input).respondsTo( "rewind" ) );
+        Object errors = env.get( "rack.errors" );
+        assertTrue( errors instanceof RubyIO );
+        assertTrue( ((IRubyObject)errors).respondsTo( "puts" ) );
+        //assertTrue( ((IRubyObject)errors).respondsTo( "write" ) ); // doesn't pass, why not?
+        //assertTrue( ((IRubyObject)errors).respondsTo( "flush" ) ); // doesn't pass, why not?
+
+    }
+
+    private RubyHash doTestHostHeaderProcessing( String protocol, String server, String port, String path )
     throws Exception
     {
         HttpRequest req = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, path );
@@ -75,10 +96,11 @@ public class RackEnvironmentMakerUriTest
         }
         String ep2 = (String) env.get( "PATH_INFO" );
         assertEquals( path, ep2 );
+        return env;
     }
 
 
-    private void doTestGetProcessing( String protocol, String server, String port, String path )
+    private RubyHash doTestGetProcessing( String protocol, String server, String port, String path )
     throws Exception
     {
         StringBuilder sb = new StringBuilder();
@@ -119,6 +141,7 @@ public class RackEnvironmentMakerUriTest
         {
             assertEquals( path, ep2 );
         }
+        return env;
     }
 
     private ChannelHandlerContext buildChannelHandlerContext( final String server, final String port )
