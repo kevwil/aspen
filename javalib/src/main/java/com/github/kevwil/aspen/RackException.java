@@ -1,7 +1,7 @@
 package com.github.kevwil.aspen;
 
 /**
- * @author sensei
+ * @author kevwil
  * @since Oct 4, 2009
  */
 public class RackException extends Exception
