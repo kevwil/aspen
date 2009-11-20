@@ -154,8 +154,9 @@ public final class RackEnvironmentMaker
 
     private static void assignOutputStream( RubyHash env )
     {
-        RubyIO stderr = new RubyIO( env.getRuntime(), env.getRuntime().getStandardError() );
-        env.put( "rack.errors", stderr );
+//        RubyIO stderr = new RubyIO( env.getRuntime(), env.getRuntime().getStandardError() );
+//        env.put( "rack.errors", stderr );
+        env.put( "rack.errors", new DefaultRackOutput( env ) );
     }
 
     private static void parseHttpHeaders( HttpRequest request, RubyHash env )

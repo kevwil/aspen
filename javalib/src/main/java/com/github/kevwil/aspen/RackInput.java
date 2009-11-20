@@ -23,7 +23,7 @@ public interface RackInput
      * @param context ruby context
      * @return nil
      */
-    IRubyObject gets(ThreadContext context);
+    IRubyObject gets( ThreadContext context );
 
     /**
      * read behaves like IO#read. Its signature is read([length, [buffer]]). If given,
@@ -38,7 +38,7 @@ public interface RackInput
      * @param args length and buffer, both optional
      * @return nil
      */
-    IRubyObject read(ThreadContext context, IRubyObject[] args);
+    IRubyObject read( ThreadContext context, IRubyObject[] args );
 
     /**
      * each must be called without arguments and only yield Strings.
@@ -46,7 +46,7 @@ public interface RackInput
      * @param block lambda te execute on each return
      * @return nil
      */
-    public IRubyObject each(ThreadContext context, Block block);
+    public IRubyObject each( ThreadContext context, Block block );
 
     /**
      * rewind must be called without arguments. It rewinds the input stream back

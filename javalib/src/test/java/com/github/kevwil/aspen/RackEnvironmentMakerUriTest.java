@@ -3,7 +3,6 @@ package com.github.kevwil.aspen;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
-import org.jruby.runtime.builtin.IRubyObject;
 import static org.junit.Assert.*;
 import org.junit.*;
 
@@ -62,10 +61,7 @@ public class RackEnvironmentMakerUriTest
         Object input = env.get( "rack.input" );
         assertTrue( input instanceof RackInput );
         Object errors = env.get( "rack.errors" );
-        assertTrue( errors instanceof RubyIO );
-        assertTrue( ((IRubyObject)errors).respondsTo( "puts" ) );
-        //assertTrue( ((IRubyObject)errors).respondsTo( "write" ) ); // doesn't pass, why not?
-        //assertTrue( ((IRubyObject)errors).respondsTo( "flush" ) ); // doesn't pass, why not?
+        assertTrue( errors instanceof RackOutput );
 
     }
 
