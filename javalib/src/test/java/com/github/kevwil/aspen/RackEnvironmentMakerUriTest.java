@@ -62,6 +62,10 @@ public class RackEnvironmentMakerUriTest
         assertTrue( input instanceof RackInput );
         Object errors = env.get( "rack.errors" );
         assertTrue( errors instanceof RackOutput );
+//        assertNotNull( errors );
+//        assertTrue( ((IRubyObject)errors).respondsTo( "puts" ) );
+//        assertTrue( ((IRubyObject)errors).respondsTo( "write" ) );
+//        assertTrue( ((IRubyObject)errors).respondsTo( "flush" ) );
 
     }
 

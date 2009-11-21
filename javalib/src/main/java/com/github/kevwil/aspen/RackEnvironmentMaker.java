@@ -54,6 +54,7 @@ public final class RackEnvironmentMaker
          * USE DEFAULT IF NOT ASSIGNED
          *
          */
+        System.out.println( "built rack env: " + env );
         return env;
     }
 
@@ -147,16 +148,26 @@ public final class RackEnvironmentMaker
 
     private static void assignInputStream( HttpRequest httpRequest, RubyHash env )
     {
+        // Thin uses StringIO.new(body)
+        
 //        env.put( "rack.input",
 //                new RubyIO( env.getRuntime(), new ChannelBufferInputStream( httpRequest.getContent() ) ) );
         env.put( "rack.input", new BufferedRackInput( env.getRuntime(), httpRequest.getContent() ) );
+//        ChannelBuffer content = httpRequest.getContent();
+//        int len = (int)httpRequest.getContentLength();
+//        byte[] buf = new byte[len];
+//        content.readBytes( buf, 0, len );
+//        new RubyStringIO( env.getRuntime(), RubyString.newString( env.getRuntime(), buf ) );
     }
 
     private static void assignOutputStream( RubyHash env )
     {
+        // Thin uses STDERR
+        
 //        RubyIO stderr = new RubyIO( env.getRuntime(), env.getRuntime().getStandardError() );
 //        env.put( "rack.errors", stderr );
         env.put( "rack.errors", new DefaultRackOutput( env ) );
+//        env.put( "rack.errors", env.getRuntime().getGlobalVariables().get( "STDERR" ) );
     }
 
     private static void parseHttpHeaders( HttpRequest request, RubyHash env )
