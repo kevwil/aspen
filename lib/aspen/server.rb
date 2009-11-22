@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/logging'
+require File.dirname(__FILE__) + '/logging.rb'
 require 'java'
 require File.dirname(__FILE__) + '/aspenj.jar'
 import com.github.kevwil.aspen.AspenServer
@@ -54,7 +54,7 @@ module Aspen
       raise ArgumentError, 'app required' unless @app
       
       # If in debug mode, wrap in logger adapter
-      @app = Rack::CommonLogger.new(@app)
+      @app = Rack::CommonLogger.new(@app) if Logging.debug?
       
       @backend = AspenServer.new(@host,@port,@app)
     end

@@ -54,7 +54,6 @@ public final class RackEnvironmentMaker
          * USE DEFAULT IF NOT ASSIGNED
          *
          */
-        System.out.println( "built rack env: " + env );
         return env;
     }
 
