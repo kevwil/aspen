@@ -32,8 +32,8 @@ extends SimpleChannelUpstreamHandler
         HttpRequest request = (HttpRequest)e.getMessage();
         IRubyObject env = RackEnvironmentMaker.build( ctx, request, runtime );
         RubyArray rackOutput =
-                _app.callMethod( runtime.getCurrentContext(), "call", env )
-                    .convertToArray();
+                (RubyArray) _app.callMethod( runtime.getCurrentContext(), "call", env )
+                    .callMethod( runtime.getCurrentContext(), "to_a" );
         HttpResponse response = RackResponseTranslator.translate( rackOutput );
         e.getChannel().write( response ).addListener( ChannelFutureListener.CLOSE );
     }

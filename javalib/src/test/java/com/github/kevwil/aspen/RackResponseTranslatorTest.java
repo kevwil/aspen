@@ -24,20 +24,33 @@ public class RackResponseTranslatorTest
     @Test
     public void shouldTranslateHelloWorldMessage() throws Exception
     {
-        String message = "Hello World!";
+        String[] message = {"Hello World!"};
         RubyArray rack_response = createRackResponse( 200, new HashMap<String,String>(), message );
 
         HttpResponse response = RackResponseTranslator.translate( rack_response );
 
         assertEquals( HttpResponseStatus.OK, response.getStatus() );
         assertTrue( response.getHeaderNames().isEmpty() );
-        assertEquals( message, response.getContent().toString( "UTF-8" ) );
+        assertEquals( message[0], response.getContent().toString( "UTF-8" ) );
+    }
+
+    @Test
+    public void shouldHandleMultiLintBodies() throws Exception
+    {
+        String[] message = {"Hello ","World!"};
+        RubyArray rack_response = createRackResponse( 200, new HashMap<String,String>(), message );
+
+        HttpResponse response = RackResponseTranslator.translate( rack_response );
+
+        assertEquals( HttpResponseStatus.OK, response.getStatus() );
+        assertTrue( response.getHeaderNames().isEmpty() );
+        assertEquals( message[0]+message[1], response.getContent().toString( "UTF-8" ) );
     }
 
     @Test
     public void shouldPassContentTypeHeader() throws Exception
     {
-        String message = "Hello World!";
+        String[] message = {"Hello World!"};
         Map<String,String> headers = new HashMap<String,String>();
         headers.put( "CONTENT_TYPE", "text/css" );
         RubyArray rack_response = createRackResponse( 200, headers, message );
@@ -46,10 +59,10 @@ public class RackResponseTranslatorTest
 
         assertEquals( HttpResponseStatus.OK, response.getStatus() );
         assertTrue( response.getHeaderNames().contains( "CONTENT_TYPE" ) );
-        assertEquals( message, response.getContent().toString( "UTF-8" ) );
+        assertEquals( message[0], response.getContent().toString( "UTF-8" ) );
     }
 
-    private RubyArray createRackResponse( int status, Map<String,String> headers, String body )
+    private RubyArray createRackResponse( int status, Map<String,String> headers, String[] body )
     {
         RubyHash hash = RubyHash.newHash( runtime );
         for( String key : headers.keySet() )
@@ -58,9 +71,14 @@ public class RackResponseTranslatorTest
                     RubyString.newString( runtime, key ),
                     RubyString.newString( runtime, headers.get( key ) ) );
         }
+        RubyArray bodies = RubyArray.newArray( runtime );
+        for( String s : body )
+        {
+            bodies.append( RubyString.newString( runtime, s ) );
+        }
         return RubyArray.newArray( runtime )
                 .append( runtime.newFixnum( status ) )
                 .append( hash )
-                .append( RubyString.newString( runtime, body ) );
+                .append( bodies );
     }
 }

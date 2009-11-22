@@ -32,13 +32,27 @@ public final class RackResponseTranslator
         }
 
         int status = RubyInteger.num2int( rackOutput.entry( 0 ).convertToInteger() );
+        log.debug( "parsed out HTTP status code " + status );
         Map<String,String> headers = new HashMap<String,String>();
         RubyHash rackHash = rackOutput.entry( 1 ).convertToHash();
         for( Object key : rackHash.keySet() )
         {
             headers.put( key.toString(), rackHash.get( key ).toString() );
         }
-        String body = rackOutput.entry( 2 ).asJavaString();
+        RubyArray r2 = rackOutput.entry( 2 ).convertToArray();
+        List<String> s2 = new ArrayList<String>();
+        for( int i = 0; i < RubyFixnum.num2int( r2.length() ); i++ )
+        {
+            s2.add( r2.get( i ).toString() );
+        }
+        StringBuilder body = new StringBuilder();
+        for( String s : s2 )
+        {
+            body.append(s);
+        }
+        String body_out = body.toString();
+        // String body = rackOutput.entry( 2 ).asJavaString();
+        log.debug( "parsed out body: " + body_out );
 
         HttpResponse response = new DefaultHttpResponse(
                 HttpVersion.HTTP_1_1,
@@ -48,7 +62,7 @@ public final class RackResponseTranslator
             response.addHeader( key, headers.get( key ) );
         }
          // TODO: need correct content-type
-        response.setContent( ChannelBuffers.copiedBuffer( body, "UTF-8" ) );
+        response.setContent( ChannelBuffers.copiedBuffer( body_out, "UTF-8" ) );
         return response;
     }
 }

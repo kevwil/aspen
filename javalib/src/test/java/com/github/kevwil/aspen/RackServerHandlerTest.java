@@ -42,6 +42,6 @@ public class RackServerHandlerTest
         // yes, I basically just gave up on understanding the internal JRuby way
         // of doing this. I'm a cheater and a loser.
         Ruby runtime = Ruby.getGlobalRuntime();
-        return runtime.evalScriptlet( "def call(env); [" + status + ", {}, \"" + body + "\"]; end" );
+        return runtime.evalScriptlet( "def call(env); [" + status + ", {}, [\"" + body + "\"]]; end" );
     }
 }
