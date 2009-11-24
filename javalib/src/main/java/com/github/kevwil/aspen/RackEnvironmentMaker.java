@@ -4,7 +4,6 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
 import org.jruby.runtime.builtin.IRubyObject;
-import org.slf4j.*;
 
 import java.net.*;
 import java.util.*;
@@ -17,7 +16,6 @@ import java.util.*;
 public final class RackEnvironmentMaker
 {
     private static final List<String> allowedSchemes = Arrays.asList( "http","https" );
-    private static final Logger log = LoggerFactory.getLogger( RackEnvironmentMaker.class );
 
     /**
      * build up a Ruby hash from the request
@@ -33,7 +31,6 @@ public final class RackEnvironmentMaker
         RubyHash env = new RubyHash( runtime );
         env.put( "rack.version", getRackVersion( runtime ) );
         URI uri = getUri( ctx, httpRequest );
-        log.debug( "built Java URI from request: " + uri );
         assignUrlScheme( uri, env );
         env.put( "rack.multithread", runtime.getFalse() );
         env.put( "rack.multiprocess", runtime.getFalse() );
@@ -64,7 +61,8 @@ public final class RackEnvironmentMaker
         if( path.length() > 0 && !path.startsWith("/") )
         {
             RackException ex = new RackException( "invalid path, must start with '/'" );
-            log.error( "error assigning PATH_INFO", ex );
+            System.err.println( "error assigning PATH_INFO" );
+            ex.printStackTrace( System.err );
             throw ex;
         }
         else
@@ -80,7 +78,8 @@ public final class RackEnvironmentMaker
         if( urlScheme == null )
         {
             RackException ex = new RackException("no http url scheme found");
-            log.error( "error assigning url scheme", ex );
+            System.err.println( "error assigning url scheme" );
+            ex.printStackTrace( System.err );
             throw ex;
         }
         if( allowedSchemes.contains( urlScheme ) )
@@ -90,7 +89,8 @@ public final class RackEnvironmentMaker
         else
         {
             RackException ex = new RackException( "invalid url scheme: " + urlScheme );
-            log.error( "error assigning url scheme", ex );
+            System.err.println( "error assigning url scheme" );
+            ex.printStackTrace( System.err );
             throw ex;
         }
     }
@@ -111,7 +111,8 @@ public final class RackEnvironmentMaker
         }
         catch( URISyntaxException ex )
         {
-            log.error( "error parsing request URI", ex );
+            System.err.println( "error parsing request URI" );
+            ex.printStackTrace( System.err );
             throw new RackException( ex );
         }
     }

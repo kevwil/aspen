@@ -3,7 +3,6 @@ package com.github.kevwil.aspen;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
-import org.slf4j.*;
 
 import java.util.*;
 
@@ -14,8 +13,6 @@ import java.util.*;
  */
 public final class RackResponseTranslator
 {
-    private static final Logger log = LoggerFactory.getLogger( RackResponseTranslator.class );
-
     /**
      * Tranlate Rack output into Netty HttpResponse
      * @param rackOutput result of all Rack middleware output
@@ -27,12 +24,12 @@ public final class RackResponseTranslator
         if( rackOutput.size() != 3 )
         {
             RackException ex = new RackException( "received output not in the form of a 3-element array" );
-            log.error( "error translating rack output into Netty HttpResponse", ex );
+            System.err.println( "error translating rack output into Netty HttpResponse" );
+            ex.printStackTrace( System.err );
             throw ex;
         }
 
         int status = RubyInteger.num2int( rackOutput.entry( 0 ).convertToInteger() );
-        log.debug( "parsed out HTTP status code " + status );
         Map<String,String> headers = new HashMap<String,String>();
         RubyHash rackHash = rackOutput.entry( 1 ).convertToHash();
         for( Object key : rackHash.keySet() )
@@ -52,7 +49,6 @@ public final class RackResponseTranslator
         }
         String body_out = body.toString();
         // String body = rackOutput.entry( 2 ).asJavaString();
-        log.debug( "parsed out body: " + body_out );
 
         HttpResponse response = new DefaultHttpResponse(
                 HttpVersion.HTTP_1_1,
