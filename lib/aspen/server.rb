@@ -1,3 +1,4 @@
+require 'g'
 require File.dirname(__FILE__) + '/logging.rb'
 require 'java'
 require File.dirname(__FILE__) + '/aspenj.jar'
@@ -14,7 +15,7 @@ module Aspen
   # == Rack Application
   # All requests will be processed through +app+ that must be a valid Rack adapter.
   # A valid Rack adapter (application) must respond to <tt>call(env#Hash)</tt> and
-  # return an array of <tt>[status, headers, body]</tt>.
+  # return an array of <tt>[status, headers, [body]]</tt>.
   class Server
     include Logging
     
@@ -84,6 +85,10 @@ module Aspen
       @backend.start
     end
     alias :start! :start
+
+    def running?
+      return @backend.is_running
+    end
 
     # == Gracefull shutdown
     # Stops the server after processing all current connections.

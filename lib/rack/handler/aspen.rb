@@ -1,4 +1,4 @@
-require 'rack/content-length'
+require 'rack/content_length'
 require 'rack/chunked'
 
 module Rack
