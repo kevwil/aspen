@@ -3,6 +3,9 @@ require 'yaml'
 
 module Aspen
   
+  # Error raised that will abort the process and print not backtrace.
+  class RunnerError < RuntimeError; end
+
   # CLI runner - parse options and drive server
   class Runner
     

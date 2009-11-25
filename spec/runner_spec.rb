@@ -1,12 +1,14 @@
-require File.dirname(__FILE__) + '/spec_helper'
 
-describe Aspen::Runner do
+require 'spec_helper'
+
+describe Aspen::Runner, "with basic options" do
+  
   it "should parse options" do
     runner = Aspen::Runner.new(%w(start --pid test.pid --port 5000))
     
     runner.should_not be_nil
     runner.options.should_not be_nil
-    runner.options.should_not be_empty
+    runner.options.kind_of?(Hash).should be_true
     runner.options[:pid].should eql('test.pid')
     runner.options[:port].should eql(5000)
   end
@@ -38,8 +40,7 @@ describe Aspen::Runner do
   end
   
   it "should warn when require a rack config file" do
-    STDERR.stubs(:write)
-    STDERR.expects(:write).with(/WARNING:/) # not getting hit?
+    Aspen::Runner.any_instance.expects(:warn).with(regexp_matches(/WARNING/))
     
     runner = Aspen::Runner.new(%w(start -r config.ru))
     runner.run! rescue nil

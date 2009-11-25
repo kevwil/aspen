@@ -1,10 +1,8 @@
-require 'java'
 require 'rubygems'
 gem 'rspec'
 require 'spec'
 
-require File.expand_path(
-    File.join(File.dirname(__FILE__), %w[.. lib aspen]))
+require File.join(File.dirname(__FILE__), '../lib/aspen')
 
 ::Aspen::Logging.silent = true
 
