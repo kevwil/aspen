@@ -24,6 +24,7 @@ public class AspenServer
 
     public AspenServer( final String host, final int port, final IRubyObject app )
     {
+        _running = false;
         _host = host;
         _port = port;
         _allChannels = new DefaultChannelGroup( "aspen-server" );
