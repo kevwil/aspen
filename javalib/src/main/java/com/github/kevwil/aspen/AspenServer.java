@@ -83,4 +83,13 @@ public class AspenServer
             throw new RuntimeException( ex );
         }
     }
+
+    /**
+     * is the socket server running?
+     * @return true or false
+     */
+    public boolean isRunning()
+    {
+        return _running;
+    }
 }

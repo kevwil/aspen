@@ -20,6 +20,11 @@ implements ChannelPipelineFactory
         _app = app;
     }
 
+    // ... you can write a 'ChunkedInput' so that the 'ChunkedWriteHandler'
+    // can pick it up and fetch the content of the stream chunk by chunk
+    // and write the fetched chunk downstream:
+    // Channel ch = ...;
+    // ch.write(new ChunkedFile(new File("video.mkv"));
     public ChannelPipeline getPipeline() throws Exception
     {
         ChannelPipeline pipeline = Channels.pipeline();
