@@ -8,10 +8,11 @@ end
 ensure_in_path 'lib'
 require 'aspen/version'
 
-# task :default => ['java:build','spec:run']
-task :default => ['spec:run']
+# task :default => ['java:build','spec:specdoc']
+task :default => ['spec:specdoc']
+task 'gem:release' => ['spec:run']
 
-Bones {
+Bones do
   name 'aspen'
   authors ['Kevin Williams']
   email ['kevwil@gmail.com']
@@ -20,8 +21,11 @@ Bones {
   rubyforge.name 'aspen'
   readme_file 'README'
   ignore_file '.gitignore'
-  depend_on 'rack', '1.0.0'
+  depend_on 'rack'
+  depend_on 'g', :development => true
   depend_on 'bones', :development => true
+  depend_on 'bones-git', :development => true
+  depend_on 'bones-extras', :development => true
   depend_on 'rspec', :development => true
   depend_on 'mocha', :development => true
 
@@ -29,8 +33,10 @@ Bones {
   spec.opts << '--color'# << '--format html:./spec_out.html'
   rcov.opts << ['--exclude', 'rcov']
   rcov.opts << ['--exclude', 'mocha']
-  # enable_sudo
-}
+
+  use_gmail
+  enable_sudo
+end
 
 
 require 'fileutils'

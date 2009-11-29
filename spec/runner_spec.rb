@@ -54,8 +54,8 @@ describe Aspen::Runner, "with basic options" do
   end
   
   it "should remember requires" do
-    runner = Aspen::Runner.new(%w(start -r rubygems -r thin))
-    runner.options[:require].should eql(%w(rubygems thin))
+    runner = Aspen::Runner.new(%w(start -r rubygems -r aspen))
+    runner.options[:require].should eql(%w(rubygems aspen))
   end
 
   it "should remember debug options" do

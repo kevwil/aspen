@@ -56,8 +56,10 @@ module Aspen
       
       # If in debug mode, wrap in logger adapter
       @app = Rack::CommonLogger.new(@app) if Logging.debug?
+
+      @proxy = NettyProxy.new(@app)
       
-      @backend = AspenServer.new(@host,@port,@app)
+      @backend = AspenServer.new(@host,@port,@proxy)
     end
     
     # Lil' shortcut to turn this:

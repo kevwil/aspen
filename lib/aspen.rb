@@ -3,6 +3,7 @@ require 'aspen/version'
 module Aspen
 
   autoload :Logging, 'aspen/logging'
+  autoload :NettyProxy, 'aspen/netty_proxy'
   autoload :Server, 'aspen/server'
   autoload :Runner, 'aspen/runner'
 
