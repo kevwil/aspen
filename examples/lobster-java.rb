@@ -5,12 +5,7 @@ require 'rack/lobster'
 
 class SimpleAdapter
   def call(env)
-    body = ["hello!"]
-    [
-      200,
-      { 'Content-Type' => 'text/plain' },
-      body
-    ]
+    [ 200, { 'Content-Type' => 'text/plain' }, ["hello!"] ]
   end
 end
 
