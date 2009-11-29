@@ -3,7 +3,6 @@ package com.github.kevwil.aspen;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.http.*;
 import org.jboss.netty.handler.stream.ChunkedWriteHandler;
-import org.jruby.runtime.builtin.IRubyObject;
 
 /**
  * Creates the pipeline of Netty middleware and RackServerHandler
@@ -13,11 +12,11 @@ import org.jruby.runtime.builtin.IRubyObject;
 public class RackHttpServerPipelineFactory
 implements ChannelPipelineFactory
 {
-    private IRubyObject _app;
+    private RackProxy _rack;
 
-    public RackHttpServerPipelineFactory( final IRubyObject app )
+    public RackHttpServerPipelineFactory( final RackProxy rack )
     {
-        _app = app;
+        _rack = rack;
     }
 
     // ... you can write a 'ChunkedInput' so that the 'ChunkedWriteHandler'
@@ -31,7 +30,7 @@ implements ChannelPipelineFactory
         pipeline.addLast( "decoder", new HttpRequestDecoder() );
         pipeline.addLast( "encoder", new HttpResponseEncoder() );
         pipeline.addLast( "chunkedWriter", new ChunkedWriteHandler() );
-        pipeline.addLast( "handler", new RackServerHandler( _app ) );
+        pipeline.addLast( "handler", new NettyServerHandler( _rack ) );
         return pipeline;
     }
 }

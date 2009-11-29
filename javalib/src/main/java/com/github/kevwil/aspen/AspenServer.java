@@ -4,7 +4,6 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.group.*;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
-import org.jruby.runtime.builtin.IRubyObject;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -22,7 +21,13 @@ public class AspenServer
     private ChannelGroup _allChannels;
     private ChannelFactory _channelFactory;
 
-    public AspenServer( final String host, final int port, final IRubyObject app )
+    /**
+     * bootstrap the Netty channel factory
+     * @param host hostname / ip address to bind to
+     * @param port tcp socket port to listen on
+     * @param rack callback proxy to pass data to/from Rack
+     */
+    public AspenServer( final String host, final int port, final RackProxy rack )
     {
         _running = false;
         _host = host;
@@ -34,7 +39,7 @@ public class AspenServer
         _bootstrap = new ServerBootstrap( _channelFactory );
         _bootstrap.setOption( "child.tcpNoDelay", true );
         _bootstrap.setOption( "child.keepAlive", true );
-        _bootstrap.setPipelineFactory( new RackHttpServerPipelineFactory( app ) );
+        _bootstrap.setPipelineFactory( new RackHttpServerPipelineFactory( rack ) );
     }
 
     /**
@@ -78,10 +83,8 @@ public class AspenServer
         }
         else
         {
-            RackException ex = new RackException( "cannot stop, not running" );
             System.err.println( "stop called when server not running" );
-            ex.printStackTrace( System.err );
-            throw new RuntimeException( ex );
+            throw new RuntimeException( "cannot stop, not running" );
         }
     }
 

@@ -1,178 +1,246 @@
 package com.github.kevwil.aspen;
 
-import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.http.*;
-import org.jruby.*;
-import org.jruby.runtime.builtin.IRubyObject;
+import org.jruby.RubyHash;
 
 import java.net.*;
-import java.util.*;
 
 /**
- * Create a Rack environment to pass out to Rack middleware.
  * @author kevwil
- * @since Jul 1, 2009
+ * @since Nov 25, 2009
  */
-public final class RackEnvironmentMaker
+public final class RackUtil
 {
-    private static final List<String> allowedSchemes = Arrays.asList( "http","https" );
+    private RackUtil(){}
 
-    /**
-     * build up a Ruby hash from the request
-     * @param ctx the request context
-     * @param httpRequest the Netty request
-     * @param runtime the current JRuby runtime
-     * @return a Ruby hash instance
-     * @throws RackException if there's a problem
-     */
-    public static IRubyObject build( final ChannelHandlerContext ctx, HttpRequest httpRequest, Ruby runtime )
-    throws RackException
+    public static ChannelHandlerContext buildChannelHandlerContext( final String server, final String port )
     {
-        RubyHash env = new RubyHash( runtime );
-        env.put( "rack.version", getRackVersion( runtime ) );
-        URI uri = getUri( ctx, httpRequest );
-        assignUrlScheme( uri, env );
-        env.put( "rack.multithread", runtime.getFalse() );
-        env.put( "rack.multiprocess", runtime.getFalse() );
-        env.put( "rack.run_once", runtime.getFalse() );
-        env.put( "REQUEST_METHOD", httpRequest.getMethod().toString() );
-        env.put( "SCRIPT_NAME", "" );
-        assignPathInfo( uri, env );
-        env.put( "QUERY_STRING", uri.getQuery() == null ? "" : uri.getQuery() );
-        env.put( "SERVER_NAME", uri.getHost() );
-        env.put( "SERVER_PORT", uri.getPort() == -1 ? "80" : Integer.toString( uri.getPort() ) );
-        parseHttpHeaders( httpRequest, env );
-
-        assignInputStream( httpRequest, env );
-        assignOutputStream( env );
-        /*
-         * TODO:
-         * NEED TO ASSIGN SESSION FROM APP FIRST,
-         * USE DEFAULT IF NOT ASSIGNED
-         *
-         */
-        return env;
+        int p = 80;
+        if( port != null && port.length() > 0 )
+        {
+            try
+            {
+                p = Integer.parseInt( port );
+            }
+            catch( Exception e )
+            {
+                e.printStackTrace();
+                p = 80;
+            }
+        }
+        return new DumDumCtx( new InetSocketAddress( server, p ) );
     }
 
-    private static void assignPathInfo( URI uri, RubyHash env )
-    throws RackException
+    private static class DumDumCtx implements ChannelHandlerContext
     {
-        String path = uri.getPath();
-        if( path.length() > 0 && !path.startsWith("/") )
+        private Channel channel;
+        private DumDumCtx( InetSocketAddress address )
         {
-            RackException ex = new RackException( "invalid path, must start with '/'" );
-            System.err.println( "error assigning PATH_INFO" );
-            ex.printStackTrace( System.err );
-            throw ex;
+            channel = new DumDumChannel( address );
         }
-        else
-        {
-            env.put( "PATH_INFO", path );
-        }
-    }
 
-    private static void assignUrlScheme( URI uri, RubyHash env )
-    throws RackException
-    {
-        String urlScheme = uri.getScheme();
-        if( urlScheme == null )
+        public Channel getChannel()
         {
-            RackException ex = new RackException("no http url scheme found");
-            System.err.println( "error assigning url scheme" );
-            ex.printStackTrace( System.err );
-            throw ex;
+            return channel;
         }
-        if( allowedSchemes.contains( urlScheme ) )
+
+        public ChannelPipeline getPipeline()
         {
-            env.put( "rack.url_scheme", urlScheme );
+            return null;
         }
-        else
+
+        public String getName()
         {
-            RackException ex = new RackException( "invalid url scheme: " + urlScheme );
-            System.err.println( "error assigning url scheme" );
-            ex.printStackTrace( System.err );
-            throw ex;
+            return null;
+        }
+
+        public ChannelHandler getHandler()
+        {
+            return null;
+        }
+
+        public boolean canHandleUpstream()
+        {
+            return false;
+        }
+
+        public boolean canHandleDownstream()
+        {
+            return false;
+        }
+
+        public void sendUpstream( final ChannelEvent channelEvent )
+        {
+        }
+
+        public void sendDownstream( final ChannelEvent channelEvent )
+        {
+        }
+
+        public Object getAttachment()
+        {
+            return null;
+        }
+
+        public void setAttachment( final Object o )
+        {
         }
     }
 
-    private static RubyArray getRackVersion( Ruby runtime )
+    private static class DumDumChannel implements Channel
     {
-        RubyArray version = RubyArray.newArray( runtime );
-        version.add( 1 );
-        version.add( 0 );
-        return version;
+        private SocketAddress address;
+
+        private DumDumChannel( final SocketAddress address )
+        {
+            this.address = address;
+        }
+
+        public Integer getId()
+        {
+            return null;
+        }
+
+        public ChannelFactory getFactory()
+        {
+            return null;
+        }
+
+        public Channel getParent()
+        {
+            return null;
+        }
+
+        public ChannelConfig getConfig()
+        {
+            return null;
+        }
+
+        public ChannelPipeline getPipeline()
+        {
+            return null;
+        }
+
+        public boolean isOpen()
+        {
+            return false;
+        }
+
+        public boolean isBound()
+        {
+            return false;
+        }
+
+        public boolean isConnected()
+        {
+            return false;
+        }
+
+        public SocketAddress getLocalAddress()
+        {
+            return address;
+        }
+
+        public SocketAddress getRemoteAddress()
+        {
+            return null;
+        }
+
+        public ChannelFuture write( final Object o )
+        {
+            return null;
+        }
+
+        public ChannelFuture write( final Object o, final SocketAddress socketAddress )
+        {
+            return null;
+        }
+
+        public ChannelFuture bind( final SocketAddress socketAddress )
+        {
+            return null;
+        }
+
+        public ChannelFuture connect( final SocketAddress socketAddress )
+        {
+            return null;
+        }
+
+        public ChannelFuture disconnect()
+        {
+            return null;
+        }
+
+        public ChannelFuture unbind()
+        {
+            return null;
+        }
+
+        public ChannelFuture close()
+        {
+            return null;
+        }
+
+        public ChannelFuture getCloseFuture()
+        {
+            return null;
+        }
+
+        public int getInterestOps()
+        {
+            return 0;
+        }
+
+        public boolean isReadable()
+        {
+            return false;
+        }
+
+        public boolean isWritable()
+        {
+            return false;
+        }
+
+        public ChannelFuture setInterestOps( final int i )
+        {
+            return null;
+        }
+
+        public ChannelFuture setReadable( final boolean b )
+        {
+            return null;
+        }
+
+        public int compareTo( final Channel o )
+        {
+            return 0;
+        }
     }
 
-    private static URI getUri( ChannelHandlerContext ctx, HttpRequest request ) throws RackException
+    public static void parseHeaders( final HttpRequest request, final RubyHash env )
     {
+        env.put( "REQUEST_METHOD", request.getMethod().toString() );
         try
         {
-            return new URI( buildFullRequest( ctx, request ) );
-        }
-        catch( URISyntaxException ex )
-        {
-            System.err.println( "error parsing request URI" );
-            ex.printStackTrace( System.err );
-            throw new RackException( ex );
-        }
-    }
-
-    private static String buildFullRequest( ChannelHandlerContext ctx, HttpRequest request )
-    {
-        if( request.getUri().contains( "://" ) )
-        {
-            return request.getUri();
-        }
-        else
-        {
-            // TODO: Netty can do SSL, eventually will need to handle it
-
-            StringBuilder sb = new StringBuilder();
-            sb.append( "http://" );
-            if( request.containsHeader( HttpHeaders.Names.HOST ) )
+            URI uri = new URI( request.getUri() );
+            env.put( "QUERY_STRING", uri.getQuery() == null ? "" : uri.getQuery() );
+            env.put( "PATH_INFO", uri.getPath() );
+            if( uri.getHost() != null && uri.getHost().length() > 0 )
             {
-                sb.append( request.getHeader( HttpHeaders.Names.HOST ) );
+                env.put( "SERVER_NAME", uri.getHost() );
             }
-            else
+            if( uri.getPort() != -1 )
             {
-                InetSocketAddress serverSocket = (InetSocketAddress) ctx.getChannel().getLocalAddress();
-                sb.append( serverSocket.getHostName() );
-                sb.append( ":" );
-                sb.append( Integer.toString( serverSocket.getPort() ) );
+                env.put( "SERVER_PORT", Integer.toString( uri.getPort() ) );
             }
-            sb.append( request.getUri() );
-            return sb.toString();
         }
-
-    }
-
-    private static void assignInputStream( HttpRequest httpRequest, RubyHash env )
-    {
-        // Thin uses StringIO.new(body)
-        
-//        env.put( "rack.input",
-//                new RubyIO( env.getRuntime(), new ChannelBufferInputStream( httpRequest.getContent() ) ) );
-        env.put( "rack.input", new BufferedRackInput( env.getRuntime(), httpRequest.getContent() ) );
-//        ChannelBuffer content = httpRequest.getContent();
-//        int len = (int)httpRequest.getContentLength();
-//        byte[] buf = new byte[len];
-//        content.readBytes( buf, 0, len );
-//        new RubyStringIO( env.getRuntime(), RubyString.newString( env.getRuntime(), buf ) );
-    }
-
-    private static void assignOutputStream( RubyHash env )
-    {
-        // Thin uses STDERR
-        
-//        RubyIO stderr = new RubyIO( env.getRuntime(), env.getRuntime().getStandardError() );
-//        env.put( "rack.errors", stderr );
-        env.put( "rack.errors", new DefaultRackOutput( env ) );
-//        env.put( "rack.errors", env.getRuntime().getGlobalVariables().get( "STDERR" ) );
-    }
-
-    private static void parseHttpHeaders( HttpRequest request, RubyHash env )
-    throws RackException
-    {
+        catch( URISyntaxException e )
+        {
+            e.printStackTrace( System.err );
+            env.put( "QUERY_STRING", "" );
+            env.put( "PATH_INFO", "/" ); //??
+        }
         doAccept( request, env );
         doAcceptCharset( request, env );
         doAcceptEncoding( request, env );
@@ -226,7 +294,7 @@ public final class RackEnvironmentMaker
         doWwwAuthenticate( request, env );
     }
 
-    private static void doAccept( HttpRequest request, RubyHash env )
+    private static void doAccept( final HttpRequest request, final RubyHash env )
     {
         if( request.containsHeader( HttpHeaders.Names.ACCEPT ) )
         {
@@ -323,14 +391,13 @@ public final class RackEnvironmentMaker
     }
 
     private static void doContentLength( final HttpRequest request, final RubyHash env )
-            throws RackException
     {
         if( request.containsHeader( HttpHeaders.Names.CONTENT_LENGTH ) )
         {
             String value = request.getHeader( HttpHeaders.Names.CONTENT_LENGTH );
             if( ! value.matches("^\\d+$") )
             {
-                throw new RackException("CONTENT_LENGTH must consist of digits only.");
+                throw new RuntimeException("CONTENT_LENGTH must consist of digits only.");
             }
             else
             {
@@ -642,5 +709,5 @@ public final class RackEnvironmentMaker
             env.put( "HTTP_WWW_AUTHENTICATE", request.getHeader( HttpHeaders.Names.WWW_AUTHENTICATE ) );
         }
     }
-
+    
 }

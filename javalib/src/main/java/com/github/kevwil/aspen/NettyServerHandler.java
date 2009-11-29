@@ -4,8 +4,6 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.http.*;
-import org.jruby.*;
-import org.jruby.runtime.builtin.IRubyObject;
 
 /**
  * This is the Netty callback handler,
@@ -14,27 +12,23 @@ import org.jruby.runtime.builtin.IRubyObject;
  * @since Jun 25, 2009
  */
 @ChannelPipelineCoverage("one")
-public class RackServerHandler
+public class NettyServerHandler
 extends SimpleChannelUpstreamHandler
 {
-    private IRubyObject _app;
+    private RackProxy _rack;
 
-    public RackServerHandler( final IRubyObject app )
+    public NettyServerHandler( final RackProxy rackProxy )
     {
-        _app = app;
+        _rack = rackProxy;
     }
 
     @Override
     public void messageReceived( final ChannelHandlerContext ctx, final MessageEvent e )
     throws Exception
     {
-        Ruby runtime = _app.getRuntime();
-        HttpRequest request = (HttpRequest)e.getMessage();
-        IRubyObject env = RackEnvironmentMaker.build( ctx, request, runtime );
-        RubyArray rackOutput =
-                (RubyArray) _app.callMethod( runtime.getCurrentContext(), "call", env )
-                    .callMethod( runtime.getCurrentContext(), "to_a" );
-        HttpResponse response = RackResponseTranslator.translate( rackOutput );
+        // send the request to Rack and receive the response
+        Object response = _rack.process( (HttpRequest)e.getMessage() );
+        // write the response out
         e.getChannel().write( response ).addListener( ChannelFutureListener.CLOSE );
     }
 
