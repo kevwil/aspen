@@ -2,10 +2,13 @@
 require 'spec_helper'
 
 describe Aspen::NettyProxy, "with Java setup" do
-
-  it "should process request and create response" do
+  
+  before(:each) do
     @ctx = RackUtil.build_channel_handler_context 'localhost', '80'
     @req = DefaultHttpRequest.new( HttpVersion::HTTP_1_1, HttpMethod::GET, 'http://localhost/foo.html')
+  end
+
+  it "should process request and create response" do
     @app = lambda { |env| [200, {}, ['hello world']] }
     @proxy = ::Aspen::NettyProxy.new(@app)
 
@@ -23,8 +26,6 @@ describe Aspen::NettyProxy, "with Java setup" do
   end
 
   it "should include headers given" do
-    @ctx = RackUtil.build_channel_handler_context 'localhost', '80'
-    @req = DefaultHttpRequest.new( HttpVersion::HTTP_1_1, HttpMethod::GET, 'http://localhost/foo.html')
     @app = lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['hello world']] }
     @proxy = ::Aspen::NettyProxy.new(@app)
 
