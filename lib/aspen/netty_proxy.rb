@@ -24,11 +24,9 @@ module Aspen
     end
 
     def process( cxt, req )
-      # need to handle chunking, keep-alive, method, url, etc
+      # still need to properly handle chunking, keep-alive, etc
       env = {}
       RackUtil.parse_headers( cxt, req, env )
-      #env.delete "HTTP_CONTENT_TYPE"
-      #env.delete "HTTP_CONTENT_LENGTH"
       env["SCRIPT_NAME"] = ""  if env["SCRIPT_NAME"] == "/"
       env.delete "PATH_INFO"  if env["PATH_INFO"] == ""
       data = req.content.to_string("UTF-8").to_s

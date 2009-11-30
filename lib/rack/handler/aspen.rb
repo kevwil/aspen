@@ -5,6 +5,7 @@ module Rack
   module Handler
     class Aspen
       def self.run( app, options={} )
+        # TODO: this sucks, server doesn't handle Rack::URLMap
         app = Rack::Chunked.new( Rack::ContentLength.new( app ) )
         server = ::Aspen::Server.new( options[:Host] || '0.0.0.0',
                                       options[:Port] || 1169,
