@@ -154,12 +154,12 @@ public class RackUtilTest
         assertNotNull( env.get( "HTTP_CONNECTION" ) );
         assertNotNull( env.get( "HTTP_CONTENT_ENCODING" ) );
         assertNotNull( env.get( "HTTP_CONTENT_LANGUAGE" ) );
-        assertNotNull( env.get( "HTTP_CONTENT_LENGTH" ) );
+        assertNotNull( env.get( "CONTENT_LENGTH" ) );
         assertNotNull( env.get( "HTTP_CONTENT_LOCATION" ) );
         assertNotNull( env.get( "HTTP_CONTENT_MD5" ) );
         assertNotNull( env.get( "HTTP_CONTENT_RANGE" ) );
         assertNotNull( env.get( "HTTP_CONTENT_TRANSFER_ENCODING" ) );
-        assertNotNull( env.get( "HTTP_CONTENT_TYPE" ) );
+        assertNotNull( env.get( "CONTENT_TYPE" ) );
         assertNotNull( env.get( "HTTP_COOKIE" ) );
         assertNotNull( env.get( "HTTP_DATE" ) );
         assertNotNull( env.get( "HTTP_ETAG" ) );

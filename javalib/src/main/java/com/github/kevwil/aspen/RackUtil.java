@@ -220,6 +220,7 @@ public final class RackUtil
 
     public static void parseHeaders( final ChannelHandlerContext ctx, final HttpRequest request, final RubyHash env )
     {
+        env.put( "SCRIPT_NAME", "" );
         doMethod( request, env );
         doUriRelated( ctx, request, env );
         doAccept( request, env );
@@ -436,7 +437,8 @@ public final class RackUtil
             }
             else
             {
-                env.put("HTTP_CONTENT_LENGTH", value);
+                // Rack spec says not to include HTTP_CONTENT_LENGTH, but CONTENT_LENGTH is OK
+                env.put("CONTENT_LENGTH", value);
             }
         }
     }
@@ -477,7 +479,8 @@ public final class RackUtil
     {
         if( request.containsHeader( HttpHeaders.Names.CONTENT_TYPE ) )
         {
-            env.put( "HTTP_CONTENT_TYPE", request.getHeader( HttpHeaders.Names.CONTENT_TYPE ) );
+                // Rack spec says not to include HTTP_CONTENT_TYPE, but CONTENT_TYPE is OK
+            env.put( "CONTENT_TYPE", request.getHeader( HttpHeaders.Names.CONTENT_TYPE ) );
         }
     }
 
