@@ -218,29 +218,10 @@ public final class RackUtil
         }
     }
 
-    public static void parseHeaders( final HttpRequest request, final RubyHash env )
+    public static void parseHeaders( final ChannelHandlerContext ctx, final HttpRequest request, final RubyHash env )
     {
-        env.put( "REQUEST_METHOD", request.getMethod().toString() );
-        try
-        {
-            URI uri = new URI( request.getUri() );
-            env.put( "QUERY_STRING", uri.getQuery() == null ? "" : uri.getQuery() );
-            env.put( "PATH_INFO", uri.getPath() );
-            if( uri.getHost() != null && uri.getHost().length() > 0 )
-            {
-                env.put( "SERVER_NAME", uri.getHost() );
-            }
-            if( uri.getPort() != -1 )
-            {
-                env.put( "SERVER_PORT", Integer.toString( uri.getPort() ) );
-            }
-        }
-        catch( URISyntaxException e )
-        {
-            e.printStackTrace( System.err );
-            env.put( "QUERY_STRING", "" );
-            env.put( "PATH_INFO", "/" ); //??
-        }
+        doMethod( request, env );
+        doUriRelated( ctx, request, env );
         doAccept( request, env );
         doAcceptCharset( request, env );
         doAcceptEncoding( request, env );
@@ -292,6 +273,60 @@ public final class RackUtil
         doVia( request, env );
         doWarning( request, env );
         doWwwAuthenticate( request, env );
+    }
+
+    private static void doMethod( final HttpRequest request, final RubyHash env )
+    {
+        env.put( "REQUEST_METHOD", request.getMethod().toString() );
+    }
+
+    static void doUriRelated( final ChannelHandlerContext ctx, final HttpRequest request, final RubyHash env )
+    {
+        try
+        {
+            URI uri = new URI( buildUriString( ctx, request ) );
+            env.put( "QUERY_STRING", uri.getQuery() == null ? "" : uri.getQuery() );
+            env.put( "PATH_INFO", uri.getPath() );
+            if( uri.getHost() != null && uri.getHost().length() > 0 )
+            {
+                env.put( "SERVER_NAME", uri.getHost() );
+            }
+            if( uri.getPort() != -1 )
+            {
+                env.put( "SERVER_PORT", Integer.toString( uri.getPort() ) );
+            }
+        }
+        catch( URISyntaxException e )
+        {
+            e.printStackTrace( System.err );
+            env.put( "QUERY_STRING", "" );
+            env.put( "PATH_INFO", "/" ); //??
+            env.put( "SERVER_NAME", "localhost" );
+        }
+    }
+
+    private static String buildUriString( final ChannelHandlerContext ctx, final HttpRequest request )
+    {
+        if( request.getUri().contains( "://" ) ) return request.getUri();
+        StringBuilder sb = new StringBuilder();
+        sb.append( "http://" );
+        if( request.containsHeader( HttpHeaders.Names.HOST ) )
+        {
+            sb.append( request.getHeader( HttpHeaders.Names.HOST ) );
+        }
+        else
+        {
+            InetSocketAddress serverSocket = (InetSocketAddress) ctx.getChannel().getLocalAddress();
+            sb.append( serverSocket.getHostName() );
+            int port = serverSocket.getPort();
+            if( port != 80 )
+            {
+                sb.append( ":" );
+                sb.append( Integer.toString( port ) );
+            }
+        }
+        sb.append( request.getUri() );
+        return sb.toString();
     }
 
     private static void doAccept( final HttpRequest request, final RubyHash env )

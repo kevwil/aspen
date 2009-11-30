@@ -27,7 +27,7 @@ extends SimpleChannelUpstreamHandler
     throws Exception
     {
         // send the request to Rack and receive the response
-        Object response = _rack.process( (HttpRequest)e.getMessage() );
+        Object response = _rack.process( ctx, (HttpRequest)e.getMessage() );
         // write the response out
         e.getChannel().write( response ).addListener( ChannelFutureListener.CLOSE );
     }

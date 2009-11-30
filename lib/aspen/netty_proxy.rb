@@ -5,6 +5,7 @@ import com.github.kevwil.aspen.RackUtil
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
 import java.nio.channels.Channels
+import org.jboss.netty.channel.ChannelHandlerContext
 import org.jboss.netty.buffer.ChannelBuffers
 import org.jboss.netty.buffer.ChannelBufferInputStream
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse
@@ -22,10 +23,10 @@ module Aspen
       @app = app
     end
 
-    def process( req )
+    def process( cxt, req )
       # need to handle chunking, keep-alive, method, url, etc
       env = {}
-      RackUtil.parse_headers( req, env )
+      RackUtil.parse_headers( cxt, req, env )
       env.delete "HTTP_CONTENT_TYPE"
       env.delete "HTTP_CONTENT_LENGTH"
       env["SCRIPT_NAME"] = ""  if env["SCRIPT_NAME"] == "/"

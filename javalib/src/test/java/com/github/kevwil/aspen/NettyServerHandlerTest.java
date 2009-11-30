@@ -26,8 +26,9 @@ public class NettyServerHandlerTest
         HttpRequest r = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         MessageEvent e = new UpstreamMessageEvent(
                 channel, r, new InetSocketAddress( 54321 ) );
+        ChannelHandlerContext cxt = pipeline.getContext( handler );
 
-        expect(rack.process( eq(r) ) ).andReturn( "boo!" );
+        expect(rack.process( eq(cxt), eq(r) ) ).andReturn( "boo!" );
         replay(rack);
         
         pipeline.sendUpstream( e );
