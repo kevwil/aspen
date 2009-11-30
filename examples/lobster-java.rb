@@ -1,5 +1,4 @@
-require File.expand_path(
-    File.join(File.dirname(__FILE__), %w[.. lib aspen]))
+require 'aspen'
 require 'rack'
 require 'rack/lobster'
 
@@ -9,6 +8,7 @@ class SimpleAdapter
   end
 end
 
+::Aspen::Logging.debug = true
 ::Aspen::Server.start('localhost',8080) do
   # use ::Rack::CommonLogger
   use ::Rack::Lint
