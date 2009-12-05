@@ -8,11 +8,12 @@ class SimpleAdapter
   end
 end
 
-::Aspen::Logging.debug = true
+# ::Aspen::Logging.debug = true
 ::Aspen::Server.start('localhost',8080) do
-  # use ::Rack::CommonLogger
+  use ::Rack::CommonLogger
+  use ::Rack::ShowExceptions
+  use ::Rack::ContentLength
   use ::Rack::Lint
-  # use ::Rack::ShowExceptions
   map '/fish' do
     run ::Rack::Lobster.new
   end
