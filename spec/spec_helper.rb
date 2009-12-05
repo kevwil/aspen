@@ -9,6 +9,8 @@ require File.dirname(__FILE__) + '/../lib/aspen/aspenj.jar'
 import org.jboss.netty.handler.codec.http.DefaultHttpRequest
 import org.jboss.netty.handler.codec.http.HttpMethod
 import org.jboss.netty.handler.codec.http.HttpVersion
+import org.jboss.netty.handler.codec.http.HttpResponseStatus
+import org.jboss.netty.buffer.ChannelBuffer
 
 ::Aspen::Logging.silent = true
 # ::Aspen::Logging.debug = true
