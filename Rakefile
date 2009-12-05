@@ -8,9 +8,8 @@ end
 ensure_in_path 'lib'
 require 'aspen/version'
 
-# task :default => ['java:build','spec:specdoc']
-task :default => ['spec:specdoc']
-task 'gem:release' => ['spec:run']
+task :default => ['spec:rcov','spec:verify','doc:yard','notes']
+task 'gem:release' => ['java:build','spec:rcov','spec:verify','doc:yard']
 
 Bones do
   name 'aspen'
@@ -28,11 +27,18 @@ Bones do
   depend_on 'bones-extras', :development => true
   depend_on 'rspec', :development => true
   depend_on 'mocha', :development => true
+  depend_on 'rcov', :development => true
 
   ruby_opts << '-Ilib' << '-rubygems'
-  # spec.opts << '--color'# << '--format html:./spec_out.html'
-  # rcov.opts << ['--exclude', 'rcov']
-  # rcov.opts << ['--exclude', 'mocha']
+  spec.opts << '--color'
+  # spec.opts << '--format html:./spec_out.html'
+  rcov.threshold 80
+  rcov.opts << ['--exclude', 'rcov']
+  rcov.opts << ['--exclude', 'mocha']
+  rcov.opts << ['--spec-only']
+  # rcov.opts << ['--no-html']
+  # rcov.opts << ['--text-counts']
+  # rcov.opts << ['--text-coverage-diff','FILE']
 
   use_gmail
   enable_sudo
