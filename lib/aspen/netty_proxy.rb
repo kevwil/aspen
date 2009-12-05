@@ -29,6 +29,7 @@ module Aspen
       RackUtil.parse_headers( cxt, req, env )
       env["SCRIPT_NAME"] = ""  if env["SCRIPT_NAME"] == "/"
       env.delete "PATH_INFO"  if env["PATH_INFO"] == ""
+      env["SERVER_PORT"] = "80" unless env["SERVER_PORT"]
       data = req.content.to_string("UTF-8").to_s
       rack_input = StringIO.new( data )
       rack_input.set_encoding( Encoding::BINARY ) if rack_input.respond_to?( :set_encoding )
@@ -45,14 +46,17 @@ module Aspen
 
       g env.inspect if Logging.debug?
       status, headers, body = @app.call(env)
-      g body.inspect if Logging.debug?
+      g body.inspect if (Logging.debug? and body)
+      g status.inspect if (Logging.debug? and status)
+      raise ArgumentError, "status is a #{status.class} class, not an integer" unless status.is_a?(Integer)
 
       resp = DefaultHttpResponse.new( HttpVersion::HTTP_1_1, HttpResponseStatus.value_of( status ) )
       headers.each do |k,vs|
-        vs.split('\n').each do |v|
-          resp.add_header k, v
-        end
-      end
+        vs.each { |v| resp.add_header k, v.chomp } if vs
+#        vs.split('\n').each do |v|
+#          resp.add_header k, v
+#        end
+      end if headers
       resp.content = ChannelBuffers.copied_buffer( body.join, "UTF-8" )
       g resp.inspect if Logging.debug?
       resp
