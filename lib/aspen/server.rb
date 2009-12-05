@@ -36,6 +36,7 @@ module Aspen
     
     def initialize(*args, &block)
       host, port, options = DEFAULT_HOST, DEFAULT_PORT, {}
+      @app = nil
       
       # Guess each parameter by its type so they can be
       # received in any order
