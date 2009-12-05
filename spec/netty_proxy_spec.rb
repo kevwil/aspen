@@ -52,9 +52,10 @@ describe Aspen::NettyProxy, "with Java setup" do
 
   it "should process middleware app successfully" do
     builder = Rack::Builder.new do
+      use Rack::CommonLogger
       use Rack::ShowExceptions
       use Rack::ContentLength
-      # use Rack::Lint
+      use Rack::Lint
       run lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['OK']] }
     end
     @app = builder.to_app

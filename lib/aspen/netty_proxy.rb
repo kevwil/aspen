@@ -15,6 +15,9 @@ require 'stringio'
 require 'aspen/version'
 
 module Aspen
+
+  class RackParseError < RuntimeError; end
+
   # implementation of RackProxy from Java side
   class NettyProxy
     include RackProxy
@@ -48,16 +51,18 @@ module Aspen
       status, headers, body = @app.call(env)
       g body.inspect if (Logging.debug? and body)
       g status.inspect if (Logging.debug? and status)
-      raise ArgumentError, "status is a #{status.class} class, not an integer" unless status.is_a?(Integer)
+      raise RackParseError, "status is a #{status.class} class, not an integer" unless status.is_a?(Integer)
+      raise RackParseError, "body doesn't respond to :each and return strings" unless body.respond_to?(:each)
 
       resp = DefaultHttpResponse.new( HttpVersion::HTTP_1_1, HttpResponseStatus.value_of( status ) )
       headers.each do |k,vs|
         vs.each { |v| resp.add_header k, v.chomp } if vs
-#        vs.split('\n').each do |v|
-#          resp.add_header k, v
-#        end
       end if headers
-      resp.content = ChannelBuffers.copied_buffer( body.join, "UTF-8" )
+      out_buf = ChannelBuffers.dynamic_buffer
+      body.each do |line|
+        out_buf.write_bytes ChannelBuffers.copied_buffer( line, "UTF-8" )
+      end
+      resp.content = out_buf
       g resp.inspect if Logging.debug?
       resp
     end
