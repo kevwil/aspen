@@ -86,6 +86,21 @@ public class RackUtilTest
     }
 
     @Test
+    public void shouldParseServerPortWhenNoneGiven() throws Exception
+    {
+        ctx = RackUtil.buildChannelHandlerContext( server, null );
+        r = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://"+server+"/" );
+        RackUtil.doUriRelated( ctx, r, env );
+
+        assertEquals( "", env.get( "QUERY_STRING" ) );
+        assertEquals( "/", env.get( "PATH_INFO" ) );
+        assertEquals( server, env.get( "SERVER_NAME" ) );
+        Object server_port = env.get("SERVER_PORT");
+        assertNotNull(server_port);
+        assertEquals( "80", server_port);
+    }
+
+    @Test
     public void shouldHandleHeaders() throws Exception
     {
         r.addHeader( HttpHeaders.Names.ACCEPT, "*/*" );

@@ -5,6 +5,8 @@ import org.jboss.netty.handler.codec.http.*;
 import org.jruby.RubyHash;
 
 import java.net.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * @author kevwil
@@ -296,6 +298,10 @@ public final class RackUtil
             {
                 env.put( "SERVER_PORT", Integer.toString( uri.getPort() ) );
             }
+            else
+            {
+                env.put( "SERVER_PORT", "80" );
+            }
         }
         catch( URISyntaxException e )
         {
@@ -308,7 +314,25 @@ public final class RackUtil
 
     private static String buildUriString( final ChannelHandlerContext ctx, final HttpRequest request )
     {
-        if( request.getUri().contains( "://" ) ) return request.getUri();
+        if( request.getUri().contains( "://" ) )
+        {
+            String uri = request.getUri();
+            Pattern pattern = Pattern.compile("http:\\/\\/(.*)\\/(.*)");
+            Matcher matcher = pattern.matcher(uri);
+            if( matcher.matches() && matcher.groupCount() > 1 )
+            {
+                String hostAndPort = matcher.group(1);
+                String path = matcher.group(2);
+                if( hostAndPort.contains(":") )
+                {
+                    return uri;
+                }
+                else
+                {
+                    return "http://" + hostAndPort + ":80/" + path;
+                }
+            }
+        }
         StringBuilder sb = new StringBuilder();
         sb.append( "http://" );
         if( request.containsHeader( HttpHeaders.Names.HOST ) )
