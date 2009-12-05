@@ -35,7 +35,6 @@ Bones do
   rcov.threshold 80
   rcov.opts << ['--exclude', 'rcov']
   rcov.opts << ['--exclude', 'mocha']
-  rcov.opts << ['--spec-only']
   # rcov.opts << ['--no-html']
   # rcov.opts << ['--text-counts']
   # rcov.opts << ['--text-coverage-diff','FILE']
