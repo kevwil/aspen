@@ -30,9 +30,9 @@ Bones do
   depend_on 'mocha', :development => true
 
   ruby_opts << '-Ilib' << '-rubygems'
-  spec.opts << '--color'# << '--format html:./spec_out.html'
-  rcov.opts << ['--exclude', 'rcov']
-  rcov.opts << ['--exclude', 'mocha']
+  # spec.opts << '--color'# << '--format html:./spec_out.html'
+  # rcov.opts << ['--exclude', 'rcov']
+  # rcov.opts << ['--exclude', 'mocha']
 
   use_gmail
   enable_sudo
