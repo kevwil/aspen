@@ -35,11 +35,11 @@ except using Netty (http://www.jboss.org/netty) for high-speed concurrent socket
 
     # You must have JRuby set up, with the dependent gems installed.
     # see the Rakefile for the dev-time dependencies
+    $ jgem install little-plugger loquacious rubyforge bones bones-git bones-extras rspec mocha rcov
 
     # You must have Ant and Maven set up.
-    # *note* the Rakefile will call Maven in "offline mode". If you get
-    # any errors about unresolved dependencies, do this:
-
+    # *note* the Rakefile will call Maven in "offline mode".
+    # If you get any errors about unresolved dependencies, do this:
     $ cd javalib
     $ mvn dependency:go-offline
     # or
@@ -47,6 +47,9 @@ except using Netty (http://www.jboss.org/netty) for high-speed concurrent socket
 
     # Now you can build and test Aspen
     $ jruby -S rake
+
+    # Install the gem
+    $ jruby -S rake gem:install
 
 == LICENSE:
 
