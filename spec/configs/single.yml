@@ -1,0 +1,8 @@
+--- 
+pid: tmp/pids/aspen.pid
+log: log/aspen.log
+timeout: 60
+port: 6000
+chdir: spec/rails_app
+environment: production
+address: 127.0.0.1

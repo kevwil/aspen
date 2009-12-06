@@ -15,6 +15,7 @@ coverage
 doc
 pkg
 target
+out
 #lib/**/*.jar
 *.iml
 *.ipr

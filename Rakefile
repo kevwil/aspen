@@ -29,6 +29,7 @@ Bones do
   depend_on 'mocha', :development => true
   depend_on 'rcov', :development => true
 
+  ruby_opts.clear
   ruby_opts << '-Ilib' << '-rubygems'
   spec.opts << '--color'
   # spec.opts << '--format html:./spec_out.html'
