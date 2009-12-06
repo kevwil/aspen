@@ -4,13 +4,15 @@ aspen
 
 == DESCRIPTION:
 
-Aspen is a web server engine for JRuby. The design is very similar to Thin,
-except using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets.
+Aspen is a web server engine for JRuby. The design is very similar
+to Thin (http://code.macournoyer.com/thin/), except
+using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets.
 
 == FEATURES/PROBLEMS:
 
 * truly concurrent socket model
 * Rack interface support
+* Not all features implemented yet, such as chunked data, different content encodings, etc.
 
 == SYNOPSIS:
 

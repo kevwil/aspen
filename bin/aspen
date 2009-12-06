@@ -1,3 +1,5 @@
+#!/usr/bin/env jruby
+
 require 'aspen'
 
 ::Aspen::Runner.new(ARGV).run!
