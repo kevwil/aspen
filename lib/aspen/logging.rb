@@ -16,9 +16,9 @@ module Aspen
     end
     
     # Global silencer methods
-    def silent
-      Logging.silent?
-    end
+    # def silent
+    #   Logging.silent?
+    # end
     def silent=(value)
       Logging.silent = value
     end
