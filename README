@@ -18,6 +18,7 @@ except using Netty (http://www.jboss.org/netty) for high-speed concurrent socket
 
 == REQUIREMENTS:
 
+* Java >= 1.5
 * JRuby >= 1.4
 * Rack
 
@@ -25,6 +26,27 @@ except using Netty (http://www.jboss.org/netty) for high-speed concurrent socket
 
 	# From Gemcutter / Rubyforge ...
 	$ (sudo) jruby -S gem install aspen
+
+== INSTALL FROM SOURCE:
+
+    # get source from Github
+    $ git clone git://github.com/kevwil/aspen.git
+    $ cd aspen
+
+    # You must have JRuby set up, with the dependent gems installed.
+    # see the Rakefile for the dev-time dependencies
+
+    # You must have Ant and Maven set up.
+    # *note* the Rakefile will call Maven in "offline mode". If you get
+    # any errors about unresolved dependencies, do this:
+
+    $ cd javalib
+    $ mvn dependency:go-offline
+    # or
+    $ mvn package
+
+    # Now you can build and test Aspen
+    $ jruby -S rake
 
 == LICENSE:
 
