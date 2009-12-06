@@ -7,6 +7,9 @@ module Aspen
   class RunnerError < RuntimeError; end
 
   # CLI runner - parse options and drive server
+  # @author Kevin Williams
+  # @since 1.0.0
+  # @version 1.0.0
   class Runner
     
     COMMANDS = %w(start stop restart config)
@@ -28,6 +31,8 @@ module Aspen
       COMMANDS
     end
 
+    # create a new instance
+    # @param [Array] command-line arguments
     def initialize(argv)
       @argv = argv
       
@@ -44,12 +49,12 @@ module Aspen
       
       parse!
     end
-    
+
+    # build up a parser in @parser
+    # @return [OptionParser] the option handler
     def parser
       # NOTE: If you add an option here make sure the key in the +options+ hash is the
       # same as the name of the command line option.
-      # +option+ keys are used to build the command line to launch other processes,
-      # see <tt>lib/thin/command.rb</tt>.
       @parser ||= OptionParser.new do |opts|
         opts.banner = "Usage: aspen [options] #{self.class.commands.join('|')}"
 

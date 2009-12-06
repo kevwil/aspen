@@ -1,7 +1,7 @@
 require 'rubygems'
 gem 'rspec'
 require 'spec'
-require 'g'
+# require 'g'
 
 require File.join(File.dirname(__FILE__), '../lib/aspen')
 require 'java'
