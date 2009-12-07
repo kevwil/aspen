@@ -1,0 +1,963 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Class: Aspen::Runner</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (R)</a> &raquo; 
+    <a href="../Aspen.html" title="Aspen">Aspen</a>
+     &raquo; 
+    <span class="title">Runner</span>
+  
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Aspen::Runner 
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/aspen/runner.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+CLI runner - parse options and drive server
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Author:</h3>
+<ul class="author">
+  
+    <li>
+      
+      
+      
+      
+        
+        
+Kevin Williams
+
+
+      
+    </li>
+  
+</ul>
+<h3>Since:</h3>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        
+1.0.0
+
+
+      
+    </li>
+  
+</ul>
+<h3>Version:</h3>
+<ul class="version">
+  
+    <li>
+      
+      
+      
+      
+        
+        
+1.0.0
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="COMMANDS-constant ">COMMANDS =
+            <span class="summary_desc"></span>
+        </dt>
+        <dd><pre class="code"><span class='dstring node'>%w(start stop restart config)</span>
+</pre></dd>
+      
+        <dt id="CONFIGLESS_COMMANDS-constant ">CONFIGLESS_COMMANDS =
+            <span class="summary_desc">
+Commands that wont load options from the config file.
+
+</span>
+        </dt>
+        <dd><pre class="code"><span class='dstring node'>%w(config)</span>
+</pre></dd>
+      
+    </dl>
+  
+
+
+  <h2>Attribute Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#arguments-instance_method" title="#arguments (instance method)">- (Object) <strong>arguments</strong> </a>
+  
+  </span>
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Arguments to be passed to the command.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#command-instance_method" title="#command (instance method)">- (Object) <strong>command</strong> </a>
+  
+  </span>
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Name of the command to be runned.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#options-instance_method" title="#options (instance method)">- (Object) <strong>options</strong> </a>
+  
+  </span>
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Parsed options.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  <h2>Method Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#commands-class_method" title="commands (class method)">+ (Object) <strong>commands</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Return all available commands.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#initialize-instance_method" title="#initialize (instance method)">- (Runner) <strong>initialize</strong>(argv) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+create a new instance.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#parse%21-instance_method" title="#parse! (instance method)">- (Object) <strong>parse!</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Parse the options.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#parser-instance_method" title="#parser (instance method)">- (OptionParser) <strong>parser</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+build up a parser in @parser.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#run%21-instance_method" title="#run! (instance method)">- (Object) <strong>run!</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Parse the current shell arguments and run the command.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#run_command-instance_method" title="#run_command (instance method)">- (Object) <strong>run_command</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Send the command to the server.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+<div id="constructor_details">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><a href="" title="Runner">Runner</a></tt>) <strong>initialize</strong>(argv) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+create a new instance
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <span class='name'>command-line</span>
+      
+      
+      
+        &mdash;
+        
+arguments
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="" title="Runner">Runner</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+a new instance of <tt>Runner</tt>
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 36</span>
+
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='argv identifier id'>argv</span><span class='rparen token'>)</span>
+  <span class='@argv ivar id'>@argv</span> <span class='assign token'>=</span> <span class='argv identifier id'>argv</span>
+  
+  <span class='comment val'># Default options values</span>
+  <span class='@options ivar id'>@options</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span>
+    <span class='symbol val'>:chdir</span>          <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='Dir constant id'>Dir</span><span class='dot token'>.</span><span class='pwd identifier id'>pwd</span><span class='comma token'>,</span>
+    <span class='symbol val'>:environment</span>    <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>'development'</span><span class='comma token'>,</span>
+    <span class='symbol val'>:address</span>        <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='Aspen constant id'>Aspen</span><span class='colon2 op'>::</span><span class='Server constant id'>Server</span><span class='colon2 op'>::</span><span class='DEFAULT_HOST constant id'>DEFAULT_HOST</span><span class='comma token'>,</span>
+    <span class='symbol val'>:port</span>           <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='Aspen constant id'>Aspen</span><span class='colon2 op'>::</span><span class='Server constant id'>Server</span><span class='colon2 op'>::</span><span class='DEFAULT_PORT constant id'>DEFAULT_PORT</span><span class='comma token'>,</span>
+    <span class='symbol val'>:log</span>            <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>'log/aspen.log'</span><span class='comma token'>,</span>
+    <span class='symbol val'>:pid</span>            <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>'tmp/pids/aspen.pid'</span><span class='comma token'>,</span>
+    <span class='symbol val'>:require</span>        <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+  <span class='rbrace token'>}</span>
+  
+  <span class='parse! fid id'>parse!</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="attr_details">
+    <h2>Attribute Details</h2>
+    
+      
+      <span id="arguments=-instance_method"></span>
+      <span id="arguments-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="arguments-instance_method">
+  
+    - (<tt>Object</tt>) <strong>arguments</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Arguments to be passed to the command.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+27
+28
+29</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 27</span>
+
+<span class='def def kw'>def</span> <span class='arguments identifier id'>arguments</span>
+  <span class='@arguments ivar id'>@arguments</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="command=-instance_method"></span>
+      <span id="command-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="command-instance_method">
+  
+    - (<tt>Object</tt>) <strong>command</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Name of the command to be runned.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+24
+25
+26</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 24</span>
+
+<span class='def def kw'>def</span> <span class='command identifier id'>command</span>
+  <span class='@command ivar id'>@command</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="options=-instance_method"></span>
+      <span id="options-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="options-instance_method">
+  
+    - (<tt>Object</tt>) <strong>options</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Parsed options
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+21
+22
+23</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 21</span>
+
+<span class='def def kw'>def</span> <span class='options identifier id'>options</span>
+  <span class='@options ivar id'>@options</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="method_details">
+    <h2>Method Details</h2>
+    
+      <div class="method_details first">
+  <p class="signature first" id="commands-class_method">
+  
+    + (<tt>Object</tt>) <strong>commands</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Return all available commands
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 30</span>
+
+<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='commands identifier id'>commands</span>
+  <span class='COMMANDS constant id'>COMMANDS</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="parse!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>parse!</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Parse the options.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+98
+99
+100
+101
+102</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 98</span>
+
+<span class='def def kw'>def</span> <span class='parse! fid id'>parse!</span>
+  <span class='parser identifier id'>parser</span><span class='dot token'>.</span><span class='parse! fid id'>parse!</span> <span class='@argv ivar id'>@argv</span>
+  <span class='@command ivar id'>@command</span>   <span class='assign token'>=</span> <span class='@argv ivar id'>@argv</span><span class='dot token'>.</span><span class='shift identifier id'>shift</span>
+  <span class='@arguments ivar id'>@arguments</span> <span class='assign token'>=</span> <span class='@argv ivar id'>@argv</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="parser-instance_method">
+  
+    - (<tt>OptionParser</tt>) <strong>parser</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+build up a parser in @parser
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>OptionParser</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+the option handler
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 55</span>
+
+<span class='def def kw'>def</span> <span class='parser identifier id'>parser</span>
+  <span class='comment val'># NOTE: If you add an option here make sure the key in the +options+ hash is the</span>
+  <span class='comment val'># same as the name of the command line option.</span>
+  <span class='@parser ivar id'>@parser</span> <span class='opasgn op'>||=</span> <span class='OptionParser constant id'>OptionParser</span><span class='dot token'>.</span><span class='new identifier id'>new</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='opts identifier id'>opts</span><span class='bitor op'>|</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='banner identifier id'>banner</span> <span class='assign token'>=</span> <span class='dstring node'>&quot;Usage: aspen [options] #{self.class.commands.join('|')}&quot;</span>
+
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='separator identifier id'>separator</span> <span class='string val'>&quot;&quot;</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='separator identifier id'>separator</span> <span class='string val'>&quot;Server options:&quot;</span>
+
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-a&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--address HOST&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;bind to HOST address &quot;</span> <span class='plus op'>+</span>
+                                    <span class='dstring node'>&quot;(default: #{@options[:address]})&quot;</span><span class='rparen token'>)</span>             <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='host identifier id'>host</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:address</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='host identifier id'>host</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-p&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--port PORT&quot;</span><span class='comma token'>,</span> <span class='dstring node'>&quot;use PORT (default: #{@options[:port]})&quot;</span><span class='rparen token'>)</span>          <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='port identifier id'>port</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:port</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='port identifier id'>port</span><span class='dot token'>.</span><span class='to_i identifier id'>to_i</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-A&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--adapter NAME&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Rack adapter to use (default: autodetect)&quot;</span><span class='comma token'>,</span>
+                                    <span class='dstring node'>&quot;(#{Rack::ADAPTERS.map{|(a,b)|a}.join(', ')})&quot;</span><span class='rparen token'>)</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='name identifier id'>name</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:adapter</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='name identifier id'>name</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-R&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--rackup FILE&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Load a Rack config file instead of &quot;</span> <span class='plus op'>+</span>
+                                   <span class='string val'>&quot;Rack adapter&quot;</span><span class='rparen token'>)</span>                                  <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='file identifier id'>file</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:rackup</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='file identifier id'>file</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-c&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--chdir DIR&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Change to dir before starting&quot;</span><span class='rparen token'>)</span>                   <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='dir identifier id'>dir</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:chdir</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='File constant id'>File</span><span class='dot token'>.</span><span class='expand_path identifier id'>expand_path</span><span class='lparen token'>(</span><span class='dir identifier id'>dir</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span>      <span class='string val'>&quot;--stats PATH&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Mount the Stats adapter under PATH&quot;</span><span class='rparen token'>)</span>             <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='path identifier id'>path</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:stats</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='path identifier id'>path</span> <span class='rbrace token'>}</span>
+    
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='separator identifier id'>separator</span> <span class='string val'>&quot;&quot;</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='separator identifier id'>separator</span> <span class='string val'>&quot;Adapter options:&quot;</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-e&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--environment ENV&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Framework environment &quot;</span> <span class='plus op'>+</span>                       
+                                       <span class='dstring node'>&quot;(default: #{@options[:environment]})&quot;</span><span class='rparen token'>)</span>      <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='env identifier id'>env</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:environment</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='env identifier id'>env</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span>      <span class='string val'>&quot;--prefix PATH&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Mount the app under PATH (start with /)&quot;</span><span class='rparen token'>)</span>       <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='path identifier id'>path</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:prefix</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='path identifier id'>path</span> <span class='rbrace token'>}</span>
+    
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-l&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--log FILE&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;File to redirect output &quot;</span> <span class='plus op'>+</span>                      
+                                <span class='dstring node'>&quot;(default: #{@options[:log]})&quot;</span><span class='rparen token'>)</span>                   <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='file identifier id'>file</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:log</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='file identifier id'>file</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-P&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--pid FILE&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;File to store PID &quot;</span> <span class='plus op'>+</span>                            
+                                <span class='dstring node'>&quot;(default: #{@options[:pid]})&quot;</span><span class='rparen token'>)</span>                   <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='file identifier id'>file</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:pid</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='file identifier id'>file</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on identifier id'>on</span><span class='lparen token'>(</span><span class='string val'>&quot;-C&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--config FILE&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Load options from config file&quot;</span><span class='rparen token'>)</span>               <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='file identifier id'>file</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:config</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='file identifier id'>file</span> <span class='rbrace token'>}</span>
+    
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='separator identifier id'>separator</span> <span class='string val'>&quot;&quot;</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='separator identifier id'>separator</span> <span class='string val'>&quot;Common options:&quot;</span>
+
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on_tail identifier id'>on_tail</span><span class='lparen token'>(</span><span class='string val'>&quot;-r&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--require FILE&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;require the library&quot;</span><span class='rparen token'>)</span>                     <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='file identifier id'>file</span><span class='bitor op'>|</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:require</span><span class='rbrack token'>]</span> <span class='lshft op'>&lt;&lt;</span> <span class='file identifier id'>file</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on_tail identifier id'>on_tail</span><span class='lparen token'>(</span><span class='string val'>&quot;-D&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--debug&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Set debbuging on&quot;</span><span class='rparen token'>)</span>                               <span class='lbrace token'>{</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:debug</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='true true kw'>true</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on_tail identifier id'>on_tail</span><span class='lparen token'>(</span><span class='string val'>&quot;-V&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--trace&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Set tracing on (log raw request/response)&quot;</span><span class='rparen token'>)</span>      <span class='lbrace token'>{</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:trace</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='true true kw'>true</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on_tail identifier id'>on_tail</span><span class='lparen token'>(</span><span class='string val'>&quot;-h&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;--help&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Show this message&quot;</span><span class='rparen token'>)</span>                               <span class='lbrace token'>{</span> <span class='puts identifier id'>puts</span> <span class='opts identifier id'>opts</span><span class='semicolon token'>;</span> <span class='exit identifier id'>exit</span> <span class='rbrace token'>}</span>
+    <span class='opts identifier id'>opts</span><span class='dot token'>.</span><span class='on_tail identifier id'>on_tail</span><span class='lparen token'>(</span><span class='string val'>'-v'</span><span class='comma token'>,</span> <span class='string val'>'--version'</span><span class='comma token'>,</span> <span class='string val'>&quot;Show version&quot;</span><span class='rparen token'>)</span>                                 <span class='lbrace token'>{</span> <span class='puts identifier id'>puts</span> <span class='Aspen constant id'>Aspen</span><span class='colon2 op'>::</span><span class='SERVER constant id'>SERVER</span><span class='semicolon token'>;</span> <span class='exit identifier id'>exit</span> <span class='rbrace token'>}</span>
+  <span class='end end kw'>end</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="run!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>run!</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Parse the current shell arguments and run the command. Exits on error.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 107</span>
+
+<span class='def def kw'>def</span> <span class='run! fid id'>run!</span>
+  <span class='if if kw'>if</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='class identifier id'>class</span><span class='dot token'>.</span><span class='commands identifier id'>commands</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='@command ivar id'>@command</span><span class='rparen token'>)</span>
+    <span class='run_command identifier id'>run_command</span>
+  <span class='elsif elsif kw'>elsif</span> <span class='@command ivar id'>@command</span><span class='dot token'>.</span><span class='nil? fid id'>nil?</span>
+    <span class='puts identifier id'>puts</span> <span class='string val'>&quot;Command required&quot;</span>
+    <span class='puts identifier id'>puts</span> <span class='@parser ivar id'>@parser</span>
+    <span class='exit identifier id'>exit</span> <span class='integer val'>1</span>  
+  <span class='else else kw'>else</span>
+    <span class='abort identifier id'>abort</span> <span class='dstring node'>&quot;Unknown command: #{@command}. Use one of #{self.class.commands.join(', ')}&quot;</span>
+  <span class='end end kw'>end</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="run_command-instance_method">
+  
+    - (<tt>Object</tt>) <strong>run_command</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Send the command to the server.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/runner.rb', line 120</span>
+
+<span class='def def kw'>def</span> <span class='run_command identifier id'>run_command</span>
+  <span class='load_options_from_config_file! fid id'>load_options_from_config_file!</span> <span class='unless unless_mod kw'>unless</span> <span class='CONFIGLESS_COMMANDS constant id'>CONFIGLESS_COMMANDS</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='@command ivar id'>@command</span><span class='rparen token'>)</span>
+  
+  <span class='comment val'>##############</span>
+  <span class='comment val'># Thin is shelling out sub-processes - this doesn't translate to JRuby, does it?</span>
+  <span class='comment val'>##############</span>
+  <span class='comment val'># PROGRAM_NAME is relative to the current directory, so make sure</span>
+  <span class='comment val'># we store and expand it before changing directory.</span>
+  <span class='comment val'># Command.script = File.expand_path($PROGRAM_NAME)</span>
+  
+  <span class='comment val'># Change the current directory ASAP so that all relative paths are</span>
+  <span class='comment val'># relative to this one.</span>
+  <span class='Dir constant id'>Dir</span><span class='dot token'>.</span><span class='chdir identifier id'>chdir</span><span class='lparen token'>(</span><span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:chdir</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  
+  <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:require</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='r identifier id'>r</span><span class='bitor op'>|</span> <span class='ruby_require identifier id'>ruby_require</span> <span class='r identifier id'>r</span> <span class='rbrace token'>}</span>
+  <span class='Logging constant id'>Logging</span><span class='dot token'>.</span><span class='debug identifier id'>debug</span> <span class='assign token'>=</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:debug</span><span class='rbrack token'>]</span>
+  <span class='Logging constant id'>Logging</span><span class='dot token'>.</span><span class='trace identifier id'>trace</span> <span class='assign token'>=</span> <span class='@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:trace</span><span class='rbrack token'>]</span>
+  
+  <span class='server identifier id'>server</span> <span class='assign token'>=</span> <span class='Server constant id'>Server</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='@options ivar id'>@options</span><span class='rparen token'>)</span>
+  
+  <span class='if if kw'>if</span> <span class='server identifier id'>server</span><span class='dot token'>.</span><span class='respond_to? fid id'>respond_to?</span><span class='lparen token'>(</span><span class='@command ivar id'>@command</span><span class='rparen token'>)</span>
+    <span class='begin begin kw'>begin</span>
+      <span class='server identifier id'>server</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='@command ivar id'>@command</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='@arguments ivar id'>@arguments</span><span class='rparen token'>)</span>
+    <span class='rescue rescue kw'>rescue</span> <span class='RunnerError constant id'>RunnerError</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='e identifier id'>e</span>
+      <span class='abort identifier id'>abort</span> <span class='e identifier id'>e</span><span class='dot token'>.</span><span class='message identifier id'>message</span>
+    <span class='end end kw'>end</span>
+  <span class='else else kw'>else</span>
+    <span class='abort identifier id'>abort</span> <span class='dstring node'>&quot;Invalid options for command: #{@command}&quot;</span>
+  <span class='end end kw'>end</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Mon Dec 07 10:45:17 2009 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.4.0 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Module: Aspen::Logging</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (L)</a> &raquo; 
+    <a href="../Aspen.html" title="Aspen">Aspen</a>
+     &raquo; 
+    <span class="title">Logging</span>
+  
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: Aspen::Logging 
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/aspen/logging.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+To be included in classes to allow some basic logging that can be silenced
+(<tt>Logging.silent=</tt>) or made more verbose. <tt>Logging.debug=</tt>:
+log all error backtrace and messages
+</p>
+<pre class="code">
+                         <span class='logged identifier id'>logged</span> <span class='with identifier id'>with</span> <span class='lt op'>&lt;</span><span class='tt identifier id'>tt</span><span class='gt op'>&gt;</span><span class='d identifier id'>d</span><span class='e identifier id'>e</span><span class='b identifier id'>b</span><span class='u identifier id'>u</span><span class='g identifier id'>g</span><span class='lt op'>&lt;</span><span class='regexp val'>/tt&gt;.
+</span></pre>
+<p>
+<tt>Logging.trace=</tt>: log all raw request and response and
+</p>
+<pre class="code">
+                         <span class='messages identifier id'>messages</span> <span class='logged identifier id'>logged</span> <span class='with identifier id'>with</span> <span class='lt op'>&lt;</span><span class='tt identifier id'>tt</span><span class='gt op'>&gt;</span><span class='t identifier id'>t</span><span class='r identifier id'>r</span><span class='a identifier id'>a</span><span class='c identifier id'>c</span><span class='e identifier id'>e</span><span class='lt op'>&lt;</span><span class='regexp val'>/tt&gt;.
+</span></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+
+  <h2>Attribute Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#debug%3D-class_method" title="debug= (class method)">+ (Object) <strong>debug=</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Sets the attribute <tt>debug</tt>.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#silent%3D-class_method" title="silent= (class method)">+ (Object) <strong>silent=</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Sets the attribute <tt>silent</tt>.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#trace%3D-class_method" title="trace= (class method)">+ (Object) <strong>trace=</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Sets the attribute <tt>trace</tt>.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  <h2>Method Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#debug%3F-class_method" title="debug? (class method)">+ (Object) <strong>debug?</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#silent%3F-class_method" title="silent? (class method)">+ (Object) <strong>silent?</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#trace%3F-class_method" title="trace? (class method)">+ (Object) <strong>trace?</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#debug-instance_method" title="#debug (instance method)">- (Object) <strong>debug</strong>(msg = nil) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Log a message to the console if debugging is activated.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#log-instance_method" title="#log (instance method)">- (Object) <strong>log</strong>(msg) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Log a message to the console.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#log_error-instance_method" title="#log_error (instance method)">- (Object) <strong>log_error</strong>(e = $!) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Log an error backtrace if debugging is activated.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#silent%3D-instance_method" title="#silent= (instance method)">- (Object) <strong>silent=</strong>(value) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Global silencer methods def silent.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#trace-instance_method" title="#trace (instance method)">- (Object) <strong>trace</strong>(msg = nil) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Log a message to the console if tracing is activated.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  <div id="attr_details">
+    <h2>Attribute Details</h2>
+    
+      
+      <span id="debug=-class_method"></span>
+      <span id=""></span>
+      <div class="method_details first">
+  <p class="signature first" id="debug=-class_method">
+  
+    + (<tt>Object</tt>) <strong>debug=</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Sets the attribute <tt>debug</tt>
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'></span>
+      
+      
+        <span class='name'>value</span>
+      
+      
+      
+        &mdash;
+        
+the value to set the attribute <tt>debug</tt> to.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+11
+12
+13</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 11</span>
+
+<span class='def def kw'>def</span> <span class='debug= identifier id'>debug=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='@debug ivar id'>@debug</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="silent=-class_method"></span>
+      <span id=""></span>
+      <div class="method_details ">
+  <p class="signature " id="silent=-class_method">
+  
+    + (<tt>Object</tt>) <strong>silent=</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Sets the attribute <tt>silent</tt>
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'></span>
+      
+      
+        <span class='name'>value</span>
+      
+      
+      
+        &mdash;
+        
+the value to set the attribute <tt>silent</tt> to.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+11
+12
+13</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 11</span>
+
+<span class='def def kw'>def</span> <span class='silent= identifier id'>silent=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='@silent ivar id'>@silent</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="trace=-class_method"></span>
+      <span id=""></span>
+      <div class="method_details ">
+  <p class="signature " id="trace=-class_method">
+  
+    + (<tt>Object</tt>) <strong>trace=</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Sets the attribute <tt>trace</tt>
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'></span>
+      
+      
+        <span class='name'>value</span>
+      
+      
+      
+        &mdash;
+        
+the value to set the attribute <tt>trace</tt> to.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+11
+12
+13</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 11</span>
+
+<span class='def def kw'>def</span> <span class='trace= identifier id'>trace=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='@trace ivar id'>@trace</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="method_details">
+    <h2>Method Details</h2>
+    
+      <div class="method_details first">
+  <p class="signature first" id="debug?-class_method">
+  
+    + (<tt>Object</tt>) <strong>debug?</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+14</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 14</span>
+
+<span class='def def kw'>def</span> <span class='debug? fid id'>debug?</span><span class='semicolon token'>;</span>  <span class='notop op'>!</span><span class='@silent ivar id'>@silent</span> <span class='andop op'>&amp;&amp;</span> <span class='@debug ivar id'>@debug</span>  <span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="silent?-class_method">
+  
+    + (<tt>Object</tt>) <strong>silent?</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+15</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 15</span>
+
+<span class='def def kw'>def</span> <span class='silent? fid id'>silent?</span><span class='semicolon token'>;</span>  <span class='@silent ivar id'>@silent</span>            <span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="trace?-class_method">
+  
+    + (<tt>Object</tt>) <strong>trace?</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+13</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 13</span>
+
+<span class='def def kw'>def</span> <span class='trace? fid id'>trace?</span><span class='semicolon token'>;</span>  <span class='notop op'>!</span><span class='@silent ivar id'>@silent</span> <span class='andop op'>&amp;&amp;</span> <span class='@trace ivar id'>@trace</span>  <span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="debug-instance_method">
+  
+    - (<tt>Object</tt>) <strong>debug</strong>(msg = nil) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Log a message to the console if debugging is activated
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 41</span>
+
+<span class='def def kw'>def</span> <span class='debug identifier id'>debug</span><span class='lparen token'>(</span><span class='msg identifier id'>msg</span><span class='assign token'>=</span><span class='nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='log identifier id'>log</span> <span class='msg identifier id'>msg</span> <span class='orop op'>||</span> <span class='yield yield kw'>yield</span> <span class='if if_mod kw'>if</span> <span class='Logging constant id'>Logging</span><span class='dot token'>.</span><span class='debug? fid id'>debug?</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="log-instance_method">
+  
+    - (<tt>Object</tt>) <strong>log</strong>(msg) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Log a message to the console
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+27
+28
+29</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 27</span>
+
+<span class='def def kw'>def</span> <span class='log identifier id'>log</span><span class='lparen token'>(</span><span class='msg identifier id'>msg</span><span class='rparen token'>)</span>
+  <span class='puts identifier id'>puts</span> <span class='msg identifier id'>msg</span> <span class='unless unless_mod kw'>unless</span> <span class='Logging constant id'>Logging</span><span class='dot token'>.</span><span class='silent? fid id'>silent?</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="log_error-instance_method">
+  
+    - (<tt>Object</tt>) <strong>log_error</strong>(e = $!) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Log an error backtrace if debugging is activated
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+48
+49
+50</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 48</span>
+
+<span class='def def kw'>def</span> <span class='log_error identifier id'>log_error</span><span class='lparen token'>(</span><span class='e identifier id'>e</span><span class='assign token'>=</span><span class='$! gvar id'>$!</span><span class='rparen token'>)</span>
+  <span class='debug identifier id'>debug</span> <span class='dstring node'>&quot;#{e}\n\t&quot;</span> <span class='plus op'>+</span> <span class='e identifier id'>e</span><span class='dot token'>.</span><span class='backtrace identifier id'>backtrace</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='string val'>&quot;\n\t&quot;</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="silent=-instance_method">
+  
+    - (<tt>Object</tt>) <strong>silent=</strong>(value) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Global silencer methods def silent
+</p>
+<pre class="code">
+  <span class='Logging constant id'>Logging</span><span class='dot token'>.</span><span class='silent? fid id'>silent?</span>
+</pre>
+<p>
+end
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+22
+23
+24</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 22</span>
+
+<span class='def def kw'>def</span> <span class='silent= identifier id'>silent=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='Logging constant id'>Logging</span><span class='dot token'>.</span><span class='silent identifier id'>silent</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="trace-instance_method">
+  
+    - (<tt>Object</tt>) <strong>trace</strong>(msg = nil) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Log a message to the console if tracing is activated
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/logging.rb', line 34</span>
+
+<span class='def def kw'>def</span> <span class='trace identifier id'>trace</span><span class='lparen token'>(</span><span class='msg identifier id'>msg</span><span class='assign token'>=</span><span class='nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='log identifier id'>log</span> <span class='msg identifier id'>msg</span> <span class='orop op'>||</span> <span class='yield yield kw'>yield</span> <span class='if if_mod kw'>if</span> <span class='Logging constant id'>Logging</span><span class='dot token'>.</span><span class='trace? fid id'>trace?</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Mon Dec 07 10:45:18 2009 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.4.0 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

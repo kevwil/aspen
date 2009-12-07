@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>aspen-1.0.0 Documentation</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html" title="Index">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><div id='filecontents'><p>
+aspen
+</p>
+<pre class="code">
+    <span class='by identifier id'>by</span> <span class='Kevin constant id'>Kevin</span> <span class='Williams constant id'>Williams</span>
+    <span class='http identifier id'>http</span><span class='symbol val'>:/</span><span class='regexp val'>/kevwil.github.com/</span><span class='aspen identifier id'>aspen</span><span class='div op'>/</span>
+</pre>
+<h2>DESCRIPTION:</h2>
+<p>
+Aspen is a web server engine for JRuby. The design is very similar to Thin
+(http://code.macournoyer.com/thin/), except using Netty
+(http://www.jboss.org/netty) for high-speed concurrent sockets.
+</p>
+<h2>FEATURES/PROBLEMS:</h2>
+<ul>
+<li>truly concurrent socket model
+
+</li>
+<li>Rack interface support
+
+</li>
+<li>Not all features implemented yet, such as chunked data, different content
+encodings, etc.
+
+</li>
+</ul>
+<h2>SYNOPSIS:</h2>
+<pre class="code">
+  <span class='FIXME constant id'>FIXME</span> <span class='lparen token'>(</span><span class='code identifier id'>code</span> <span class='sample identifier id'>sample</span> <span class='of identifier id'>of</span> <span class='usage identifier id'>usage</span><span class='rparen token'>)</span>
+</pre>
+<h2>REQUIREMENTS:</h2>
+<ul>
+<li>Java &gt;= 1.5
+
+</li>
+<li>JRuby &gt;= 1.4
+
+</li>
+<li>Rack
+
+</li>
+</ul>
+<h2>INSTALL:</h2>
+<pre class="code">
+        <span class='comment val'># From Gemcutter / Rubyforge ...</span>
+        $ <span class='lparen token'>(</span><span class='sudo identifier id'>sudo</span><span class='rparen token'>)</span> <span class='jruby identifier id'>jruby</span> <span class='minus op'>-</span><span class='S constant id'>S</span> <span class='gem identifier id'>gem</span> <span class='install identifier id'>install</span> <span class='aspen identifier id'>aspen</span>
+</pre>
+<h2>INSTALL FROM SOURCE:</h2>
+<pre class="code">
+    <span class='comment val'># get source from Github</span>
+    $ <span class='git identifier id'>git</span> <span class='clone identifier id'>clone</span> <span class='git identifier id'>git</span><span class='symbol val'>:/</span><span class='regexp val'>/github.com/</span><span class='kevwil identifier id'>kevwil</span><span class='div op'>/</span><span class='aspen identifier id'>aspen</span><span class='dot token'>.</span><span class='git identifier id'>git</span>
+    $ <span class='cd identifier id'>cd</span> <span class='aspen identifier id'>aspen</span>
+
+    <span class='comment val'># You must have JRuby set up, with the dependent gems installed.</span>
+    <span class='comment val'># see the Rakefile for the dev-time dependencies</span>
+    $ <span class='jgem identifier id'>jgem</span> <span class='install identifier id'>install</span> <span class='little identifier id'>little</span><span class='minus op'>-</span><span class='plugger identifier id'>plugger</span> <span class='loquacious identifier id'>loquacious</span> <span class='rubyforge identifier id'>rubyforge</span> <span class='bones identifier id'>bones</span> <span class='bones identifier id'>bones</span><span class='minus op'>-</span><span class='git identifier id'>git</span> <span class='bones identifier id'>bones</span><span class='minus op'>-</span><span class='extras identifier id'>extras</span> <span class='rspec identifier id'>rspec</span> <span class='mocha identifier id'>mocha</span> <span class='rcov identifier id'>rcov</span>
+
+    <span class='comment val'># You must have Ant (http://ant.apache.org) and Maven (http://maven.apache.org) set up.</span>
+    <span class='comment val'># *note* the Rakefile will call Maven in &quot;offline mode&quot;.</span>
+    <span class='comment val'># If you get any errors about unresolved dependencies, do this:</span>
+    $ <span class='cd identifier id'>cd</span> <span class='javalib identifier id'>javalib</span>
+    $ <span class='mvn identifier id'>mvn</span> <span class='dependency identifier id'>dependency</span><span class='symbol val'>:go</span><span class='minus op'>-</span><span class='offline identifier id'>offline</span> <span class='lparen token'>(</span><span class='or or kw'>or</span> <span class='string val'>'mvn package'</span><span class='rparen token'>)</span>
+
+    <span class='comment val'># Now you can build and test Aspen</span>
+    $ <span class='jruby identifier id'>jruby</span> <span class='minus op'>-</span><span class='S constant id'>S</span> <span class='rake identifier id'>rake</span>
+
+    <span class='comment val'># Install the gem</span>
+    $ <span class='jruby identifier id'>jruby</span> <span class='minus op'>-</span><span class='S constant id'>S</span> <span class='rake identifier id'>rake</span> <span class='gem identifier id'>gem</span><span class='symbol val'>:install</span>
+</pre>
+<h2>LICENSE:</h2>
+<p>
+(The MIT License)
+</p>
+<p>
+Copyright &#169; 2009 Kevin Williams
+</p>
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+&#8216;Software&#8217;), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
+</p>
+<p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+</p>
+<p>
+THE SOFTWARE IS PROVIDED &#8216;AS IS&#8217;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+</p>
+</div></div>
+    
+    <div id="footer">
+  Generated on Mon Dec 07 10:45:15 2009 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.4.0 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

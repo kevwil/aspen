@@ -1,0 +1,903 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Class: Aspen::Server</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (S)</a> &raquo; 
+    <a href="../Aspen.html" title="Aspen">Aspen</a>
+     &raquo; 
+    <span class="title">Server</span>
+  
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Aspen::Server 
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><a href="Logging.html" title="Aspen::Logging">Aspen::Logging</a></dd>
+      
+    
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/aspen/server.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+the Server is the launching point and core of Aspen.
+</p>
+<h2>TCP Server</h2>
+<p>
+It will listen for incoming requests on TCP sockets at <tt>host:port</tt>
+by specifying <tt>host</tt> and <tt>port</tt>.
+</p>
+<h2>Rack Application</h2>
+<p>
+All requests will be processed through <tt>app</tt> that must be a valid
+Rack adapter. A valid Rack adapter (application) must respond to
+<tt>call(env#Hash)</tt> and return an array of <tt>[status, headers,
+[body]]</tt>.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Author:</h3>
+<ul class="author">
+  
+    <li>
+      
+      
+      
+      
+        
+        
+Kevin Williams
+
+
+      
+    </li>
+  
+</ul>
+<h3>Since:</h3>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        
+1.0.0
+
+
+      
+    </li>
+  
+</ul>
+<h3>Version:</h3>
+<ul class="version">
+  
+    <li>
+      
+      
+      
+      
+        
+        
+1.0.0
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="DEFAULT_HOST-constant ">DEFAULT_HOST =
+            <span class="summary_desc">
+default values.
+
+</span>
+        </dt>
+        <dd><pre class="code"><span class='string val'>'0.0.0.0'</span>
+</pre></dd>
+      
+        <dt id="DEFAULT_PORT-constant ">DEFAULT_PORT =
+            <span class="summary_desc"></span>
+        </dt>
+        <dd><pre class="code"><span class='integer val'>1169</span>
+</pre></dd>
+      
+    </dl>
+  
+
+
+  
+  
+  
+  
+  <h2>Attribute Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#app-instance_method" title="#app (instance method)">- (Object) <strong>app</strong> </a>
+  
+  </span>
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Application (Rack adapter) called with the request that produces the
+response.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#host-instance_method" title="#host (instance method)">- (Object) <strong>host</strong> </a>
+  
+  </span>
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+IP address of to bind sockets to, usually the address of the host, the
+loopback address (127.0.0.1), or the &#8216;all&#8217; binding address of
+0.0.0.0 (which is the default).
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#port-instance_method" title="#port (instance method)">- (Object) <strong>port</strong> </a>
+  
+  </span>
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+port number for the server to listen on.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  <h2>Method Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#start-class_method" title="start (class method)">+ (Object) <strong>start</strong>(*args, &amp;block) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Lil&#8217; shortcut to turn this:.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#initialize-instance_method" title="#initialize (instance method)">- (Server) <strong>initialize</strong>(*args, &amp;block) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+A new instance of <tt>Server</tt>.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#running%3F-instance_method" title="#running? (instance method)">- (Object) <strong>running?</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#start-instance_method" title="#start (instance method)">- (Object) <strong>start</strong> </a>
+  
+    (also: #start!)
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Start the server and listen for connections.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#stop-instance_method" title="#stop (instance method)">- (Object) <strong>stop</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><h2>Gracefull shutdown</h2>
+
+Stops the server after processing all current connections.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#stop%21-instance_method" title="#stop! (instance method)">- (Object) <strong>stop!</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><h2>Force shutdown</h2>
+
+Stops the server closing all current connections right away.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="Logging.html" title="Aspen::Logging">Aspen::Logging</a></h3>
+  <p class="inherited"><a href="Logging.html#debug-instance_method" title="#debug">#debug</a>, <a href="Logging.html#debug%3F-class_method" title="debug?">debug?</a>, <a href="Logging.html#log-instance_method" title="#log">#log</a>, <a href="Logging.html#log_error-instance_method" title="#log_error">#log_error</a>, <a href="Logging.html#silent%3D-instance_method" title="#silent=">#silent=</a>, <a href="Logging.html#silent%3F-class_method" title="silent?">silent?</a>, <a href="Logging.html#trace-instance_method" title="#trace">#trace</a>, <a href="Logging.html#trace%3F-class_method" title="trace?">trace?</a></p>
+<div id="constructor_details">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><a href="" title="Server">Server</a></tt>) <strong>initialize</strong>(*args, &amp;block) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A new instance of <tt>Server</tt>
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="" title="Server">Server</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+a new instance of <tt>Server</tt>
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 40</span>
+
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='args identifier id'>args</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='host identifier id'>host</span><span class='comma token'>,</span> <span class='port identifier id'>port</span><span class='comma token'>,</span> <span class='options identifier id'>options</span> <span class='assign token'>=</span> <span class='DEFAULT_HOST constant id'>DEFAULT_HOST</span><span class='comma token'>,</span> <span class='DEFAULT_PORT constant id'>DEFAULT_PORT</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+  <span class='@app ivar id'>@app</span> <span class='assign token'>=</span> <span class='nil nil kw'>nil</span>
+  
+  <span class='comment val'># Guess each parameter by its type so they can be</span>
+  <span class='comment val'># received in any order</span>
+  <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='each identifier id'>each</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='arg identifier id'>arg</span><span class='bitor op'>|</span>
+    <span class='case case kw'>case</span> <span class='arg identifier id'>arg</span>
+    <span class='when when kw'>when</span> <span class='Fixnum constant id'>Fixnum</span><span class='comma token'>,</span> <span class='regexp val'>/^\d+$/</span>  <span class='then then kw'>then</span> <span class='@port ivar id'>@port</span> <span class='assign token'>=</span> <span class='arg identifier id'>arg</span><span class='dot token'>.</span><span class='to_i identifier id'>to_i</span>
+    <span class='when when kw'>when</span> <span class='String constant id'>String</span>           <span class='then then kw'>then</span> <span class='@host ivar id'>@host</span> <span class='assign token'>=</span> <span class='arg identifier id'>arg</span>
+    <span class='when when kw'>when</span> <span class='Hash constant id'>Hash</span>             <span class='then then kw'>then</span> <span class='options identifier id'>options</span> <span class='assign token'>=</span> <span class='arg identifier id'>arg</span>
+    <span class='else else kw'>else</span>
+      <span class='@app ivar id'>@app</span> <span class='assign token'>=</span> <span class='arg identifier id'>arg</span> <span class='if if_mod kw'>if</span> <span class='arg identifier id'>arg</span><span class='dot token'>.</span><span class='respond_to? fid id'>respond_to?</span><span class='lparen token'>(</span><span class='symbol val'>:call</span><span class='rparen token'>)</span>
+    <span class='end end kw'>end</span>
+  <span class='end end kw'>end</span>
+  
+  <span class='comment val'># Allow using Rack builder as a block</span>
+  <span class='@app ivar id'>@app</span> <span class='assign token'>=</span> <span class='Rack constant id'>Rack</span><span class='colon2 op'>::</span><span class='Builder constant id'>Builder</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='to_app identifier id'>to_app</span> <span class='if if_mod kw'>if</span> <span class='block identifier id'>block</span>
+  
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>'app required'</span> <span class='unless unless_mod kw'>unless</span> <span class='@app ivar id'>@app</span>
+  
+  <span class='comment val'># If in debug mode, wrap in logger adapter</span>
+  <span class='@app ivar id'>@app</span> <span class='assign token'>=</span> <span class='Rack constant id'>Rack</span><span class='colon2 op'>::</span><span class='CommonLogger constant id'>CommonLogger</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='@app ivar id'>@app</span><span class='rparen token'>)</span> <span class='if if_mod kw'>if</span> <span class='Logging constant id'>Logging</span><span class='dot token'>.</span><span class='debug? fid id'>debug?</span>
+
+  <span class='@proxy ivar id'>@proxy</span> <span class='assign token'>=</span> <span class='NettyProxy constant id'>NettyProxy</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='@app ivar id'>@app</span><span class='rparen token'>)</span>
+  
+  <span class='@backend ivar id'>@backend</span> <span class='assign token'>=</span> <span class='AspenServer constant id'>AspenServer</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='@host ivar id'>@host</span><span class='comma token'>,</span><span class='@port ivar id'>@port</span><span class='comma token'>,</span><span class='@proxy ivar id'>@proxy</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="attr_details">
+    <h2>Attribute Details</h2>
+    
+      
+      <span id="app=-instance_method"></span>
+      <span id="app-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="app-instance_method">
+  
+    - (<tt>Object</tt>) <strong>app</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Application (Rack adapter) called with the request that produces the
+response.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 30</span>
+
+<span class='def def kw'>def</span> <span class='app identifier id'>app</span>
+  <span class='@app ivar id'>@app</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="host=-instance_method"></span>
+      <span id="host-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="host-instance_method">
+  
+    - (<tt>Object</tt>) <strong>host</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+IP address of to bind sockets to, usually the address of the host, the
+loopback address (127.0.0.1), or the &#8216;all&#8217; binding address of
+0.0.0.0 (which is the default).
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 35</span>
+
+<span class='def def kw'>def</span> <span class='host identifier id'>host</span>
+  <span class='@host ivar id'>@host</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="port=-instance_method"></span>
+      <span id="port-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="port-instance_method">
+  
+    - (<tt>Object</tt>) <strong>port</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+port number for the server to listen on
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38
+39
+40</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 38</span>
+
+<span class='def def kw'>def</span> <span class='port identifier id'>port</span>
+  <span class='@port ivar id'>@port</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="method_details">
+    <h2>Method Details</h2>
+    
+      <div class="method_details first">
+  <p class="signature first" id="start-class_method">
+  
+    + (<tt>Object</tt>) <strong>start</strong>(*args, &amp;block) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Lil&#8217; shortcut to turn this:
+</p>
+<pre class="code">
+  <span class='Server constant id'>Server</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='dot3 op'>...</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='start identifier id'>start</span>
+</pre>
+<p>
+into this:
+</p>
+<pre class="code">
+  <span class='Server constant id'>Server</span><span class='dot token'>.</span><span class='start identifier id'>start</span><span class='lparen token'>(</span><span class='dot3 op'>...</span><span class='rparen token'>)</span>
+</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+77
+78
+79</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 77</span>
+
+<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='start identifier id'>start</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='args identifier id'>args</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='args identifier id'>args</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='start! fid id'>start!</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="running?-instance_method">
+  
+    - (<tt>Object</tt>) <strong>running?</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+95
+96
+97</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 95</span>
+
+<span class='def def kw'>def</span> <span class='running? fid id'>running?</span>
+  <span class='return return kw'>return</span> <span class='@backend ivar id'>@backend</span><span class='dot token'>.</span><span class='is_running identifier id'>is_running</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="start-instance_method">
+  
+    - (<tt>Object</tt>) <strong>start</strong> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names">start!</span>
+    </span>
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Start the server and listen for connections.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 82</span>
+
+<span class='def def kw'>def</span> <span class='start identifier id'>start</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>'app required'</span> <span class='unless unless_mod kw'>unless</span> <span class='@app ivar id'>@app</span>
+
+  <span class='log identifier id'>log</span>   <span class='dstring node'>&quot;&gt;&gt; Aspen web server (#{::Aspen::SERVER})&quot;</span>
+  <span class='debug identifier id'>debug</span> <span class='string val'>&quot;&gt;&gt; Debugging ON&quot;</span>
+  <span class='trace identifier id'>trace</span> <span class='string val'>&quot;&gt;&gt; Tracing ON&quot;</span>
+
+  <span class='log identifier id'>log</span> <span class='dstring node'>&quot;&gt;&gt; Listening on #{@host}:#{@port}, CTRL+C to stop&quot;</span>
+
+  <span class='@backend ivar id'>@backend</span><span class='dot token'>.</span><span class='start identifier id'>start</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="stop-instance_method">
+  
+    - (<tt>Object</tt>) <strong>stop</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Gracefull shutdown</h2>
+<p>
+Stops the server after processing all current connections. As soon as this
+method is called, the server stops accepting new requests and wait for all
+current connections to finish. Calling twice is the equivalent of calling
+<tt>stop!</tt>.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 104</span>
+
+<span class='def def kw'>def</span> <span class='stop identifier id'>stop</span>
+  <span class='if if kw'>if</span> <span class='running? fid id'>running?</span>
+    <span class='@backend ivar id'>@backend</span><span class='dot token'>.</span><span class='stop identifier id'>stop</span>
+    <span class='unless unless kw'>unless</span> <span class='@backend ivar id'>@backend</span><span class='dot token'>.</span><span class='empty? fid id'>empty?</span>
+      <span class='log identifier id'>log</span> <span class='dstring node'>&quot;&gt;&gt; Waiting for #{@backend.size} connection(s) to finish, &quot;</span> <span class='plus op'>+</span>
+            <span class='dstring node'>&quot;can take up to #{timeout} sec, CTRL+C to stop now&quot;</span>
+    <span class='end end kw'>end</span>
+  <span class='else else kw'>else</span>
+    <span class='stop! fid id'>stop!</span>
+  <span class='end end kw'>end</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="stop!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>stop!</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Force shutdown</h2>
+<p>
+Stops the server closing all current connections right away. This
+doesn&#8217;t wait for connection to finish their work and send data. All
+current requests will be dropped.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+120
+121
+122
+123
+124</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/aspen/server.rb', line 120</span>
+
+<span class='def def kw'>def</span> <span class='stop! fid id'>stop!</span>
+  <span class='log identifier id'>log</span> <span class='string val'>&quot;&gt;&gt; Stopping ...&quot;</span>
+
+  <span class='@backend ivar id'>@backend</span><span class='dot token'>.</span><span class='stop! fid id'>stop!</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Mon Dec 07 10:45:17 2009 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.4.0 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>
