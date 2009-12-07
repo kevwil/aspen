@@ -12,7 +12,7 @@ module Aspen
   # @version 1.0.0
   class Runner
     
-    COMMANDS = %w(start stop restart config)
+    COMMANDS = %w(start stop config)
     
     # Commands that wont load options from the config file
     CONFIGLESS_COMMANDS = %w(config)
@@ -135,11 +135,11 @@ module Aspen
       Logging.debug = @options[:debug]
       Logging.trace = @options[:trace]
       
-      server = Server.new(@options)
+      controller = Controller.new(@options)
       
-      if server.respond_to?(@command)
+      if controller.respond_to?(@command)
         begin
-          server.send(@command, *@arguments)
+          controller.send(@command, *@arguments)
         rescue RunnerError => e
           abort e.message
         end
