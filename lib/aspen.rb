@@ -3,9 +3,11 @@ require 'aspen/version'
 module Aspen
 
   autoload :Logging, 'aspen/logging'
+  autoload :Controller, 'aspen/controller'
   autoload :NettyProxy, 'aspen/netty_proxy'
   autoload :Server, 'aspen/server'
   autoload :Runner, 'aspen/runner'
+  autoload :Stats, 'aspen/stats'
 
 end  # module Aspen
 

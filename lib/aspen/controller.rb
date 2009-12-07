@@ -1,6 +1,16 @@
 require 'yaml'
 
 module Aspen
+  
+  # Error raised that will abort the process and print not backtrace.
+  class RunnerError < RuntimeError; end
+
+  # Raised when a mandatory option is missing to run a command.
+  class OptionRequired < RunnerError
+    def initialize(option)
+      super("#{option} option required")
+    end
+  end
 
   # Raised when an option is not valid.
   class InvalidOption < RunnerError; end
@@ -20,21 +30,36 @@ module Aspen
 
     # build server and start it
     def start
+      server = Aspen::Server.new(@options[:Host] || @options[:address], @options[:Port] || @options[:port], @options)
+      if @options[:rackup]
+        server.app = load_rackup_config
+      else
+        server.app = load_adapter
+      end
+
+      # If a prefix is required, wrap in Rack URL mapper
+      server.app = Rack::URLMap.new(@options[:prefix] => server.app) if @options[:prefix]
+
+      # If a stats URL is specified, wrap in Stats adapter
+      server.app = Stats::Adapter.new(server.app, @options[:stats]) if @options[:stats]
+
+      server.start
     end
 
     # stop the server
     def stop
-
-    end
-
-    # restart the server
-    def restart
-      
+      Server.stop
     end
 
     # clean up options and write to file
     def config
+      config_file = @options.delete(:config) || raise(OptionRequired, :config)
 
+      # Stringify keys
+      @options.keys.each { |o| @options[o.to_s] = @options.delete(o) }
+
+      File.open(config_file, 'w') { |f| f << @options.to_yaml }
+      log ">> Wrote configuration to #{config_file}"
     end
     
 
