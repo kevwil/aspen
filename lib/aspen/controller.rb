@@ -17,7 +17,7 @@ module Aspen
   
   # controls a server
   class Controller
-    include Aspen::Logging
+    include Logging
 
     # Command line options passed to the aspen script
     attr_accessor :options
@@ -30,7 +30,7 @@ module Aspen
 
     # build server and start it
     def start
-      server = Aspen::Server.new(@options[:Host] || @options[:address], @options[:Port] || @options[:port], @options)
+      server = Server.new(@options[:Host] || @options[:address], @options[:Port] || @options[:port], @options)
       if @options[:rackup]
         server.app = load_rackup_config
       else

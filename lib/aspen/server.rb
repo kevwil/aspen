@@ -56,13 +56,17 @@ module Aspen
       # Allow using Rack builder as a block
       @app = Rack::Builder.new(&block).to_app if block
       
-      raise ArgumentError, 'app required' unless @app
-      
       # If in debug mode, wrap in logger adapter
       @app = Rack::CommonLogger.new(@app) if Logging.debug?
 
       @proxy = NettyProxy.new(@app)
       
+      @backend = AspenServer.new(@host,@port,@proxy)
+    end
+
+    def app=(newapp)
+      @app = newapp
+      @proxy = NettyProxy.new(newapp)
       @backend = AspenServer.new(@host,@port,@proxy)
     end
     
