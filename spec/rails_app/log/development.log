@@ -1,0 +1,888 @@
+# Logfile created on Sun Dec 06 14:36:50 -0700 2009
+
+Processing SimpleController#index (for  at 2009-12-06 14:43:22) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (230.0ms)
+Rendered rescues/_request_and_response (5.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 14:44:43) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (189.0ms)
+Rendered rescues/_request_and_response (6.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 14:51:19) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (179.0ms)
+Rendered rescues/_request_and_response (6.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 14:58:46) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (240.0ms)
+Rendered rescues/_request_and_response (6.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 15:22:51) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (181.0ms)
+Rendered rescues/_request_and_response (7.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 15:59:20) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (191.0ms)
+Rendered rescues/_request_and_response (6.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 16:03:09) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (230.0ms)
+Rendered rescues/_request_and_response (8.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 16:38:15) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (184.0ms)
+Rendered rescues/_request_and_response (7.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 16:53:13) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:16
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (178.0ms)
+Rendered rescues/_request_and_response (18.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 17:42:42) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:16
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (211.0ms)
+Rendered rescues/_request_and_response (9.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 17:43:11) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:16
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (235.0ms)
+Rendered rescues/_request_and_response (7.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SimpleController#index (for  at 2009-12-06 17:46:23) [GET]
+Rendering simple/index
+
+ActionView::TemplateError (can't dump anonymous class Class) on line #4 of app/views/simple/index.html.erb:
+1: <h1>Simple#index</h1>
+2: 
+3: <h2>ENV</h2>
+4: <%= request.env.to_yaml %>
+5: 
+6: <h2>Cookies</h2>
+7: <%= request.cookies.to_yaml %>
+
+    yaml/rubytypes:56:in `to_yaml'
+    yaml/rubytypes:160:in `to_yaml'
+    yaml/rubytypes:159:in `each'
+    yaml/rubytypes:159:in `to_yaml'
+    yaml/rubytypes:158:in `seq'
+    yaml/rubytypes:158:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:157:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:68:in `to_yaml'
+    yaml/rubytypes:67:in `each'
+    yaml/rubytypes:67:in `to_yaml'
+    yaml/rubytypes:66:in `map'
+    yaml/rubytypes:66:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:65:in `to_yaml'
+    yaml/rubytypes:91:in `to_yaml'
+    yaml/rubytypes:90:in `each'
+    yaml/rubytypes:90:in `to_yaml'
+    yaml/rubytypes:89:in `map'
+    yaml/rubytypes:89:in `to_yaml'
+    yaml:388:in `emit'
+    yaml:388:in `quick_emit'
+    yaml/rubytypes:88:in `to_yaml'
+    app/views/simple/index.html.erb:4
+    /spec/rack/rails_adapter_spec.rb:15
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `instance_eval'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:40:in `execute'
+    rspec (1.2.9) lib/spec/example/example_methods.rb:37:in `execute'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:214:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `each'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:212:in `run_examples'
+    rspec (1.2.9) lib/spec/example/example_group_methods.rb:103:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:23:in `run'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `each'
+    rspec (1.2.9) lib/spec/runner/example_group_runner.rb:22:in `run'
+    rspec (1.2.9) lib/spec/runner/options.rb:151:in `run_examples'
+    rspec (1.2.9) lib/spec/runner/command_line.rb:9:in `run'
+    rspec (1.2.9) bin/spec:5
+
+Rendered rescues/_trace (193.0ms)
+Rendered rescues/_request_and_response (6.0ms)
+Rendering rescues/layout (internal_server_error)

@@ -4,6 +4,7 @@ require 'spec_helper'
 describe Aspen::NettyProxy, "with Java setup" do
   
   before(:each) do
+    ::Aspen::Logging.silent=true
     @ctx = RackUtil.build_channel_handler_context 'localhost', '80'
     @req = DefaultHttpRequest.new( HttpVersion::HTTP_1_1, HttpMethod::GET, 'http://localhost/foo.html')
   end
@@ -62,6 +63,7 @@ describe Aspen::NettyProxy, "with Java setup" do
     @proxy = ::Aspen::NettyProxy.new(@app)
 
     response = @proxy.process(@ctx, @req)
+  
     response.should_not be_nil
     response.header_names.contains('Content-Type').should be_true
     response.get_header('Content-Type').should == 'text/plain'

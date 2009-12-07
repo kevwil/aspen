@@ -16,6 +16,7 @@ doc
 pkg
 target
 out
+vendor/
 #lib/**/*.jar
 *.iml
 *.ipr
