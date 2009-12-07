@@ -10,6 +10,8 @@ require 'aspen/version'
 
 task :default => ['spec:rcov','spec:verify','doc:yard','notes']
 task 'gem:release' => ['java:build','spec:rcov','spec:verify','doc:yard']
+task 'clean' => ['java:clean', 'doc:clean']
+task 'clobber' => ['java:clobber']
 
 Bones do
   name 'aspen'
@@ -44,23 +46,33 @@ Bones do
   enable_sudo
 end
 
-
 require 'fileutils'
+
+namespace :doc do
+  desc "clean up generated docs"
+  task :clean do
+    d = 'doc'
+    y = '.yardoc'  
+    FileUtils.rm_rf(d) if File.exist?(d) and File.writable?(d) and File.directory?(d)
+    FileUtils.rm(y) if File.exist?(y) and File.writable?(d)
+  end
+end
 
 namespace :java do
 
   desc "clean up java tool output"
   task :clean do
-
     system "cd javalib;mvn --offline clean;cd .."
+  end
+
+  desc "delete the generated jar"
+  task :clobber do
     FileUtils.rm Dir.glob('lib/**/*.jar')
   end
 
   desc "build java code and copy jars to lib folder"
   task :build => :clean do
-
     system "cd javalib;mvn --offline package;ant;cd .."
-
   end
 
 end
