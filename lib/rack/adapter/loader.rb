@@ -33,7 +33,7 @@ module Rack
     def self.for(name, options={})
       case name.to_sym
       when :rails
-        return Rails.new(options.merge(:root => options[:chdir]))
+        return Rack::Adapter::Rails.new(options.merge(:root => options[:chdir]))
       
       when :ramaze
         require "#{options[:chdir]}/start"

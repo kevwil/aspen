@@ -40,8 +40,8 @@ module Aspen
       @options = {
         :chdir          => Dir.pwd,
         :environment    => 'development',
-        :address        => Server::DEFAULT_HOST,
-        :port           => Server::DEFAULT_PORT,
+        :address        => Aspen::Server::DEFAULT_HOST,
+        :port           => Aspen::Server::DEFAULT_PORT,
         :log            => 'log/aspen.log',
         :pid            => 'tmp/pids/aspen.pid',
         :require        => []
