@@ -35,11 +35,14 @@ Bones do
   ruby_opts << '-Ilib' << '-rubygems'
   spec.opts << '--color'
   # spec.opts << '--format html:./spec_out.html'
-  rcov.threshold 80
-  # rcov.opts << ['--exclude', 'rcov']
-  #rcov.opts << ['--exclude', 'mocha']
-  rcov.opts << ['--exclude', 'examples']
+  #rcov.threshold 80
+  rcov.opts << ['--include', 'lib']
   rcov.opts << ['--exclude', 'spec']
+  rcov.opts << ['--exclude', 'examples']
+  rcov.opts << ['--exclude', 'rcov']
+  rcov.opts << ['--exclude', 'mocha']
+  rcov.opts << ['--exclude', 'rails']
+  rcov.opts << ['--exclude', 'action_controller']
   # rcov.opts << ['--no-html']
   # rcov.opts << ['--text-counts']
   # rcov.opts << ['--text-coverage-diff','FILE']
