@@ -1,3 +1,4 @@
 .rakeTasks
 aspen.i*
 javalib/
+spec/
