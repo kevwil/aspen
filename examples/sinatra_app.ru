@@ -15,5 +15,3 @@ end
 map "/post" do
   run Post
 end
-
-# run Sinatra::Application
