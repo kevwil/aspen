@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven
-Built-By: kevwil
-Build-Jdk: 1.5.0_20
-Class-Path: netty-3.1.5.GA.jar

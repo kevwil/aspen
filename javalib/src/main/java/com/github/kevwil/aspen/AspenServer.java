@@ -74,6 +74,7 @@ public class AspenServer
                 future.awaitUninterruptibly();
                 _channelFactory.releaseExternalResources();
                 _bootstrap.releaseExternalResources();
+                _running = false;
             }
             catch( Exception e )
             {

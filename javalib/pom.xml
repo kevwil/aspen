@@ -33,7 +33,7 @@
             <!--<manifest>
               <addClasspath>true</addClasspath>
             </manifest>-->
-            <manifestFile>src/main/resources/jar-manifest.txt</manifestFile>
+            <!--<manifestFile>src/main/resources/jar-manifest.txt</manifestFile>-->
           </archive>
         </configuration>
       </plugin>

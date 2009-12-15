@@ -2,9 +2,18 @@
 <project name="aspenj" default="jarjar">
 
   <target name="jarjar" description="merge jars into one">
-    <zip destfile="../lib/aspen/${ant.project.name}.jar">
-      <zipgroupfileset dir="target" includes="*.jar"/>
-    </zip>
+    <mkdir dir="target/netty-classes"/>
+    <unzip dest="target/netty-classes">
+      <fileset dir="target" includes="netty*.jar"/>
+      <patternset>
+        <include name="**/*.class"/>
+      </patternset>
+    </unzip>
+    <jar destfile="../lib/aspen/${ant.project.name}.jar">
+      <fileset dir="target/classes"/>
+      <fileset dir="target/netty-classes"/>
+    </jar>
+    <delete dir="target/netty-classes"/>
   </target>
 
 </project>
