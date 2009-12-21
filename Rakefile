@@ -8,7 +8,8 @@ end
 ensure_in_path 'lib'
 require 'aspen/version'
 
-task :default => ['spec:rcov','spec:verify','doc:yard','notes']
+#task :default => ['spec:rcov','spec:verify','doc:yard','notes']
+task :default => ['spec:rcov','notes']
 task 'gem:release' => ['java:build','spec:rcov','spec:verify','doc:yard']
 task 'clean' => ['java:clean', 'doc:clean']
 task 'clobber' => ['java:clobber']
@@ -30,6 +31,7 @@ Bones do
   depend_on 'rspec', :development => true
   depend_on 'mocha', :development => true
   depend_on 'rcov', :development => true
+  #depend_on 'yard', :development => true
 
   ruby_opts.clear
   ruby_opts << '-Ilib' << '-rubygems'
@@ -59,7 +61,7 @@ namespace :doc do
     d = 'doc'
     y = '.yardoc'  
     FileUtils.rm_rf(d) if File.exist?(d) and File.writable?(d) and File.directory?(d)
-    FileUtils.rm(y) if File.exist?(y) and File.writable?(d)
+    FileUtils.rm(y) if File.exist?(y) and File.writable?(y)
   end
 end
 

@@ -5,7 +5,7 @@ describe Aspen::NettyProxy, "with Java setup" do
   
   before(:each) do
     ::Aspen::Logging.silent=true
-    @ctx = RackUtil.build_channel_handler_context 'localhost', '80'
+    @ctx = RackUtil.build_dummy_channel_handler_context 'localhost', '80'
     @req = DefaultHttpRequest.new( HttpVersion::HTTP_1_1, HttpMethod::GET, 'http://localhost/foo.html')
   end
 
