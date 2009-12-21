@@ -32,7 +32,7 @@ public class RackUtilTest
     {
         server = "localhost";
         port = "8080";
-        ctx = RackUtil.buildChannelHandlerContext( server, port );
+        ctx = RackUtil.buildDummyChannelHandlerContext( server, port );
         r = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://"+server+":"+port+"/" );
         env = RubyHash.newHash( ruby );
     }
@@ -50,7 +50,7 @@ public class RackUtilTest
     @Test
     public void shouldUsePort80() throws Exception
     {
-        ctx = RackUtil.buildChannelHandlerContext( server, null );
+        ctx = RackUtil.buildDummyChannelHandlerContext( server, null );
         assertNotNull( ctx );
         assertNotNull( ctx.getChannel() );
         assertNotNull( ctx.getChannel().getLocalAddress() );
@@ -88,7 +88,7 @@ public class RackUtilTest
     @Test
     public void shouldParseServerPortWhenNoneGiven() throws Exception
     {
-        ctx = RackUtil.buildChannelHandlerContext( server, null );
+        ctx = RackUtil.buildDummyChannelHandlerContext( server, null );
         r = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://"+server+"/" );
         RackUtil.doUriRelated( ctx, r, env );
 

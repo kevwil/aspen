@@ -16,7 +16,7 @@ public final class RackUtil
 {
     private RackUtil(){}
 
-    public static ChannelHandlerContext buildChannelHandlerContext( final String server, final String port )
+    public static ChannelHandlerContext buildDummyChannelHandlerContext( final String server, final String port )
     {
         int p = 80;
         if( port != null && port.length() > 0 )
