@@ -8,7 +8,7 @@ end
 ensure_in_path 'lib'
 require 'aspen/version'
 
-#task :default => ['spec:rcov','spec:verify','doc:yard','notes']
+task :default => ['spec:rcov','spec:verify','doc:yard','notes']
 task :default => ['spec:rcov','notes']
 task 'gem:release' => ['java:build','spec:rcov','spec:verify','doc:yard']
 task 'clean' => ['java:clean', 'doc:clean']
@@ -31,7 +31,7 @@ Bones do
   depend_on 'rspec', :development => true
   depend_on 'mocha', :development => true
   depend_on 'rcov', :development => true
-  #depend_on 'yard', :development => true
+  depend_on 'yard', :development => true
 
   ruby_opts.clear
   ruby_opts << '-Ilib' << '-rubygems'
