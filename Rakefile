@@ -26,7 +26,7 @@ Bones do
   depend_on 'rack'
   depend_on 'g', :development => true
   depend_on 'bones', :development => true
-  depend_on 'bones-git', :development => true
+  #depend_on 'bones-git', :development => true
   depend_on 'bones-extras', :development => true
   depend_on 'rspec', :development => true
   depend_on 'mocha', :development => true
