@@ -4,7 +4,7 @@
   <target name="jarjar" description="merge jars into one">
     <mkdir dir="target/netty-classes"/>
     <unzip dest="target/netty-classes">
-      <fileset dir="target" includes="netty*.jar"/>
+      <fileset dir="target" includes="*.jar"/>
       <patternset>
         <include name="**/*.class"/>
       </patternset>
