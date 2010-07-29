@@ -20,7 +20,7 @@ Bones do
   email ['kevwil@gmail.com']
   url 'http://kevwil.github.com/aspen'
   version ENV['VERSION'] || Aspen::VERSION::STRING
-  rubyforge.name 'aspen'
+  # rubyforge.name 'aspen'
   readme_file 'README'
   ignore_file '.gitignore'
   depend_on 'rack'
@@ -36,6 +36,7 @@ Bones do
   ruby_opts.clear
   ruby_opts << '-Ilib' << '-rubygems'
   spec.opts << '--color'
+  spec.opts << '--format specdoc'
   # spec.opts << '--format html:./spec_out.html'
   #rcov.threshold 80
   rcov.opts << ['--include', 'lib']
