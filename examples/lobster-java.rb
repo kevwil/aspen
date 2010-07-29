@@ -20,8 +20,8 @@ end
   map '/test' do
     run SimpleAdapter.new
   end
-  # map '/files' do
-  #     run Rack::File.new('.')
-  #   end
+  map '/files' do
+    run ::Rack::Directory.new('~/bin')
+  end
 end
 
