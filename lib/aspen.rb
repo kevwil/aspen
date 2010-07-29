@@ -11,7 +11,8 @@ module Aspen
 
 end  # module Aspen
 
-require 'rack'
+# require 'rack'
+gem 'rack', '=1.1.0' # match the Rails required dependency
 require 'rack/adapter/loader'
 
 module Rack
