@@ -37,11 +37,11 @@ module Rack
         ENV['RAILS_ENV'] = @env
 
         require "#{@root}/config/environment"
-        require 'dispatcher'
 
-#        if @prefix
-#          ActionController::AbstractRequest.relative_url_root = @prefix
-#        end
+        if @prefix
+          ActionController::Base.relative_url_root = @prefix
+        end
+        require 'dispatcher'
       end
 
       def file_exist?(path)

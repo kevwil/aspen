@@ -1,4 +1,5 @@
 require 'rubygems'
+# gem 'rack', '=1.1.0'
 gem 'rspec'
 require 'spec'
 # require 'g'

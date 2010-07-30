@@ -23,7 +23,7 @@ Bones do
   # rubyforge.name 'aspen'
   readme_file 'README'
   ignore_file '.gitignore'
-  depend_on 'rack'
+  depend_on 'rack', '=1.1.0'
   depend_on 'g', :development => true
   depend_on 'bones', :development => true
   #depend_on 'bones-git', :development => true

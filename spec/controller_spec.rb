@@ -16,7 +16,7 @@ describe Controller, 'start' do
     
     Server.expects(:new).with('0.0.0.0', 8080, @controller.options).returns(@server)
     # @server.expects(:config)
-    Rack::Adapter::Rails.stubs(:new).returns(@adapter)
+    ::Rack::Adapter::Rails.stubs(:new).returns(@adapter)
   end
   
   it "should configure server" do
@@ -26,7 +26,7 @@ describe Controller, 'start' do
   end
   
   it "should configure Rails adapter" do
-    Rack::Adapter::Rails.expects(:new).with(@controller.options.merge(:root => nil))
+    ::Rack::Adapter::Rails.expects(:new).with(@controller.options.merge(:root => nil))
     
     @controller.start
   end
@@ -34,8 +34,8 @@ describe Controller, 'start' do
   it "should mount app under :prefix" do
     @controller.options[:prefix] = '/app'
     @controller.start
-    
-    @server.app.class.should == Rack::URLMap
+
+    @server.app.class.to_s.should == 'Rack::URLMap'
   end
 
   it "should mount Stats adapter under :stats" do
