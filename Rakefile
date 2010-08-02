@@ -46,6 +46,7 @@ Bones do
   rcov.opts << ['--exclude', 'mocha']
   rcov.opts << ['--exclude', 'rails']
   rcov.opts << ['--exclude', 'action_controller']
+  rcov.opts << ['--exclude /gems/,/Library/,/usr/,spec,lib/tasks,yaml']
   # rcov.opts << ['--no-html']
   # rcov.opts << ['--text-counts']
   # rcov.opts << ['--text-coverage-diff','FILE']
