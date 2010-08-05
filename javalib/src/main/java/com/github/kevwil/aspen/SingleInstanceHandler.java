@@ -1,7 +1,6 @@
 package com.github.kevwil.aspen;
 
 import org.jboss.netty.channel.ChannelPipelineCoverage;
-import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 
 /**
  * thread-safe Netty callback handler
