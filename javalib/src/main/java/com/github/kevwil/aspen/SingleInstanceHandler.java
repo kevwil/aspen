@@ -1,7 +1,5 @@
 package com.github.kevwil.aspen;
 
-import org.jboss.netty.channel.ChannelPipelineCoverage;
-
 /**
  * thread-safe Netty callback handler
  *
@@ -14,7 +12,6 @@ import org.jboss.netty.channel.ChannelPipelineCoverage;
  * @author kevwil
  * @since Dec. 21, 2009
  */
-@ChannelPipelineCoverage("all")
 public class SingleInstanceHandler
 extends AspenUpstreamHandlerBase
 {

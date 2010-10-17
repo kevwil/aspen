@@ -1,8 +1,6 @@
 package com.github.kevwil.aspen;
 
-import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
-import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.http.*;
 
 /**
