@@ -15,7 +15,7 @@ module Aspen
     STRING   = [MAJOR, MINOR, TINY].join('.')
 
     # Rack protocol version
-    RACK     = [1, 0].freeze
+    RACK     = [1, 1].freeze
   end
 
   # name string

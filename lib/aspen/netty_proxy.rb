@@ -61,12 +61,19 @@ module Aspen
                    "rack.url_scheme" => "http",
                  } )
 
+      # g "about to call #{@app.class} class"
       # g env.inspect if Logging.debug?
-      status, headers, body = @app.call(env)
+      result = @app.call(env)
+      # g result.inspect
+      status, headers, body = result
+      #status, headers, body = @app.call(env)
       # g body.inspect if (Logging.debug? and body)
       # g status.inspect if (Logging.debug? and status)
-      raise RackParseError, "status is a #{status.class} class, not an integer" unless status.is_a?(Integer)
-      raise RackParseError, "body doesn't respond to :each and return strings" unless body.respond_to?(:each)
+      # raise RackParseError, "status is a #{status.class} class, not an integer" unless status.is_a?(Integer)
+      status = 200 unless status.is_a?(Integer)
+      unless body.nil?
+        raise RackParseError, "body doesn't respond to :each and return strings because it is a(n) #{body.class}" unless body.respond_to?(:each)
+      end
 
       resp = DefaultHttpResponse.new( HttpVersion::HTTP_1_1, HttpResponseStatus.value_of( status ) )
       headers.each do |k,vs|
@@ -75,7 +82,7 @@ module Aspen
       out_buf = ChannelBuffers.dynamic_buffer
       body.each do |line|
         out_buf.write_bytes ChannelBuffers.copied_buffer( line, "UTF-8" )
-      end
+      end if body
       resp.content = out_buf
       # g resp.inspect if Logging.debug?
       resp

@@ -24,7 +24,15 @@ module Rack
 
         raise RuntimeError, "only Rack-based Rails apps are supported" unless rack_based?
 
-        @rails_app = ActionController::Dispatcher.new
+        @rails_app = ::Rack::Builder.new {
+          # use ::Rails::Rack::LogTailer unless options[:detach]
+          use ::Rails::Rack::Debugger if options[:debugger]
+
+          map "/" do
+            use ::Rails::Rack::Static
+            run ::ActionController::Dispatcher.new
+          end
+        }.to_app
 
         @file_app = Rack::File.new(::File.join(RAILS_ROOT, "public"))
       end

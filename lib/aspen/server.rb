@@ -66,7 +66,7 @@ module Aspen
 
     def app=(newapp)
       @app = newapp
-      @proxy = NettyProxy.new(newapp)
+      @proxy = NettyProxy.new(@app)
       @backend = AspenServer.new(@host,@port,@proxy)
     end
     
