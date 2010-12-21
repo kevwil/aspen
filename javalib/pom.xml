@@ -80,12 +80,12 @@
     <dependency>
       <groupId>org.jruby</groupId>
       <artifactId>jruby</artifactId>
-      <version>1.5.3</version>
+      <version>1.5.6</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.netty</groupId>
       <artifactId>netty</artifactId>
-      <version>3.2.1.Final</version>
+      <version>3.2.3.Final</version>
     </dependency>
   </dependencies>
 
