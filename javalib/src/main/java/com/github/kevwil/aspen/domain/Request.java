@@ -9,6 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * @author kevwil
@@ -21,10 +23,12 @@ public class Request
     private HttpRequest _request;
     private HttpMethod _realMethod;
     private Map<String,String> _qsParams;
+    private List<Entry<String,String>> _originalHeaders;
 
     public Request( HttpRequest request )
     {
         _request = request;
+        _originalHeaders = request.getHeaders();
         _qsParams = parseQueryStringParams( request );
         _realMethod = parseRealMethod( request );
     }
@@ -89,6 +93,16 @@ public class Request
         return _request.isChunked();
     }
 
+    public Map<String,String> getQueryStringParams()
+    {
+        return _qsParams;
+    }
+
+    public List<Entry<String,String>> getOriginalHeaders()
+    {
+        return _originalHeaders;
+    }
+
     private Map<String, String> parseQueryStringParams( HttpRequest request )
     {
         Map<String,String> params = new HashMap<String,String>();
@@ -102,7 +116,14 @@ public class Request
             {
                 String[] kv = pair.split( "=" );
                 String value = ( kv.length > 1 ? kv[1] : "" );
-                request.addHeader( kv[0], value );
+                if( kv[0].equals( METHOD_OVERRIDE_PARAMETER ) )
+                {
+                    request.addHeader( METHOD_OVERRIDE_HEADER, value );
+                }
+                else
+                {
+                    request.addHeader( kv[0], value );
+                }
                 params.put( kv[0], value );
             }
         }
