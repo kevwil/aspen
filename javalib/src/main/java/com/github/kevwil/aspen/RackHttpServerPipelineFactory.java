@@ -2,7 +2,6 @@ package com.github.kevwil.aspen;
 
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.http.*;
-import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 
 /**
  * Creates the pipeline of Netty middleware and RackServerHandler
@@ -12,11 +11,15 @@ import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 public class RackHttpServerPipelineFactory
 implements ChannelPipelineFactory
 {
-    private RackProxy _rack;
+    private final RackProxy _rack;
+    private final boolean _compressionEnabled;
+    private final int _maxChunkSize;
 
     public RackHttpServerPipelineFactory( final RackProxy rack )
     {
         _rack = rack;
+        _compressionEnabled = false;
+        _maxChunkSize = 8*1024;
     }
 
     // ... you can write a 'ChunkedInput' so that the 'ChunkedWriteHandler'
@@ -28,8 +31,14 @@ implements ChannelPipelineFactory
     {
         ChannelPipeline pipeline = Channels.pipeline();
         pipeline.addLast( "decoder", new HttpRequestDecoder() );
+        pipeline.addLast( "aggregator", new HttpChunkAggregator( _maxChunkSize ) );
         pipeline.addLast( "encoder", new HttpResponseEncoder() );
-        pipeline.addLast( "chunkedWriter", new ChunkedWriteHandler() );
+//        pipeline.addLast( "chunkedWriter", new ChunkedWriteHandler() );
+        if( _compressionEnabled )
+        {
+            pipeline.addLast( "deflator", new HttpContentCompressor() );
+            pipeline.addLast( "inflator", new HttpContentDecompressor() );
+        }
         pipeline.addLast( "handler", new NettyServerHandler( _rack ) );
         return pipeline;
     }
