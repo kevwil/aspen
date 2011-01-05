@@ -30,7 +30,7 @@ public class RackHttpServerPipelineFactoryTest
         assertNotNull( pipeline );
         ChannelHandler handler = pipeline.getLast();
         assertNotNull( handler );
-        assertTrue( handler instanceof NettyServerHandler );
+        assertTrue( handler instanceof RackChannelUpstreamHandler );
         verify(rack);
     }
 }

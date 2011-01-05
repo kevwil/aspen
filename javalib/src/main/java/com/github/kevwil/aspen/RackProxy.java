@@ -1,5 +1,7 @@
 package com.github.kevwil.aspen;
 
+import com.github.kevwil.aspen.domain.Request;
+import com.github.kevwil.aspen.domain.Response;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
@@ -17,9 +19,8 @@ public interface RackProxy
      * and write the fetched chunk downstream:
      * Channel ch = ...;
      * ch.write(new ChunkedFile(new File("video.mkv"));
-     * @param cxt the context for the handler
-     * @param r the HttpRequest
-     * @return the HttpResponse, or ChunkedInput
+     * @param request the Request
+     * @return the Response
      */
-    Object process( ChannelHandlerContext cxt, HttpRequest r );
+    Response process( Request request ); // TODO need to handle chunks !!
 }

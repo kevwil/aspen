@@ -47,6 +47,11 @@ public class AspenServer
      */
     public void start()
     {
+        if( _running )
+        {
+            System.err.println( "Unable to start - already running" );
+            return;
+        }
         try
         {
             Channel channel = _bootstrap.bind( new InetSocketAddress( _host, _port ) );

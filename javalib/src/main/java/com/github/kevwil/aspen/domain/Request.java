@@ -25,12 +25,15 @@ public class Request
     private Map<String,String> _qsParams;
     private List<Entry<String,String>> _originalHeaders;
 
-    public Request( HttpRequest request )
+    public Request( final HttpRequest request )
     {
-        _request = request;
-        _originalHeaders = request.getHeaders();
-        _qsParams = parseQueryStringParams( request );
-        _realMethod = parseRealMethod( request );
+        if( request != null )
+        {
+            _request = request;
+            _originalHeaders = request.getHeaders();
+            _qsParams = parseQueryStringParams( request );
+            _realMethod = parseRealMethod( request );
+        }
     }
 
     public HttpMethod getMethod()
