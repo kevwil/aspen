@@ -1,7 +1,7 @@
 package com.github.kevwil.aspen.rack;
 
 import org.jruby.RubyArray;
-import org.jruby.RubyObject;
+import org.jruby.RubyHash;
 
 /**
  * @author kevwil
@@ -9,5 +9,5 @@ import org.jruby.RubyObject;
  */
 public interface RackMiddleware
 {
-    public RubyArray call( RubyObject env );
+    public RubyArray call( RubyHash env );
 }
