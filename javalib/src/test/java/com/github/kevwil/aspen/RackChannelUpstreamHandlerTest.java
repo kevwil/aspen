@@ -28,7 +28,8 @@ public class RackChannelUpstreamHandlerTest
         HttpRequest hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         MessageEvent e = new UpstreamMessageEvent(
                 channel, hr, new InetSocketAddress( 54321 ) );
-        Request request = createMockBuilder( Request.class ).withConstructor( hr ).createMock();
+        ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
+        Request request = createMockBuilder( Request.class ).withConstructor( ctx, hr ).createMock();
         Response response = new Response( request );
 
         expect( rack.process( anyObject( Request.class ) ) ).andReturn( response );

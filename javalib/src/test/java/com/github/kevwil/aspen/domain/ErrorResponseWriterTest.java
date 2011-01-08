@@ -36,16 +36,16 @@ public class ErrorResponseWriterTest
         _writer = new MockErrorResponseWriter();
         _writer.setResponse( _httpResponse );
         _httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
-        _request = new Request( _httpRequest );
-        _response = new Response( _request );
         _exception = new ServiceException( "Oops!" );
-        _response.setException( _exception );
         _rack = createMock( RackProxy.class );
         ChannelHandler handler = new RackChannelUpstreamHandler( _rack );
         ChannelPipeline pipeline = Channels.pipeline();
         pipeline.addLast( "handler", handler );
         new DefaultLocalServerChannelFactory().newChannel( pipeline );
         _context = pipeline.getContext( handler );
+        _request = new Request( _context, _httpRequest );
+        _response = new Response( _request );
+        _response.setException( _exception );
     }
 
     @After
