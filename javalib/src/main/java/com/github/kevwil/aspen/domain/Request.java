@@ -1,12 +1,17 @@
 package com.github.kevwil.aspen.domain;
 
+import com.github.kevwil.aspen.RackUtil;
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.jruby.Ruby;
+import org.jruby.RubyHash;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.net.*;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -20,17 +25,54 @@ public class Request
 {
     private static final String METHOD_OVERRIDE_PARAMETER = "_method";
     private static final String METHOD_OVERRIDE_HEADER = "X-Http-Method-Override";
+    private ChannelHandlerContext _context;
     private HttpRequest _request;
     private HttpMethod _realMethod;
+    private URL _url;
     private Map<String,String> _qsParams;
     private List<Entry<String,String>> _originalHeaders;
+    private RubyHash _rubyHeaders;
 
-    public Request( HttpRequest request )
+    public Request( final ChannelHandlerContext context, final HttpRequest request )
     {
-        _request = request;
-        _originalHeaders = request.getHeaders();
-        _qsParams = parseQueryStringParams( request );
-        _realMethod = parseRealMethod( request );
+        if( request != null )
+        {
+            _context = context;
+            _request = request;
+            _originalHeaders = request.getHeaders();
+            _qsParams = parseQueryStringParams( request );
+            _realMethod = parseRealMethod( request );
+            _rubyHeaders = RubyHash.newHash( Ruby.getGlobalRuntime() );
+            RackUtil.parseHeaders( _context, _request, _rubyHeaders );
+            try
+            {
+                _url = new URL( _request.getUri() );
+            }
+            catch( MalformedURLException e )
+            {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+    }
+
+    public URL getUrl()
+    {
+        return _url;
+    }
+
+    public RubyHash getRubyHeaders()
+    {
+        return _rubyHeaders;
+    }
+
+    public HttpRequest getHttpRequest()
+    {
+        return _request;
+    }
+
+    public ChannelHandlerContext getContext()
+    {
+        return _context;
     }
 
     public HttpMethod getMethod()
@@ -46,6 +88,11 @@ public class Request
     public ChannelBuffer getBody()
     {
         return _request.getContent();
+    }
+
+    public String getBodyString()
+    {
+        return getBody().toString( Charset.forName( "UTF-8" ) );
     }
 
     public void setBody( ChannelBuffer body )
