@@ -2,7 +2,7 @@ package com.github.kevwil.aspen;
 
 import com.github.kevwil.aspen.domain.Request;
 import com.github.kevwil.aspen.domain.Response;
-import com.github.kevwil.aspen.rack.RackMiddleware;
+import com.github.kevwil.aspen.exception.InvalidAppException;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -25,9 +25,9 @@ public class JRubyRackProxy
 implements RackProxy
 {
     private static final Ruby RUBY = Ruby.getGlobalRuntime();
-    private RackMiddleware _app;
+    private IRubyObject _app;
 
-    public JRubyRackProxy( RackMiddleware app )
+    public JRubyRackProxy( IRubyObject app )
     {
         _app = app;
     }
@@ -35,6 +35,10 @@ implements RackProxy
     @Override
     public Response process( final Request request )
     {
+        if( ! _app.respondsTo( "call" ) )
+        {
+            throw new InvalidAppException();
+        }
         RubyHash env = RubyHash.newHash( RUBY );
         HttpRequest hr = request.getHttpRequest();
         ChannelHandlerContext ctx = request.getContext();
@@ -45,7 +49,11 @@ implements RackProxy
         RubyIO errors = new RubyIO( RUBY, STDIO.ERR );
         updateEnv( env, input, errors, request );
 
-        RubyArray result = _app.call( env );
+        IRubyObject[] args = { env };
+        RubyArray result = (RubyArray)_app.callMethod( RUBY.getCurrentContext(),
+                                                       "call",
+                                                       args,
+                                                       Block.NULL_BLOCK );
 
         return createResponse( request, result );
     }

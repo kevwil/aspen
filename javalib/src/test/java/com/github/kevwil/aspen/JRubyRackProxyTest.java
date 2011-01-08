@@ -2,11 +2,13 @@ package com.github.kevwil.aspen;
 
 import com.github.kevwil.aspen.domain.Request;
 import com.github.kevwil.aspen.domain.Response;
-import com.github.kevwil.aspen.rack.RackMiddleware;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
+import org.jruby.runtime.Block;
+import org.jruby.runtime.ThreadContext;
+import org.jruby.runtime.builtin.IRubyObject;
 import org.jruby.util.io.STDIO;
 import org.junit.*;
 
@@ -25,13 +27,13 @@ public class JRubyRackProxyTest
 {
     private static final Ruby _runtime = Ruby.getGlobalRuntime();
     private JRubyRackProxy _rack;
-    private RackMiddleware _app;
+    private IRubyObject _app;
     private Request r;
 
     @Before
     public void startUp()
     {
-        _app = createMock( RackMiddleware.class );
+        _app = createMock( IRubyObject.class );
         _rack = new JRubyRackProxy( _app );
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
         HttpRequest hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
@@ -140,7 +142,11 @@ public class JRubyRackProxyTest
         array.add( headers );
         array.add( "Hello World!" );
 
-        expect( _app.call( anyObject( RubyHash.class ) ) ).andReturn( array );
+        expect( _app.respondsTo( eq( "call" ) ) ).andReturn( true );
+        expect( _app.callMethod( anyObject( ThreadContext.class ),
+                                 eq( "call" ),
+                                 anyObject( IRubyObject[].class ),
+                                 eq( Block.NULL_BLOCK ) ) ).andReturn( array );
         replay( _app );
 
         Response response = _rack.process( r );
