@@ -8,6 +8,7 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jruby.*;
+import org.jruby.javasupport.JavaClass;
 import org.jruby.runtime.*;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.jruby.util.io.STDIO;
@@ -67,14 +68,14 @@ implements RackProxy
         {
             IRubyObject value = headers.op_aref( RUBY.getCurrentContext(), key );
             r.addHeader( key.toString(), value.toString() );
-//            if( JavaClass.assignable( value.getClass(), headers.getClass() ) )
-//            {
-//                RubyHash valueHash = (RubyHash)value;
-//                for( IRubyObject key1 : valueHash.keys().toJavaArray() )
-//                {
-//                    r.addHeader( key.toString(), valueHash.op_aref( RUBY.getCurrentContext(), key1 ).toString() );
-//                }
-//            }
+            if( JavaClass.assignable( value.getClass(), headers.getClass() ) )
+            {
+                RubyHash valueHash = (RubyHash)value;
+                for( IRubyObject key1 : valueHash.keys().toJavaArray() )
+                {
+                    r.addHeader( key.toString(), valueHash.op_aref( RUBY.getCurrentContext(), key1 ).toString() );
+                }
+            }
         }
         IRubyObject body = result.entry( 2 );
 

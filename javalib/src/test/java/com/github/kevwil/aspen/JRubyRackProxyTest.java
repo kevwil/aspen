@@ -28,6 +28,8 @@ public class JRubyRackProxyTest
     private static final Ruby _runtime = Ruby.getGlobalRuntime();
     private JRubyRackProxy _rack;
     private IRubyObject _app;
+    private ChannelHandlerContext ctx;
+    private HttpRequest hr;
     private Request r;
 
     @Before
@@ -35,8 +37,8 @@ public class JRubyRackProxyTest
     {
         _app = createMock( IRubyObject.class );
         _rack = new JRubyRackProxy( _app );
-        ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
-        HttpRequest hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
+        ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
+        hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         r = new Request( ctx, hr );
     }
 
@@ -119,6 +121,10 @@ public class JRubyRackProxyTest
         array.add( 200 );
         RubyHash headers = RubyHash.newHash( _runtime );
         headers.put( "X-Content", "foo" );
+        RubyHash cookies = RubyHash.newHash( _runtime );
+        cookies.put( "foo_content", "foo" );
+        cookies.put( "bar_content", "bar" );
+        headers.put( "Cookie", cookies );
         array.add( headers );
         array.add( "Hello World!" );
 
