@@ -13,16 +13,15 @@ import static org.junit.Assert.*;
  */
 public class ResponseTest
 {
-    private Request req;
-    private Response resp;
 
+    @SuppressWarnings( { "ThrowableResultOfMethodCallIgnored" } )
     @Test
     public void shouldBuildDefaultParams()
     {
-        HttpRequest hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
+        HttpRequest hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
-        req = new Request( ctx, hr );
-        resp = new Response( req );
+        Request req = new Request( ctx, hr );
+        Response resp = new Response( req );
         assertNotNull( resp );
         assertNull( resp.getBody() );
         assertNull( resp.getException() );

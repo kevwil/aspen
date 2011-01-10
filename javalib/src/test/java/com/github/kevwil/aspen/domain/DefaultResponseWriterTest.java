@@ -33,7 +33,7 @@ public class DefaultResponseWriterTest
         _httpResponse = createMock( HttpResponse.class );
         _writer = new MockDefaultResponseWriter();
         _writer.setResponse( _httpResponse );
-        _httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
+        _httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         _rack = createMock( RackProxy.class );
         ChannelHandler handler = new RackChannelUpstreamHandler( _rack );
         ChannelPipeline pipeline = Channels.pipeline();

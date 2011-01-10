@@ -29,13 +29,13 @@ public class RequestTest
     public void shouldBuildBasicRequest()
             throws Exception
     {
-        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
+        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         req = new Request( ctx, httpRequest );
 
         assertEquals( HttpMethod.GET, req.getMethod() );
         assertEquals( HttpMethod.GET, req.getRealMethod() );
         assertEquals( 0, req.getBody().toByteBuffer().capacity() );
-        assertEquals( "/", req.getUri() );
+        assertEquals( "http://localhost/", req.getUri() );
     }
 
     @Test
@@ -45,7 +45,7 @@ public class RequestTest
         encoder.addParam( "foo", "bar" );
         String path = encoder.toString();
 
-        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, path );
+        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/"+path );
         httpRequest.addHeader( "X-Http-Method-Override", "PUT" );
         req = new Request( ctx, httpRequest );
 

@@ -27,7 +27,7 @@ extends SimpleChannelUpstreamHandler
     public void messageReceived( final ChannelHandlerContext ctx, final MessageEvent e )
     throws Exception
     {
-        Request request = createRequest( (HttpRequest)e.getMessage() );
+        Request request = createRequest( ctx, (HttpRequest)e.getMessage() );
         Response response = createResponse( request );
         try
         {
@@ -44,10 +44,12 @@ extends SimpleChannelUpstreamHandler
         }
         catch( Exception ex )
         {
+            assert response != null;
             response.setException( ex );
         }
         finally
         {
+            assert response != null;
             if( response.hasException() )
             {
                 writeError( ctx, request, response );
@@ -59,9 +61,9 @@ extends SimpleChannelUpstreamHandler
         }
     }
 
-    private Request createRequest( final HttpRequest message )
+    private Request createRequest( final ChannelHandlerContext ctx, final HttpRequest message )
     {
-        return new Request( message );
+        return new Request( ctx, message );
     }
 
     private Response createResponse( final Request request )
@@ -75,7 +77,7 @@ extends SimpleChannelUpstreamHandler
     {
         Throwable cause = e.getCause();
 
-        Request request = new Request( null );
+        Request request = new Request( ctx, null );
         Response response = new Response( request );
         response.setException( cause );
         

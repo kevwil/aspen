@@ -3,6 +3,7 @@ package com.github.kevwil.aspen;
 import com.github.kevwil.aspen.domain.Request;
 import com.github.kevwil.aspen.domain.Response;
 import com.github.kevwil.aspen.exception.InvalidAppException;
+import com.github.kevwil.aspen.exception.ServiceException;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -26,9 +27,9 @@ public class JRubyRackProxy
 implements RackProxy
 {
     private static final Ruby RUBY = Ruby.getGlobalRuntime();
-    private IRubyObject _app;
+    private final IRubyObject _app;
 
-    public JRubyRackProxy( IRubyObject app )
+    public JRubyRackProxy( final IRubyObject app )
     {
         _app = app;
     }
@@ -85,8 +86,10 @@ implements RackProxy
 
     void writeBodyToResponse( final IRubyObject body, final Response response )
     {
-        // TODO: don't use assert to test this
-        assert body.respondsTo( "each" );
+        if( !body.respondsTo( "each" ) )
+        {
+            throw new ServiceException( "response body does not respond to :each" );
+        }
         final ChannelBuffer outBuffer = ChannelBuffers.dynamicBuffer();
         BlockCallback callback = new BlockCallback(){
             public IRubyObject call( ThreadContext context, IRubyObject[] args, Block block ){
@@ -101,7 +104,7 @@ implements RackProxy
 
     void updateEnv( final RubyHash env, final RubyIO input, final RubyIO errors, final Request request )
     {
-        env.put( "rack.version", "foo" );
+        env.put( "rack.version", Version.RACK );
         env.put( "rack.input", input );
         env.put( "rack.errors", errors );
         env.put( "rack.multithread", true );

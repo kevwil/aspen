@@ -89,7 +89,7 @@ public class JRubyRackProxyTest
 
         _rack.updateEnv( env, input, errors, r );
 
-        assertEquals( "foo", env.get( "rack.version" ) );
+        assertEquals( Version.RACK, env.get( "rack.version" ) );
         assertEquals( input, env.get( "rack.input" ) );
         assertEquals( errors, env.get( "rack.errors" ) );
         assertEquals( true, env.get( "rack.multithread" ) );
