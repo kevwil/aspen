@@ -1,7 +1,9 @@
 package com.github.kevwil.aspen.domain;
 
 import com.github.kevwil.aspen.RackUtil;
+import com.github.kevwil.aspen.exception.ServiceException;
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpMethod;
@@ -50,8 +52,36 @@ public class Request
             }
             catch( MalformedURLException e )
             {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                InetSocketAddress local = (InetSocketAddress) context.getChannel().getLocalAddress();
+                StringBuffer sb = new StringBuffer();
+                sb.append( getProtocolFromLocalAddress( local ) )
+                        .append( local.getHostName() )
+                        .append( getPortFromLocalAddress( local ) )
+                        .append( _request.getUri() );
+                try
+                {
+                    _url = new URL( sb.toString() );
+                }
+                catch( MalformedURLException mue )
+                {
+                    throw new ServiceException( mue );
+                }
             }
+        }
+    }
+
+    private static String getProtocolFromLocalAddress( final InetSocketAddress local )
+    {
+        return ( local.getPort() == 443 ? "https://" : "http://" );
+    }
+
+    private static String getPortFromLocalAddress( final InetSocketAddress local )
+    {
+        switch( local.getPort() )
+        {
+            case 80: return "";
+            case 443: return "";
+            default: return ":" + local.getPort();
         }
     }
 
