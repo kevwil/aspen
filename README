@@ -6,7 +6,7 @@ aspen
 
 Aspen is a web server engine for JRuby. The design is very similar
 to Thin (http://code.macournoyer.com/thin/), except
-using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets.
+using Netty (http://jboss.org/netty) for high-speed concurrent sockets.
 
 == FEATURES/PROBLEMS:
 
@@ -16,13 +16,13 @@ using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets.
 
 == SYNOPSIS:
 
-  FIXME (code sample of usage)
+  Sample code can be found in the examples directory.
 
 == REQUIREMENTS:
 
 * Java >= 1.5
-* JRuby >= 1.4
-* Rack
+* JRuby >= 1.5
+* Rack >= 1.1
 
 == INSTALL:
 
@@ -37,7 +37,7 @@ using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets.
 
     # You must have JRuby set up, with the dependent gems installed.
     # see the Rakefile for the dev-time dependencies
-    $ jgem install little-plugger loquacious rubyforge bones bones-git bones-extras rspec mocha rcov
+    $ jgem install little-plugger loquacious rubyforge bones bones-git bones-extras rspec mocha rcov yard
 
     # You must have Ant (http://ant.apache.org) and Maven (http://maven.apache.org) set up.
     # *note* the Rakefile will call Maven in "offline mode".
@@ -55,7 +55,7 @@ using Netty (http://www.jboss.org/netty) for high-speed concurrent sockets.
 
 (The MIT License)
 
-Copyright (c) 2009 Kevin Williams
+Copyright (c) 2009-2011 Kevin Williams
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

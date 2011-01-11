@@ -8,8 +8,9 @@ end
 ensure_in_path 'lib'
 require 'aspen/version'
 
-task :default => ['spec:rcov','spec:verify','doc:yard','notes']
-task :default => ['spec:rcov','notes']
+task :default => ['spec:rcov', 'doc:yard', 'notes']
+# task :default => ['spec:rcov','spec:verify','doc:yard','notes']
+# task :default => ['spec:rcov','notes']
 task 'gem:release' => ['java:build','spec:rcov','spec:verify','doc:yard']
 task 'clean' => ['java:clean', 'doc:clean']
 task 'clobber' => ['java:clobber']
@@ -23,7 +24,7 @@ Bones do
   # rubyforge.name 'aspen'
   readme_file 'README'
   ignore_file '.gitignore'
-  depend_on 'rack', '=1.1.0'
+  depend_on 'rack', '>=1.1.0'
   depend_on 'g', :development => true
   depend_on 'bones', :development => true
   #depend_on 'bones-git', :development => true
@@ -38,7 +39,7 @@ Bones do
   spec.opts << '--color'
   spec.opts << '--format specdoc'
   # spec.opts << '--format html:./spec_out.html'
-  #rcov.threshold 80
+  rcov.threshold 35
   rcov.opts << ['--include', 'lib']
   rcov.opts << ['--exclude', 'spec']
   rcov.opts << ['--exclude', 'examples']
