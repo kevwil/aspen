@@ -1,5 +1,5 @@
 # Or with: aspen start -R config.ru
-# then browse to http://localhost:1169
+# then browse to http://localhost:3000
 # 
 # Check Rack::Builder doc for more details on this file format:
 #  http://rack.rubyforge.org/doc/classes/Rack/Builder.html
@@ -21,4 +21,4 @@ run app
 
 # Run with rackup:
 # 1) change "run app" to "Aspen::Server.start app"
-# 2) browse to http://localhost:1169
+# 2) browse to http://localhost:3000
