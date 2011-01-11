@@ -1,5 +1,9 @@
 package com.github.kevwil.aspen;
 
+import org.jruby.Ruby;
+import org.jruby.RubyArray;
+import org.jruby.runtime.builtin.IRubyObject;
+
 import java.util.*;
 
 /**
@@ -11,7 +15,15 @@ public class Version
     public static final int MAJOR = 1;
     public static final int MINOR = 0;
     public static final int TINY = 0;
-    public static final int[] RACK = {1,1};
+    public static final RubyArray RACK = createVersionArray();
+
+    private static RubyArray createVersionArray()
+    {
+        RubyArray array = RubyArray.newArray( Ruby.getGlobalRuntime() );
+        array.add( 1 );
+        array.add( 1 );
+        return array;
+    }
 
     @Override
     public String toString()
