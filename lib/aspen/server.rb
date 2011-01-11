@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/logging.rb'
 require 'java'
 require File.dirname(__FILE__) + '/aspenj.jar'
 import com.github.kevwil.aspen.AspenServer
+import com.github.kevwil.aspen.JRubyRackProxy
 
 module Aspen
   
@@ -24,7 +25,7 @@ module Aspen
     
     # default values
     DEFAULT_HOST = '0.0.0.0'
-    DEFAULT_PORT = 1169
+    DEFAULT_PORT = 3000
     
     # Application (Rack adapter) called with the request that produces the response.
     attr_accessor :app
@@ -59,14 +60,14 @@ module Aspen
       # If in debug mode, wrap in logger adapter
       @app = Rack::CommonLogger.new(@app) if Logging.debug?
 
-      @proxy = NettyProxy.new(@app)
+      @proxy = JRubyRackProxy.new(@app)
       
       @backend = AspenServer.new(@host,@port,@proxy)
     end
 
     def app=(newapp)
       @app = newapp
-      @proxy = NettyProxy.new(@app)
+      @proxy = JRubyRackProxy.new(@app)
       @backend = AspenServer.new(@host,@port,@proxy)
     end
     
