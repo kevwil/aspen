@@ -7,12 +7,12 @@ class Main < Sinatra::Base
 end
 
 class Post < Sinatra::Base
-  get '' do
+  get '/' do
     'Hello from Post.'
   end
   
   get '/list' do
-    "<p>item 1</p>\n<p>item 2</p><p>...</p>"
+    "<p>item 1</p>\n<p>item 2</p>\n<p>...</p>"
   end
   
 end
