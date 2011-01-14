@@ -53,7 +53,7 @@ Bones do
   # rcov.opts << ['--text-coverage-diff','FILE']
 
   use_gmail
-  enable_sudo
+  # enable_sudo
 end
 
 require 'fileutils'
