@@ -5,6 +5,8 @@ import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.*;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 
 /**
@@ -20,9 +22,16 @@ extends HttpResponseWriterBase
     {
         HttpResponse httpResponse = createHttpResponse( response );
 		httpResponse.setHeader( HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8" );
-		StringBuilder builder = new StringBuilder( "Failure: " );
-		builder.append( response.getException().getLocalizedMessage() );
-		builder.append( "\r\n" );
+        StringWriter builder =new StringWriter();
+        response.getException().printStackTrace( new PrintWriter( builder ) );
+//		StringBuilder builder = new StringBuilder( "Failure: " );
+//		builder.append( response.getException().getLocalizedMessage() );
+//		builder.append( "\r\n" );
+//        for( StackTraceElement ste : response.getException().getStackTrace() )
+//        {
+//            builder.append( ste.toString() );
+//		    builder.append( "\r\n" );
+//        }
 		httpResponse.setContent(
                 ChannelBuffers.copiedBuffer( builder.toString(),
                                              Charset.forName( "UTF-8" ) ) );

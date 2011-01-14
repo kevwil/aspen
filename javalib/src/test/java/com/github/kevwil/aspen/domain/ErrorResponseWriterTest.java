@@ -3,6 +3,7 @@ package com.github.kevwil.aspen.domain;
 import com.github.kevwil.aspen.RackChannelUpstreamHandler;
 import com.github.kevwil.aspen.RackProxy;
 import com.github.kevwil.aspen.exception.ServiceException;
+import org.easymock.EasyMock;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
@@ -90,12 +91,13 @@ public class ErrorResponseWriterTest
 
     private void expectSetContent( HttpResponse httpResponse, Throwable exception )
     {
-        StringBuilder builder = new StringBuilder( "Failure: " );
-		builder.append( exception.getLocalizedMessage() );
-		builder.append( "\r\n" );
-		httpResponse.setContent(
-                ChannelBuffers.copiedBuffer( builder.toString(),
-                                             Charset.forName( "UTF-8" ) ) );
+//        StringBuilder builder = new StringBuilder( "Failure: " );
+//		builder.append( exception.getLocalizedMessage() );
+//		builder.append( "\r\n" );
+//		httpResponse.setContent(
+//                ChannelBuffers.copiedBuffer( builder.toString(),
+//                                             Charset.forName( "UTF-8" ) ) );
+        httpResponse.setContent( anyObject( ChannelBuffer.class ) );
     }
 
     private void expectNonKeepAlive( HttpResponse httpResponse )
