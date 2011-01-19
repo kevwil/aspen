@@ -1,6 +1,10 @@
 package com.github.kevwil.aspen.domain;
 
+import com.github.kevwil.aspen.RubyUtil;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import org.jruby.RubyHash;
+import org.jruby.javasupport.JavaClass;
+import org.jruby.runtime.builtin.IRubyObject;
 
 import java.util.*;
 
@@ -120,5 +124,26 @@ public class Response
     public void setException( Throwable e )
     {
         _exception = e;
+    }
+
+    public void addHeaders( final RubyHash headers )
+    {
+        for( IRubyObject key : headers.keys().toJavaArray() )
+        {
+            IRubyObject value = RubyUtil.hashGet( headers, key );
+            // if hash value
+            if( JavaClass.assignable( value.getClass(), headers.getClass() ) )
+            {
+                RubyHash valueHash = (RubyHash)value;
+                for( IRubyObject key1 : valueHash.keys().toJavaArray() )
+                {
+                    addHeader( key.toString(), RubyUtil.hashGet( valueHash, key1 ).toString() );
+                }
+            }
+            else
+            {
+                addHeader( key.toString(), value.toString() );
+            }
+        }
     }
 }
