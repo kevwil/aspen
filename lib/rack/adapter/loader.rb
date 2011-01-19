@@ -8,6 +8,7 @@ module Rack
   # NOTE: If a framework has a file that is not unique, make sure to place
   # it at the end.
   ADAPTERS = [
+    [:rack,    'config.ru'],
     [:rails,   'config/environment.rb'],
     [:ramaze,  'start.rb'],
     [:halcyon, 'runner.ru'],
@@ -28,12 +29,21 @@ module Rack
       end
       raise AdapterNotFound, "No adapter found for #{dir}"
     end
-    
+
+    # Load a Rack application from a Rack config file (.ru).
+    def self.load(config)
+      rackup_code = ::File.read(config)
+      eval("Rack::Builder.new {( #{rackup_code}\n )}.to_app", TOPLEVEL_BINDING, config)
+    end
+
     # Loads an adapter identified by +name+ using +options+ hash.
     def self.for(name, options={})
       case name.to_sym
+      when :rack
+        return load(::File.join(options[:chdir], "config.ru"))
+
       when :rails
-        return Rack::Adapter::Rails.new(options.merge(:root => options[:chdir]))
+        return Rails.new(options.merge(:root => options[:chdir]))
       
       when :ramaze
         require "#{options[:chdir]}/start"

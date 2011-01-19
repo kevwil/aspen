@@ -24,15 +24,16 @@ module Rack
 
         raise RuntimeError, "only Rack-based Rails apps are supported" unless rack_based?
 
-        @rails_app = ::Rack::Builder.new {
-          # use ::Rails::Rack::LogTailer unless options[:detach]
-          use ::Rails::Rack::Debugger if options[:debugger]
-
-          map "/" do
-            use ::Rails::Rack::Static
-            run ::ActionController::Dispatcher.new
-          end
-        }.to_app
+#        @rails_app = ::Rack::Builder.new {
+#          # use ::Rails::Rack::LogTailer unless options[:detach]
+#          use ::Rails::Rack::Debugger if options[:debugger]
+#
+#          map "/" do
+#            use ::Rails::Rack::Static
+#            run ::ActionController::Dispatcher.new
+#          end
+#        }.to_app
+        @rails_app = ActionController::Dispatcher.new
 
         @file_app = Rack::File.new(::File.join(RAILS_ROOT, "public"))
       end
@@ -45,11 +46,15 @@ module Rack
         ENV['RAILS_ENV'] = @env
 
         require "#{@root}/config/environment"
+        require 'dispatcher'
 
         if @prefix
-          ActionController::Base.relative_url_root = @prefix
+          if ActionController::Base.respond_to?(:relative_url_root=)
+            ActionController::Base.relative_url_root = @prefix
+          else
+            ActionController::AbstractRequest.relative_url_root = @prefix
+          end
         end
-        require 'dispatcher'
       end
 
       def file_exist?(path)
