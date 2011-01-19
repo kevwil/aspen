@@ -15,3 +15,4 @@ vendor
 .yardoc
 .generators
 .rvmrc
+spec/rails_app/db/*.sqlite3
