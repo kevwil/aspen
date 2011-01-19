@@ -15,7 +15,10 @@ public class Version
     public static final int MAJOR = 1;
     public static final int MINOR = 0;
     public static final int TINY = 0;
+    public static final String ASPEN = versionString();
     public static final RubyArray RACK = createVersionArray();
+
+    private Version(){}
 
     private static RubyArray createVersionArray()
     {
@@ -25,8 +28,7 @@ public class Version
         return array;
     }
 
-    @Override
-    public String toString()
+    private static String versionString()
     {
         return join( Arrays.asList( Integer.toString( MAJOR ),
                                     Integer.toString( MINOR ),
@@ -34,7 +36,7 @@ public class Version
                      "." );
     }
 
-    private String join( Collection<String> s, String delimiter )
+    private static String join( Collection<String> s, String delimiter )
     {
         Iterator<String> iterator = s.iterator();
         StringBuffer buffer = new StringBuffer( iterator.next() );
