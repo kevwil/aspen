@@ -56,10 +56,27 @@ public class JRubyRackProxyTest
         env.put( "SCRIPT_NAME", "/" );
         env.put( "PATH_INFO", "" );
 
-        _rack.tweakCgiVariables( env );
+        _rack.tweakCgiVariables( env, "/" );
 
         assertEquals( "", env.get( "SCRIPT_NAME" ) );
         assertFalse( env.containsKey( "PATH_INFO" ) );
+        assertTrue( env.containsKey( "SERVER_PORT" ) );
+        assertEquals( "80", env.get( "SERVER_PORT" ) );
+    }
+
+    @Test
+    public void shouldUpdateCGIVariablesWithPathInfo()
+    {
+        replay( _app );
+        RubyHash env = RubyHash.newHash( _runtime );
+        env.put( "SCRIPT_NAME", "/" );
+        env.put( "PATH_INFO", "/aoeu" );
+
+        _rack.tweakCgiVariables( env, "/aoeu" );
+
+        assertEquals( "", env.get( "SCRIPT_NAME" ) );
+        assertTrue( env.containsKey( "PATH_INFO" ) );
+        assertEquals( "/aoeu", env.get( "PATH_INFO" ) );
         assertTrue( env.containsKey( "SERVER_PORT" ) );
         assertEquals( "80", env.get( "SERVER_PORT" ) );
     }
