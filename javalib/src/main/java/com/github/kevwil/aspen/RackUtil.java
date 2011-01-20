@@ -39,7 +39,7 @@ public final class RackUtil
         private Channel channel;
         private DumDumCtx( InetSocketAddress address )
         {
-            channel = new DumDumChannel( address );
+            channel = new DumDumChannel( address, new InetSocketAddress( address.getHostName(), 54321 ) );
         }
 
         public Channel getChannel()
@@ -92,11 +92,13 @@ public final class RackUtil
 
     private static class DumDumChannel implements Channel
     {
-        private SocketAddress address;
+        private SocketAddress localAddress;
+        private SocketAddress remoteAddress;
 
-        private DumDumChannel( final SocketAddress address )
+        private DumDumChannel( final SocketAddress localAddress, final SocketAddress remoteAddress )
         {
-            this.address = address;
+            this.localAddress = localAddress;
+            this.remoteAddress = remoteAddress;
         }
 
         public Integer getId()
@@ -141,12 +143,12 @@ public final class RackUtil
 
         public SocketAddress getLocalAddress()
         {
-            return address;
+            return localAddress;
         }
 
         public SocketAddress getRemoteAddress()
         {
-            return null;
+            return remoteAddress;
         }
 
         public ChannelFuture write( final Object o )
@@ -412,8 +414,15 @@ public final class RackUtil
 
     private static void doAuthorization( final HttpRequest request, final RubyHash env )
     {
+        env.put( "AUTH_TYPE", "" );
         if( request.containsHeader( HttpHeaders.Names.AUTHORIZATION ) )
         {
+            String[] auth = request.getHeader( HttpHeaders.Names.AUTHORIZATION ).split( " " );
+            if( auth.length > 1 )
+            {
+                env.put( "AUTH_TYPE", auth[0] );
+                env.put( "REMOTE_USER", auth[1] );
+            }
             env.put( "HTTP_AUTHORIZATION", request.getHeader( HttpHeaders.Names.AUTHORIZATION ) );
         }
     }
