@@ -27,14 +27,14 @@ extends SimpleChannelUpstreamHandler
     public void messageReceived( final ChannelHandlerContext ctx, final MessageEvent e )
     throws Exception
     {
-        Request request = createRequest( ctx, (HttpRequest)e.getMessage() );
-        Response response = createResponse( request );
+        Request request = new Request( ctx, (HttpRequest)e.getMessage() );
+        Response response = new Response( request );
         try
         {
             response = _rack.process( request );
             if( response == null )
             {
-                response = createResponse( request );
+                response = new Response( request );
                 response.setException( new ServiceException( "null response from Rack" ) );
             }
             if( !response.hasException() && response.getResponseStatus().getCode() >= 400 )
@@ -59,16 +59,6 @@ extends SimpleChannelUpstreamHandler
                 writeResponse( ctx, request, response );
             }
         }
-    }
-
-    private Request createRequest( final ChannelHandlerContext ctx, final HttpRequest message )
-    {
-        return new Request( ctx, message );
-    }
-
-    private Response createResponse( final Request request )
-    {
-        return new Response( request );
     }
 
     @Override

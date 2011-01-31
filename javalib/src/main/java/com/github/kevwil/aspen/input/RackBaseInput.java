@@ -14,7 +14,7 @@ import java.io.InputStream;
 /**
  * @author nicksieger
  * @author kevwil
- * @since Jav 27, 2011
+ * @since Jan 27, 2011
  */
 public abstract class RackBaseInput
 extends RubyObject
@@ -95,7 +95,7 @@ implements RackInput
 
     protected abstract RackInput getDelegateInput();
 
-    /**
+    /*
      * For testing, to allow the input stream to be set from Ruby.
      */
     @JRubyMethod( name = "stream=", visibility = Visibility.PRIVATE )
@@ -109,7 +109,7 @@ implements RackInput
         return getRuntime().getNil();
     }
 
-    /**
+    /*
      * For testing, to allow the content length to be set from Ruby.
      */
     @JRubyMethod( name = "content_length=", visibility = Visibility.PRIVATE )

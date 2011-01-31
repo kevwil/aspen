@@ -22,11 +22,6 @@ public class Response
 
     public Response( Request request )
     {
-        initialize( request );
-    }
-
-    private void initialize( final Request request )
-    {
         _req = request;
     }
 
@@ -50,20 +45,20 @@ public class Response
         return ( getBody() != null );
     }
 
-    public void clearHeaders()
-    {
-        _headers.clear();
-    }
+//    public void clearHeaders()
+//    {
+//        _headers.clear();
+//    }
 
-    public String getHeader( String name )
-    {
-        List<String> values =_headers.get( name );
-        if( values != null && !values.isEmpty() )
-        {
-            return values.get( 0 );
-        }
-        return null;
-    }
+//    public String getHeader( String name )
+//    {
+//        List<String> values =_headers.get( name );
+//        if( values != null && !values.isEmpty() )
+//        {
+//            return values.get( 0 );
+//        }
+//        return null;
+//    }
 
     public List<String> getHeaders( String name )
     {
@@ -91,20 +86,20 @@ public class Response
         _statusCode = HttpResponseStatus.valueOf( code );
     }
 
-    public void setResponseStatus( HttpResponseStatus responseStatus )
-    {
-        _statusCode = responseStatus;
-    }
+//    public void setResponseStatus( HttpResponseStatus responseStatus )
+//    {
+//        _statusCode = responseStatus;
+//    }
 
-    public void setResponseCreated()
-    {
-        _statusCode = HttpResponseStatus.CREATED;
-    }
+//    public void setResponseCreated()
+//    {
+//        _statusCode = HttpResponseStatus.CREATED;
+//    }
 
-    public void setResponseNoContent()
-    {
-        _statusCode = HttpResponseStatus.NO_CONTENT;
-    }
+//    public void setResponseNoContent()
+//    {
+//        _statusCode = HttpResponseStatus.NO_CONTENT;
+//    }
 
     public HttpResponseStatus getResponseStatus()
     {

@@ -1,7 +1,6 @@
 package com.github.kevwil.aspen;
 
-import com.github.kevwil.aspen.domain.Request;
-import com.github.kevwil.aspen.domain.Response;
+import com.github.kevwil.aspen.domain.*;
 import com.github.kevwil.aspen.exception.InvalidAppException;
 import com.github.kevwil.aspen.exception.ServiceException;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -23,7 +22,7 @@ import java.nio.charset.Charset;
 public class JRubyRackProxy
 implements RackProxy
 {
-    private static final Ruby RUBY = Ruby.getGlobalRuntime();
+    private final Ruby RUBY = Ruby.getGlobalRuntime();
     private final IRubyObject _app;
 
     public JRubyRackProxy( final IRubyObject app )
@@ -38,18 +37,18 @@ implements RackProxy
         {
             throw new InvalidAppException();
         }
-//        System.out.println( request.getHttpRequest() );
-        RubyHash env = RubyHash.newHash( RUBY );
-        HttpRequest hr = request.getHttpRequest();
-        ChannelHandlerContext ctx = request.getContext();
-        RackUtil.parseHeaders( ctx, hr, env );
-        assignConnectionRelatedCgiHeaders( env, ctx, hr );
-        tweakCgiVariables( env, hr.getUri() );
+//        RubyHash env = RubyHash.newHash( RUBY );
+//        HttpRequest hr = request.getHttpRequest();
+//        ChannelHandlerContext ctx = request.getContext();
+//        RackUtil.parseHeaders( ctx, hr, env );
+//        assignConnectionRelatedCgiHeaders( env, ctx, hr );
+//        tweakCgiVariables( env, hr.getUri() );
+//
+//        RubyIO input = buildInputStream( request );
+//        RubyIO errors = new RubyIO( RUBY, STDIO.ERR );
+//        updateEnv( env, input, errors, request );
 
-        RubyIO input = buildInputStream( request );
-        RubyIO errors = new RubyIO( RUBY, STDIO.ERR );
-        updateEnv( env, input, errors, request );
-
+        RubyHash env = request.getEnv().toRuby();
         IRubyObject[] args = { env };
 //        RubyObject.puts( env.inspect() );
         IRubyObject callResult = _app.callMethod( RUBY.getCurrentContext(),
@@ -84,34 +83,34 @@ implements RackProxy
         }
     }
 
-    private void assignConnectionRelatedCgiHeaders( final RubyHash env, final ChannelHandlerContext ctx, final HttpRequest hr )
-    {
-        String remote = ctx.getChannel().getRemoteAddress().toString();
-        env.put( "REMOTE_ADDR", remote );
-        env.put( "REMOTE_HOST", remote );
-        if( !env.containsKey( "SERVER_NAME" ) && !env.containsKey( "SERVER_PORT" ) )
-        {
-            if( hr.containsHeader( HttpHeaders.Names.HOST ) )
-            {
-                String[] parts = hr.getHeader( HttpHeaders.Names.HOST ).split( ":" );
-                if( parts.length > 0 )
-                {
-                    env.put( "SERVER_NAME", parts[0] );
-                    if( parts.length > 1 )
-                    {
-                        env.put( "SERVER_PORT", parts[1] );
-                    }
-                }
-            }
-            else
-            {
-                InetSocketAddress localAddress = (InetSocketAddress) ctx.getChannel().getLocalAddress();
-                env.put( "SERVER_NAME", localAddress.getHostName() );
-                env.put( "SERVER_PORT", String.valueOf( localAddress.getPort() ) );
-            }
-        }
-        env.put( "SERVER_PROTOCOL", hr.getProtocolVersion().toString() );
-    }
+//    private void assignConnectionRelatedCgiHeaders( final RubyHash env, final ChannelHandlerContext ctx, final HttpRequest hr )
+//    {
+//        String remote = ctx.getChannel().getRemoteAddress().toString();
+//        env.put( "REMOTE_ADDR", remote );
+//        env.put( "REMOTE_HOST", remote );
+//        if( !env.containsKey( "SERVER_NAME" ) && !env.containsKey( "SERVER_PORT" ) )
+//        {
+//            if( hr.containsHeader( HttpHeaders.Names.HOST ) )
+//            {
+//                String[] parts = hr.getHeader( HttpHeaders.Names.HOST ).split( ":" );
+//                if( parts.length > 0 )
+//                {
+//                    env.put( "SERVER_NAME", parts[0] );
+//                    if( parts.length > 1 )
+//                    {
+//                        env.put( "SERVER_PORT", parts[1] );
+//                    }
+//                }
+//            }
+//            else
+//            {
+//                InetSocketAddress localAddress = (InetSocketAddress) ctx.getChannel().getLocalAddress();
+//                env.put( "SERVER_NAME", localAddress.getHostName() );
+//                env.put( "SERVER_PORT", String.valueOf( localAddress.getPort() ) );
+//            }
+//        }
+//        env.put( "SERVER_PROTOCOL", hr.getProtocolVersion().toString() );
+//    }
 
     Response createResponse( final Request request, final RubyArray result )
     {
@@ -165,50 +164,50 @@ implements RackProxy
         response.setBody( bodyBuffer.toString( Charset.forName( "UTF-8" ) ) );
     }
 
-    void updateEnv( final RubyHash env, final RubyIO input, final RubyIO errors, final Request request )
-    {
-        env.put( "rack.version", Version.RACK );
-        env.put( "rack.input", input );
-        env.put( "rack.errors", errors );
-        env.put( "rack.multithread", true );
-        env.put( "rack.multiprocess", false );
-        env.put( "rack.run_once", false );
-        env.put( "rack.url_scheme", request.getUrl().getProtocol() );
-    }
+//    void updateEnv( final RubyHash env, final RubyIO input, final RubyIO errors, final Request request )
+//    {
+//        env.put( "rack.version", Version.RACK );
+//        env.put( "rack.input", input );
+//        env.put( "rack.errors", errors );
+//        env.put( "rack.multithread", true );
+//        env.put( "rack.multiprocess", false );
+//        env.put( "rack.run_once", false );
+//        env.put( "rack.url_scheme", request.getUrl().getProtocol() );
+//    }
 
-    RubyIO buildInputStream( final Request request )
-    {
-        RubyIO input = RubyUtil.stringToIO( request.getBodyString() );
-        input.binmode();
-        return input;
-    }
+//    RubyIO buildInputStream( final Request request )
+//    {
+//        RubyIO input = RubyUtil.stringToIO( request.getBodyString() );
+//        input.binmode();
+//        return input;
+//    }
 
-    void tweakCgiVariables( final RubyHash env, final String path )
-    {
-        // Rack-specified rules
-        if( env.get( "SCRIPT_NAME" ).equals( "/" ) )
-            env.put( "SCRIPT_NAME", "" );
-        if( env.get( "PATH_INFO" ).equals( "" ) )
-        {
-            env.remove( "PATH_INFO" );
-        }
-        else
-        {
-            int snLen = env.get( "SCRIPT_NAME" ).toString().length();
-            env.put( "PATH_INFO", path.substring( snLen, path.length() ) );
-        }
-        if( !env.containsKey( "REQUEST_PATH" ) ||
-                env.get( "REQUEST_PATH" ) == null ||
-                env.get( "REQUEST_PATH" ).toString().length() == 0 )
-        {
-            env.put( "REQUEST_PATH", env.get( "SCRIPT_NAME" ).toString() + env.get( "PATH_INFO" ) );
-        }
-        if( !env.containsKey( "SERVER_PORT" ) )
-            env.put( "SERVER_PORT", "80" );
-
-        // CGI-specific headers
-        env.put( "PATH_TRANSLATED", env.get( "PATH_INFO" ) );
-//        env.put( "QUERY_STRING", path.substring( path.indexOf( "?" ) + 1 ) );
-        env.put( "SERVER_SOFTWARE", "Aspen " + Version.ASPEN );
-    }
+//    void tweakCgiVariables( final RubyHash env, final String path )
+//    {
+//        // Rack-specified rules
+//        if( env.get( "SCRIPT_NAME" ).equals( "/" ) )
+//            env.put( "SCRIPT_NAME", "" );
+//        if( env.get( "PATH_INFO" ).equals( "" ) )
+//        {
+//            env.remove( "PATH_INFO" );
+//        }
+//        else
+//        {
+//            int snLen = env.get( "SCRIPT_NAME" ).toString().length();
+//            env.put( "PATH_INFO", path.substring( snLen, path.length() ) );
+//        }
+//        if( !env.containsKey( "REQUEST_PATH" ) ||
+//                env.get( "REQUEST_PATH" ) == null ||
+//                env.get( "REQUEST_PATH" ).toString().length() == 0 )
+//        {
+//            env.put( "REQUEST_PATH", env.get( "SCRIPT_NAME" ).toString() + env.get( "PATH_INFO" ) );
+//        }
+//        if( !env.containsKey( "SERVER_PORT" ) )
+//            env.put( "SERVER_PORT", "80" );
+//
+//        // CGI-specific headers
+//        env.put( "PATH_TRANSLATED", env.get( "PATH_INFO" ) );
+////        env.put( "QUERY_STRING", path.substring( path.indexOf( "?" ) + 1 ) );
+//        env.put( "SERVER_SOFTWARE", "Aspen " + Version.ASPEN );
+//    }
 }
