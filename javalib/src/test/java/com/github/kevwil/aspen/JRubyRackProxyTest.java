@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
  */
 public class JRubyRackProxyTest
 {
-    private static final Ruby _runtime = Ruby.getGlobalRuntime();
+    private final Ruby _runtime = Ruby.getGlobalRuntime();
     private JRubyRackProxy _rack;
     private IRubyObject _app;
     private ChannelHandlerContext ctx;
@@ -46,73 +46,6 @@ public class JRubyRackProxyTest
     public void tearDown()
     {
         verify( _app );
-    }
-
-    @Test
-    public void shouldUpdateCGIVariables()
-    {
-        replay( _app );
-        RubyHash env = RubyHash.newHash( _runtime );
-        env.put( "SCRIPT_NAME", "/" );
-        env.put( "PATH_INFO", "" );
-
-        _rack.tweakCgiVariables( env, "/" );
-
-        assertEquals( "", env.get( "SCRIPT_NAME" ) );
-        assertFalse( env.containsKey( "PATH_INFO" ) );
-        assertTrue( env.containsKey( "SERVER_PORT" ) );
-        assertEquals( "80", env.get( "SERVER_PORT" ) );
-    }
-
-    @Test
-    public void shouldUpdateCGIVariablesWithPathInfo()
-    {
-        replay( _app );
-        RubyHash env = RubyHash.newHash( _runtime );
-        env.put( "SCRIPT_NAME", "/" );
-        env.put( "PATH_INFO", "/aoeu" );
-
-        _rack.tweakCgiVariables( env, "/aoeu" );
-
-        assertEquals( "", env.get( "SCRIPT_NAME" ) );
-        assertTrue( env.containsKey( "PATH_INFO" ) );
-        assertEquals( "/aoeu", env.get( "PATH_INFO" ) );
-        assertTrue( env.containsKey( "SERVER_PORT" ) );
-        assertEquals( "80", env.get( "SERVER_PORT" ) );
-    }
-
-    @Test
-    public void shouldBuildInputStream()
-    {
-        replay( _app );
-        String data = "foo=bar";
-        r.setBody( ChannelBuffers.copiedBuffer( data, Charset.forName( "UTF-8" ) ) );
-
-        RubyIO result = _rack.buildInputStream( r );
-
-        assertNotNull( result );
-
-        assertEquals( data, result.read( _runtime.getCurrentContext() ).toString() );
-    }
-
-    @Test
-    public void shouldUpdateEnv()
-    {
-        replay( _app );
-        RubyHash env = RubyHash.newHash( _runtime );
-        RubyIO input = RubyIO.newIO( _runtime, Channels.newChannel(
-                new ByteArrayInputStream( "foo".getBytes( Charset.forName( "UTF-8" ) ) ) ) );
-        RubyIO errors = new RubyIO( _runtime, STDIO.ERR );
-
-        _rack.updateEnv( env, input, errors, r );
-
-        assertEquals( Version.RACK, env.get( "rack.version" ) );
-        assertEquals( input, env.get( "rack.input" ) );
-        assertEquals( errors, env.get( "rack.errors" ) );
-        assertEquals( true, env.get( "rack.multithread" ) );
-        assertEquals( false, env.get( "rack.multiprocess" ) );
-        assertEquals( false, env.get( "rack.run_once" ) );
-        assertEquals( "http", env.get( "rack.url_scheme" ) );
     }
 
     @Test
