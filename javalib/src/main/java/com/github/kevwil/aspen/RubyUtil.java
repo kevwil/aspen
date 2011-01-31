@@ -60,7 +60,6 @@ public class RubyUtil
         }
     }
 
-
     public static ChannelBuffer bodyToBuffer( final IRubyObject body )
     {
         final ChannelBuffer outBuffer = ChannelBuffers.dynamicBuffer();

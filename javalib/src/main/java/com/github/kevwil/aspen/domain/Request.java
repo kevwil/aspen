@@ -1,9 +1,9 @@
 package com.github.kevwil.aspen.domain;
 
+import com.github.kevwil.aspen.RackEnvironment;
 import com.github.kevwil.aspen.RackUtil;
 import com.github.kevwil.aspen.exception.ServiceException;
 import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpMethod;
@@ -11,13 +11,10 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jruby.Ruby;
 import org.jruby.RubyHash;
 
-import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
-import java.util.Map.Entry;
 
 /**
  * @author kevwil
@@ -25,64 +22,33 @@ import java.util.Map.Entry;
  */
 public class Request
 {
-    private static final String METHOD_OVERRIDE_PARAMETER = "_method";
-    private static final String METHOD_OVERRIDE_HEADER = "X-Http-Method-Override";
-    private ChannelHandlerContext _context;
-    private HttpRequest _request;
+    public static final String METHOD_OVERRIDE_PARAMETER = "_method";
+    public static final String METHOD_OVERRIDE_HEADER = "X-Http-Method-Override";
+    private final ChannelHandlerContext _context;
+    private final HttpRequest _request;
+//    private List<Map.Entry<String,String>> _originalHeaders;
     private HttpMethod _realMethod;
+//    private Map<String,String> _qsParams;
     private URL _url;
-    private Map<String,String> _qsParams;
-    private List<Entry<String,String>> _originalHeaders;
+    private String _uri;
     private RubyHash _rubyHeaders;
 
     public Request( final ChannelHandlerContext context, final HttpRequest request )
     {
-        if( request != null )
-        {
-            _context = context;
-            _request = request;
-            _originalHeaders = request.getHeaders();
-            _qsParams = parseQueryStringParams( request );
-            _realMethod = parseRealMethod( request );
-            _rubyHeaders = RubyHash.newHash( Ruby.getGlobalRuntime() );
-            RackUtil.parseHeaders( _context, _request, _rubyHeaders );
-            try
-            {
-                _url = new URL( _request.getUri() );
-            }
-            catch( MalformedURLException e )
-            {
-                InetSocketAddress local = (InetSocketAddress) context.getChannel().getLocalAddress();
-                StringBuffer sb = new StringBuffer();
-                sb.append( getProtocolFromLocalAddress( local ) )
-                        .append( local.getHostName() )
-                        .append( getPortFromLocalAddress( local ) )
-                        .append( _request.getUri() );
-                try
-                {
-                    _url = new URL( sb.toString() );
-                }
-                catch( MalformedURLException mue )
-                {
-                    throw new ServiceException( mue );
-                }
-            }
-        }
+        _context = context;
+        _request = request;
+        initialize();
     }
 
-    private static String getProtocolFromLocalAddress( final InetSocketAddress local )
+    private void initialize()
     {
-        return ( local.getPort() == 443 ? "https://" : "http://" );
-    }
-
-    private static String getPortFromLocalAddress( final InetSocketAddress local )
-    {
-        switch( local.getPort() )
-        {
-            case 80: return "";
-            case 443: return "";
-            default: return ":" + local.getPort();
-        }
+//        _originalHeaders = _request.getHeaders();
+        _uri = _request.getUri();
+//        _qsParams = parseQueryStringParams();
+        _realMethod = parseRealMethod( parseQueryStringParams() );
+        _url = parseUrl();
+        _rubyHeaders = RubyHash.newHash( Ruby.getGlobalRuntime() );
+        RackUtil.parseHeaders( _context, _request, _rubyHeaders );
     }
 
     public URL getUrl()
@@ -100,9 +66,9 @@ public class Request
         return _request;
     }
 
-    public ChannelHandlerContext getContext()
+    public RackEnvironment getEnv()
     {
-        return _context;
+        return new DefaultRackEnvironment( this );
     }
 
     public HttpMethod getMethod()
@@ -130,29 +96,34 @@ public class Request
         _request.setContent( body );
     }
 
-    public void clearHeaders()
-    {
-        _request.clearHeaders();
-    }
+//    public Map<String,String> getQueryStringParams()
+//    {
+//        return _qsParams;
+//    }
 
     public boolean containsHeader( String name )
     {
         return _request.containsHeader( name );
     }
 
-    public void addHeader( String name, String value )
+    public String getHeader( String name )
     {
-        _request.addHeader( name, value );
-    }
-
-    public void removeHeader( String name )
-    {
-        _request.removeHeader( name );
+        return _request.getHeader( name );
     }
 
     public String getUri()
     {
-        return _request.getUri();
+        return _uri;
+    }
+
+    public SocketAddress getRemoteAddress()
+    {
+        return _context.getChannel().getRemoteAddress();
+    }
+
+    public SocketAddress getLocalAddress()
+    {
+        return _context.getChannel().getLocalAddress();
     }
 
     public boolean isKeepAlive()
@@ -160,32 +131,74 @@ public class Request
         return HttpHeaders.isKeepAlive( _request );
     }
 
-    public boolean is100ContinueExpected()
+    private URL parseUrl()
     {
-        return HttpHeaders.is100ContinueExpected( _request );
+        URL result;
+        try
+        {
+            result = new URL( _uri );
+        }
+        catch( MalformedURLException e )
+        {
+            InetSocketAddress local = (InetSocketAddress) getLocalAddress();
+            StringBuffer sb = new StringBuffer();
+            sb.append( getProtocolFromLocalAddress( local ) )
+                    .append( local.getHostName() )
+                    .append( getPortFromLocalAddress( local ) )
+                    .append( _request.getUri() );
+            try
+            {
+                result = new URL( sb.toString() );
+            }
+            catch( MalformedURLException mue )
+            {
+                throw new ServiceException( mue );
+            }
+        }
+        return result;
     }
 
-    public boolean isChunked()
+    private static String getProtocolFromLocalAddress( final InetSocketAddress local )
     {
-        return _request.isChunked();
+        return ( local.getPort() == 443 ? "https://" : "http://" );
     }
 
-    public Map<String,String> getQueryStringParams()
+    private static String getPortFromLocalAddress( final InetSocketAddress local )
     {
-        return _qsParams;
+        switch( local.getPort() )
+        {
+            case 80: return "";
+            case 443: return "";
+            default: return ":" + local.getPort();
+        }
     }
 
-    public List<Entry<String,String>> getOriginalHeaders()
+    private HttpMethod parseRealMethod( Map<String,String> qs )
     {
-        return _originalHeaders;
+        if( ! HttpMethod.POST.equals( _request.getMethod() ) )
+            return _request.getMethod();
+
+        if( _request.containsHeader( Request.METHOD_OVERRIDE_HEADER ) )
+        {
+            return HttpMethod.valueOf( _request.getHeader( Request.METHOD_OVERRIDE_HEADER ) );
+        }
+        if( qs.containsKey( Request.METHOD_OVERRIDE_PARAMETER ) )
+        {
+            String method = qs.get( Request.METHOD_OVERRIDE_PARAMETER );
+            _request.addHeader( Request.METHOD_OVERRIDE_HEADER, method );
+            return HttpMethod.valueOf( method );
+        }
+        return _request.getMethod();
     }
 
-    private Map<String, String> parseQueryStringParams( HttpRequest request )
+    /*
+     * Why are headers added back to the original request??
+     */
+    private Map<String, String> parseQueryStringParams()
     {
         Map<String,String> params = new HashMap<String,String>();
-        String uri = getUri( request );
-        int q = uri.indexOf( "?" );
-        String qs = ( q >= 0 ? uri.substring( q+1 ) : null );
+        int q = _uri.indexOf( "?" );
+        String qs = ( q >= 0 ? _uri.substring( q+1 ) : null );
         if( qs != null )
         {
             String[] pairs = qs.split( "&" );
@@ -193,42 +206,17 @@ public class Request
             {
                 String[] kv = pair.split( "=" );
                 String value = ( kv.length > 1 ? kv[1] : "" );
-                if( kv[0].equals( METHOD_OVERRIDE_PARAMETER ) )
-                {
-                    request.addHeader( METHOD_OVERRIDE_HEADER, value );
-                }
-                else
-                {
-                    request.addHeader( kv[0], value );
-                }
+//                if( kv[0].equals( Request.METHOD_OVERRIDE_PARAMETER ) )
+//                {
+//                    _request.addHeader( Request.METHOD_OVERRIDE_HEADER, value );
+//                }
+//                else
+//                {
+//                    _request.addHeader( kv[0], value );
+//                }
                 params.put( kv[0], value );
             }
         }
         return params;
-    }
-
-    private HttpMethod parseRealMethod( HttpRequest request )
-    {
-        if( ! HttpMethod.POST.equals( request.getMethod() ) )
-            return request.getMethod();
-
-        if( request.containsHeader( METHOD_OVERRIDE_HEADER ) )
-        {
-            return HttpMethod.valueOf( request.getHeader( METHOD_OVERRIDE_HEADER ) );
-        }
-        return _request.getMethod();
-    }
-
-    private String getUri( HttpRequest request )
-    {
-        String result = "";
-        try
-        {
-            result = URLDecoder.decode( request.getUri(), "UTF-8" );
-        }
-        catch( UnsupportedEncodingException e )
-        {
-        }
-        return result;
     }
 }
