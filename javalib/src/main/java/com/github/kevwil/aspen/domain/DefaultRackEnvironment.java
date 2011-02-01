@@ -7,7 +7,6 @@ import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jruby.*;
 import org.jruby.javasupport.JavaEmbedUtils;
-import org.jruby.runtime.Block;
 import org.jruby.util.io.STDIO;
 
 import java.io.*;
@@ -41,11 +40,9 @@ implements RackEnvironment
 
     private RubyHash createRubyHash( final Request request )
     {
-        RubyHash env = RubyHash.newHash( _runtime );
+        RubyHash env = request.getRubyHeaders();
         assignConnectionRelatedCgiHeaders( env, request );
         tweakCgiVariables( env, request.getUri() );
-        env.merge( _runtime.getCurrentContext(), request.getRubyHeaders(), Block.NULL_BLOCK );
-
         updateEnv( env, request );
         return env;
     }
@@ -93,7 +90,7 @@ implements RackEnvironment
 
     void assignConnectionRelatedCgiHeaders( final RubyHash env, final Request request )
     {
-        String remote = request.getRemoteAddress().toString();
+        String remote = request.getRemoteAddress().toString().replace( "/", "" );
         env.put( "REMOTE_ADDR", remote );
         env.put( "REMOTE_HOST", remote );
         if( !env.containsKey( "SERVER_NAME" ) && !env.containsKey( "SERVER_PORT" ) )
