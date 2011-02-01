@@ -10,7 +10,6 @@ import org.jruby.javasupport.JavaEmbedUtils;
 
 import java.io.*;
 import java.net.*;
-import java.nio.channels.Channels;
 
 /**
  * @author kevwil
@@ -51,10 +50,9 @@ implements RackEnvironment
     {
         env.put( "rack.version", Version.RACK );
         env.put( "rack.input", JavaEmbedUtils.javaToRuby( _runtime, getRackInput() ) );
-        RubyIO errors = RubyIO.newIO( _runtime, Channels.newChannel( System.err ) );
+        RubyIO errors = (RubyIO) _runtime.getGlobalVariables().get( "$stderr" );
         errors.setAutoclose( false );
         env.put( "rack.errors", errors );
-//        env.put( "rack.errors", new RubyIO( _runtime, STDIO.ERR ) );
         env.put( "rack.multithread", true );
         env.put( "rack.multiprocess", false );
         env.put( "rack.run_once", false );
@@ -93,9 +91,10 @@ implements RackEnvironment
 
     void assignConnectionRelatedCgiHeaders( final RubyHash env, final Request request )
     {
-        String remote = request.getRemoteAddress().toString().replace( "/", "" );
+        InetSocketAddress remoteAddress = (InetSocketAddress) request.getRemoteAddress();
+        String remote = remoteAddress.getHostName().replace( "/", "" );
         env.put( "REMOTE_ADDR", remote );
-        env.put( "REMOTE_HOST", remote );
+//        env.put( "REMOTE_HOST", remote );
         if( !env.containsKey( "SERVER_NAME" ) && !env.containsKey( "SERVER_PORT" ) )
         {
             if( request.containsHeader( HttpHeaders.Names.HOST ) )
@@ -118,6 +117,7 @@ implements RackEnvironment
             }
         }
         env.put( "SERVER_PROTOCOL", request.getHttpRequest().getProtocolVersion().toString() );
+        env.put( "HTTP_VERSION", request.getHttpRequest().getProtocolVersion().toString() );
     }
 
     void tweakCgiVariables( final RubyHash env, final String path )
@@ -146,8 +146,9 @@ implements RackEnvironment
             env.put( "SERVER_PORT", "80" );
 
         // CGI-specific headers
-        env.put( "PATH_TRANSLATED", env.get( "PATH_INFO" ) );
-//        env.put( "QUERY_STRING", path.substring( path.indexOf( "?" ) + 1 ) );
+//        env.put( "PATH_TRANSLATED", env.get( "PATH_INFO" ) );
+        env.put( "REQUEST_URI", path );
+        env.put( "GATEWAY_INTERFACE", "CGI/1.2" );
         env.put( "SERVER_SOFTWARE", "Aspen " + Version.ASPEN );
     }
 
