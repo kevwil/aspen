@@ -7,10 +7,10 @@ import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jruby.*;
 import org.jruby.javasupport.JavaEmbedUtils;
-import org.jruby.util.io.STDIO;
 
 import java.io.*;
 import java.net.*;
+import java.nio.channels.Channels;
 
 /**
  * @author kevwil
@@ -51,7 +51,10 @@ implements RackEnvironment
     {
         env.put( "rack.version", Version.RACK );
         env.put( "rack.input", JavaEmbedUtils.javaToRuby( _runtime, getRackInput() ) );
-        env.put( "rack.errors", new RubyIO( _runtime, STDIO.ERR ) );
+        RubyIO errors = RubyIO.newIO( _runtime, Channels.newChannel( System.err ) );
+        errors.setAutoclose( false );
+        env.put( "rack.errors", errors );
+//        env.put( "rack.errors", new RubyIO( _runtime, STDIO.ERR ) );
         env.put( "rack.multithread", true );
         env.put( "rack.multiprocess", false );
         env.put( "rack.run_once", false );
