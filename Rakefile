@@ -9,9 +9,8 @@ ensure_in_path 'lib'
 require 'aspen/version'
 
 task :default => ['spec:rcov', 'doc:yard', 'notes']
-# task :default => ['spec:rcov','spec:verify','doc:yard','notes']
-# task :default => ['spec:rcov','notes']
 task 'gem:release' => ['java:build','spec:rcov','spec:verify','doc:yard']
+task 'gem:package' => ['java:build']
 task 'clean' => ['java:clean', 'doc:clean']
 task 'clobber' => ['java:clobber']
 
@@ -23,26 +22,26 @@ Bones do
   version ENV['VERSION'] || Aspen::VERSION::STRING
   # rubyforge.name 'aspen'
   readme_file 'README'
-  ignore_file '.gitignore'
+  ignore_file '.bnsignore'
   depend_on 'rack', '>=1.1.0'
-  depend_on 'g', :development => true
-  depend_on 'bones', :development => true
-  #depend_on 'bones-git', :development => true
+  depend_on 'bones-rcov', :development => true
+  depend_on 'bones-yard', :development => true
   depend_on 'bones-extras', :development => true
   depend_on 'rspec', :development => true
   depend_on 'mocha', :development => true
-  depend_on 'rcov', :development => true
-  depend_on 'yard', :development => true
+  
+  gem.need_tar = false
 
   ruby_opts.clear
   ruby_opts << '-Ilib' << '-rubygems'
   spec.opts << '--color'
   spec.opts << '--format specdoc'
   # spec.opts << '--format html:./spec_out.html'
-  rcov.threshold 35
+  rcov.threshold 75
   rcov.opts << ['--include', 'lib']
   rcov.opts << ['--exclude', 'spec']
   rcov.opts << ['--exclude', 'examples']
+  rcov.opts << ['--exclude', 'javalib']
   rcov.opts << ['--exclude', 'rcov']
   rcov.opts << ['--exclude', 'mocha']
   rcov.opts << ['--exclude', 'rails']
@@ -64,7 +63,7 @@ namespace :doc do
     d = 'doc'
     y = '.yardoc'  
     FileUtils.rm_rf(d) if File.exist?(d) and File.writable?(d) and File.directory?(d)
-    FileUtils.rm(y) if File.exist?(y) and File.writable?(y)
+    FileUtils.rm_f(y) if File.exist?(y) and File.writable?(y)
   end
 end
 

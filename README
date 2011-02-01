@@ -20,14 +20,17 @@ using Netty (http://jboss.org/netty) for high-speed concurrent sockets.
 
 == REQUIREMENTS:
 
-* Java >= 1.5
-* JRuby >= 1.5
-* Rack >= 1.1
+* Java >= 1.5 (I'm using 1.6 but 1.5 *should* work)
+* JRuby >= 1.6.0.RC1
+* Rack >= 1.1 (I'm using 1.2 but trying to retain 1.1 compatibility)
 
 == INSTALL:
 
 	# From Gemcutter / Rubyforge ...
 	$ (sudo) jruby -S gem install aspen
+	
+	# if using JRuby via RVM (http://rvm.beginrescueend.com/) which I highly recommend doing
+	$ gem install aspen
 
 == INSTALL FROM SOURCE:
 
@@ -37,7 +40,7 @@ using Netty (http://jboss.org/netty) for high-speed concurrent sockets.
 
     # You must have JRuby set up, with the dependent gems installed.
     # see the Rakefile for the dev-time dependencies
-    $ jgem install little-plugger loquacious rubyforge bones bones-git bones-extras rspec mocha rcov yard
+    $ jgem install bones-rcov bones-yard bones-extras rspec mocha
 
     # You must have Ant (http://ant.apache.org) and Maven (http://maven.apache.org) set up.
     # *note* the Rakefile will call Maven in "offline mode".
