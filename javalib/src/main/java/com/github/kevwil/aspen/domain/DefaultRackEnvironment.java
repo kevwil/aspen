@@ -94,7 +94,6 @@ implements RackEnvironment
         InetSocketAddress remoteAddress = (InetSocketAddress) request.getRemoteAddress();
         String remote = remoteAddress.getHostName().replace( "/", "" );
         env.put( "REMOTE_ADDR", remote );
-//        env.put( "REMOTE_HOST", remote );
         if( !env.containsKey( "SERVER_NAME" ) && !env.containsKey( "SERVER_PORT" ) )
         {
             if( request.containsHeader( HttpHeaders.Names.HOST ) )
@@ -146,7 +145,6 @@ implements RackEnvironment
             env.put( "SERVER_PORT", "80" );
 
         // CGI-specific headers
-//        env.put( "PATH_TRANSLATED", env.get( "PATH_INFO" ) );
         env.put( "REQUEST_URI", path );
         env.put( "GATEWAY_INTERFACE", "CGI/1.2" );
         env.put( "SERVER_SOFTWARE", "Aspen " + Version.ASPEN );

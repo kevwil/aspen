@@ -26,9 +26,7 @@ public class Request
     public static final String METHOD_OVERRIDE_HEADER = "X-Http-Method-Override";
     private final ChannelHandlerContext _context;
     private final HttpRequest _request;
-//    private List<Map.Entry<String,String>> _originalHeaders;
     private HttpMethod _realMethod;
-//    private Map<String,String> _qsParams;
     private URL _url;
     private String _uri;
     private RubyHash _rubyHeaders;
@@ -42,9 +40,7 @@ public class Request
 
     private void initialize()
     {
-//        _originalHeaders = _request.getHeaders();
         _uri = _request.getUri();
-//        _qsParams = parseQueryStringParams();
         _realMethod = parseRealMethod( parseQueryStringParams() );
         _url = parseUrl();
         _rubyHeaders = RubyHash.newHash( Ruby.getGlobalRuntime() );
@@ -95,11 +91,6 @@ public class Request
     {
         _request.setContent( body );
     }
-
-//    public Map<String,String> getQueryStringParams()
-//    {
-//        return _qsParams;
-//    }
 
     public boolean containsHeader( String name )
     {
@@ -191,9 +182,6 @@ public class Request
         return _request.getMethod();
     }
 
-    /*
-     * Why are headers added back to the original request??
-     */
     private Map<String, String> parseQueryStringParams()
     {
         Map<String,String> params = new HashMap<String,String>();
@@ -206,14 +194,6 @@ public class Request
             {
                 String[] kv = pair.split( "=" );
                 String value = ( kv.length > 1 ? kv[1] : "" );
-//                if( kv[0].equals( Request.METHOD_OVERRIDE_PARAMETER ) )
-//                {
-//                    _request.addHeader( Request.METHOD_OVERRIDE_HEADER, value );
-//                }
-//                else
-//                {
-//                    _request.addHeader( kv[0], value );
-//                }
                 params.put( kv[0], value );
             }
         }
