@@ -6,9 +6,9 @@ module Rack
     class Aspen
       def self.run( app, options={} )
         # TODO: this sucks, server doesn't handle Rack::URLMap
-        app = Rack::Chunked.new( Rack::ContentLength.new( app ) )
+        # app = Rack::Chunked.new( Rack::ContentLength.new( app ) )
         server = ::Aspen::Server.new( options[:Host] || '0.0.0.0',
-                                      options[:Port] || 1169,
+                                      options[:Port] || 3000,
                                       app )
         yield server if block_given?
         server.start
