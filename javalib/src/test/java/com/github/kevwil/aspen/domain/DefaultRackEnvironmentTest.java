@@ -90,7 +90,7 @@ public class DefaultRackEnvironmentTest
 
         assertEquals( Version.RACK, hash.get( "rack.version" ) );
         assertEquals( JavaEmbedUtils.javaToRuby( _runtime, env.getRackInput() ), hash.get( "rack.input" ) );
-        assertTrue( hash.get( "rack.errors" ) instanceof RubyIO );
+        assertTrue( hash.get( "rack.errors" ) instanceof RackErrors );
         assertEquals( true, hash.get( "rack.multithread" ) );
         assertEquals( false, hash.get( "rack.multiprocess" ) );
         assertEquals( false, hash.get( "rack.run_once" ) );

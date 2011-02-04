@@ -3,6 +3,7 @@ package com.github.kevwil.aspen.domain;
 import com.github.kevwil.aspen.*;
 import com.github.kevwil.aspen.exception.ServiceException;
 import com.github.kevwil.aspen.io.RackRewindableInput;
+import com.github.kevwil.aspen.io.RubyIORackErrors;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jruby.*;
@@ -50,9 +51,7 @@ implements RackEnvironment
     {
         env.put( "rack.version", Version.RACK );
         env.put( "rack.input", JavaEmbedUtils.javaToRuby( _runtime, getRackInput() ) );
-        RubyIO errors = (RubyIO) _runtime.getGlobalVariables().get( "$stderr" );
-        errors.setAutoclose( false );
-        env.put( "rack.errors", errors );
+        env.put( "rack.errors", JavaEmbedUtils.javaToRuby( _runtime, new RubyIORackErrors( _runtime ) ) );
         env.put( "rack.multithread", true );
         env.put( "rack.multiprocess", false );
         env.put( "rack.run_once", false );

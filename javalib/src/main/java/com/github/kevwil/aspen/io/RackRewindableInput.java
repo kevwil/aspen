@@ -17,6 +17,8 @@ import java.nio.channels.*;
  * Suitable env['rack.input'] object for servlet environments, allowing to rewind the
  * input per the Rack specification.
  *
+ * Should still be suitable for a Netty environment, there's nothing servlet-specific here.
+ *
  * @author nicksieger
  * @author kevwil
  * @since Jan 27, 2011
