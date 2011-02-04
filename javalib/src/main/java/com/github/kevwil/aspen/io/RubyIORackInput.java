@@ -1,4 +1,4 @@
-package com.github.kevwil.aspen.input;
+package com.github.kevwil.aspen.io;
 
 import com.github.kevwil.aspen.RackInput;
 import org.jruby.Ruby;

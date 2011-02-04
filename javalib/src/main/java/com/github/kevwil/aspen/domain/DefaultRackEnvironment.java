@@ -2,7 +2,7 @@ package com.github.kevwil.aspen.domain;
 
 import com.github.kevwil.aspen.*;
 import com.github.kevwil.aspen.exception.ServiceException;
-import com.github.kevwil.aspen.input.RackRewindableInput;
+import com.github.kevwil.aspen.io.RackRewindableInput;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jruby.*;
