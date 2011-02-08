@@ -9,7 +9,7 @@ class SimpleAdapter
 end
 
 # ::Aspen::Logging.debug = true
-::Aspen::Server.start('localhost',8080) do
+::Aspen::Server.start('localhost',3000) do
   use ::Rack::CommonLogger
   use ::Rack::ShowExceptions
   use ::Rack::ContentLength
