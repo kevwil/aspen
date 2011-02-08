@@ -1,9 +1,10 @@
 package com.github.kevwil.aspen.domain;
 
 import com.github.kevwil.aspen.*;
-import com.github.kevwil.aspen.exception.ServiceException;
-import com.github.kevwil.aspen.io.RackRewindableInput;
+//import com.github.kevwil.aspen.exception.ServiceException;
+//import com.github.kevwil.aspen.io.RackRewindableInput;
 import com.github.kevwil.aspen.io.RubyIORackErrors;
+import com.github.kevwil.aspen.io.RubyIORackInput;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jruby.*;
@@ -28,14 +29,17 @@ implements RackEnvironment
     {
         _request = request;
         _stream = new ChannelBufferInputStream( _request.getBody() );
-        try
-        {
-            setRackInput( new RackRewindableInput( _runtime, this ) );
-        }
-        catch( IOException e )
-        {
-            throw new ServiceException( e );
-        }
+//        try
+//        {
+            //setRackInput( new RackRewindableInput( _runtime, this ) );
+            RubyIORackInput input = new RubyIORackInput( _runtime );
+            input.setBuffer( _request.getBody() );
+            setRackInput( input );
+//        }
+//        catch( IOException e )
+//        {
+//            throw new ServiceException( e );
+//        }
     }
 
     private RubyHash createRubyHash( final Request request )
