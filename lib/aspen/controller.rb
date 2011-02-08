@@ -66,7 +66,7 @@ module Aspen
     private
       def load_adapter
         adapter = @options[:adapter] || Rack::Adapter.guess(@options[:chdir])
-        # log ">> Using #{adapter} adapter"
+        log ">> Using #{adapter} adapter"
         Rack::Adapter.for(adapter, @options)
       rescue Rack::AdapterNotFound => e
         raise InvalidOption, e.message
