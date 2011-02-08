@@ -7,7 +7,7 @@ import com.github.kevwil.aspen.io.RubyIORackErrors;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jruby.*;
-import org.jruby.javasupport.JavaEmbedUtils;
+//import org.jruby.javasupport.JavaEmbedUtils;
 
 import java.io.*;
 import java.net.*;
@@ -50,8 +50,8 @@ implements RackEnvironment
     void updateEnv( final RubyHash env, final Request request )
     {
         env.put( "rack.version", Version.RACK );
-        env.put( "rack.input", JavaEmbedUtils.javaToRuby( _runtime, getRackInput() ) );
-        env.put( "rack.errors", JavaEmbedUtils.javaToRuby( _runtime, new RubyIORackErrors( _runtime ) ) );
+        env.put( "rack.input", getRackInput() );
+        env.put( "rack.errors", new RubyIORackErrors( _runtime ) );
         env.put( "rack.multithread", true );
         env.put( "rack.multiprocess", false );
         env.put( "rack.run_once", false );
