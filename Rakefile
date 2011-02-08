@@ -20,14 +20,12 @@ Bones do
   email ['kevwil@gmail.com']
   url 'http://kevwil.github.com/aspen'
   version ENV['VERSION'] || Aspen::VERSION::STRING
-  # rubyforge.name 'aspen'
   readme_file 'README'
   ignore_file '.bnsignore'
   depend_on 'rack', '>=1.1.0'
   depend_on 'bones-rcov', :development => true
   depend_on 'bones-yard', :development => true
-  depend_on 'bones-extras', :development => true
-  depend_on 'rspec', :development => true
+  depend_on 'rspec', '>=1.3', '<2.0', :development => true
   depend_on 'mocha', :development => true
   
   gem.need_tar = false
