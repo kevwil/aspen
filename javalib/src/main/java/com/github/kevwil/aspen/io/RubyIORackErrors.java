@@ -2,6 +2,7 @@ package com.github.kevwil.aspen.io;
 
 import com.github.kevwil.aspen.RackErrors;
 import org.jruby.*;
+import org.jruby.anno.JRubyMethod;
 import org.jruby.runtime.ObjectAllocator;
 import org.jruby.runtime.ThreadContext;
 import org.jruby.runtime.builtin.IRubyObject;
@@ -48,7 +49,7 @@ implements RackErrors
     public RubyIORackErrors( Ruby runtime, RubyClass metaClass )
     {
         super( runtime, metaClass );
-        _stderr = (RubyIO) runtime.getGlobalVariables().get( "$stderr" );
+//        _stderr = (RubyIO) runtime.getGlobalVariables().get( "$stderr" );
     }
 
     public RubyIORackErrors( Ruby runtime )
@@ -56,29 +57,35 @@ implements RackErrors
         super( runtime, getRubyIORackErrorsClass( runtime ) );
     }
 
-    private RubyIO _stderr;
+//    private RubyIO _stderr;
 
-    @Override
-    public IRubyObject puts( final ThreadContext context, final IRubyObject arg )
+    @JRubyMethod( required = 1 )
+    public IRubyObject puts( final ThreadContext context, final IRubyObject args )
     {
-        return _stderr.puts( context, new IRubyObject[]{ arg } );
+        System.err.println( args.toString() );
+        return getRuntime().getNil();
+//        return _stderr.puts( context, new IRubyObject[]{ arg } );
     }
 
-    @Override
+    @JRubyMethod()
     public IRubyObject write( final ThreadContext context, final IRubyObject string )
     {
-        return _stderr.write( context, string );
+        System.err.println( string.toString() );
+        return getRuntime().getNil();
+//        return _stderr.write( context, string );
     }
 
-    @Override
+    @JRubyMethod()
     public IRubyObject flush()
     {
-        return _stderr.flush();
+        System.err.flush();
+        return getRuntime().getNil();
+//        return _stderr.flush();
     }
 
-    @Override
+    @JRubyMethod()
     public IRubyObject close()
     {
-        throw _stderr.getRuntime().newIOError( "Rack spec prohibits calling close() on rack.errors stream." );
+        throw getRuntime().newIOError( "Rack spec prohibits calling close() on rack.errors stream." );
     }
 }
