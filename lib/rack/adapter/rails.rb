@@ -34,6 +34,10 @@ module Rack
 #          end
 #        }.to_app
         @rails_app = ActionController::Dispatcher.new
+#        @rails_app = ::Rack::Builder.new {
+#          run ::ActionController::Dispatcher.new
+#          use ::Rack::Lint
+#        }
 
         @file_app = Rack::File.new(::File.join(RAILS_ROOT, "public"))
       end
@@ -46,7 +50,7 @@ module Rack
         ENV['RAILS_ENV'] = @env
 
         require "#{@root}/config/environment"
-        require 'dispatcher'
+        require 'action_controller/dispatcher'
 
         if @prefix
           if ActionController::Base.respond_to?(:relative_url_root=)
