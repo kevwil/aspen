@@ -30,11 +30,11 @@ implements RackErrors
             ObjectAllocator allocator,
             Class annoClass)
     {
-        RubyModule jrubyMod = runtime.getOrCreateModule( "Aspen" );
-        RubyClass klass = jrubyMod.getClass( name );
+        RubyModule aspenMod = runtime.getOrCreateModule( "Aspen" );
+        RubyClass klass = aspenMod.getClass( name );
         if( klass == null )
         {
-            klass = jrubyMod.defineClassUnder( name, parent, allocator );
+            klass = aspenMod.defineClassUnder( name, parent, allocator );
             klass.defineAnnotatedMethods( annoClass );
         }
         return klass;
@@ -49,7 +49,6 @@ implements RackErrors
     public RubyIORackErrors( Ruby runtime, RubyClass metaClass )
     {
         super( runtime, metaClass );
-//        _stderr = (RubyIO) runtime.getGlobalVariables().get( "$stderr" );
     }
 
     public RubyIORackErrors( Ruby runtime )
@@ -57,14 +56,11 @@ implements RackErrors
         super( runtime, getRubyIORackErrorsClass( runtime ) );
     }
 
-//    private RubyIO _stderr;
-
     @JRubyMethod( required = 1 )
     public IRubyObject puts( final ThreadContext context, final IRubyObject args )
     {
         System.err.println( args.toString() );
         return getRuntime().getNil();
-//        return _stderr.puts( context, new IRubyObject[]{ arg } );
     }
 
     @JRubyMethod()
@@ -72,7 +68,6 @@ implements RackErrors
     {
         System.err.println( string.toString() );
         return getRuntime().getNil();
-//        return _stderr.write( context, string );
     }
 
     @JRubyMethod()
@@ -80,7 +75,6 @@ implements RackErrors
     {
         System.err.flush();
         return getRuntime().getNil();
-//        return _stderr.flush();
     }
 
     @JRubyMethod()
