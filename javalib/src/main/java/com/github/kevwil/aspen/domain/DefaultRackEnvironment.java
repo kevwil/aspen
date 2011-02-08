@@ -122,17 +122,17 @@ implements RackEnvironment
         {
             env.remove( "PATH_INFO" );
         }
-        else
-        {
-            int snLen = env.get( "SCRIPT_NAME" ).toString().length();
-            env.put( "PATH_INFO", path.substring( snLen, path.length() ) );
-        }
-        if( !env.containsKey( "REQUEST_PATH" ) ||
-                env.get( "REQUEST_PATH" ) == null ||
-                env.get( "REQUEST_PATH" ).toString().length() == 0 )
-        {
-            env.put( "REQUEST_PATH", env.get( "SCRIPT_NAME" ).toString() + env.get( "PATH_INFO" ) );
-        }
+//        else
+//        {
+//            int snLen = env.get( "SCRIPT_NAME" ).toString().length();
+//            env.put( "PATH_INFO", path.substring( snLen, path.length() ) );
+//        }
+//        if( !env.containsKey( "REQUEST_PATH" ) ||
+//                env.get( "REQUEST_PATH" ) == null ||
+//                env.get( "REQUEST_PATH" ).toString().length() == 0 )
+//        {
+//            env.put( "REQUEST_PATH", env.get( "SCRIPT_NAME" ).toString() + env.get( "PATH_INFO" ) );
+//        }
         if( !env.containsKey( "SERVER_PORT" ) )
             env.put( "SERVER_PORT", "80" );
 
