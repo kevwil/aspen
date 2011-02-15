@@ -28,17 +28,17 @@ public class RubyUtil
 
     public static IRubyObject call( final String method, final IRubyObject target )
     {
-        return target.callMethod( _runtime.getCurrentContext(), method );
+        return target.callMethod( target.getRuntime().getCurrentContext(), method );
     }
 
     public static IRubyObject hashGet( final RubyHash hash, final IRubyObject key )
     {
-        return hash.op_aref( _runtime.getCurrentContext(), key );
+        return hash.op_aref( hash.getRuntime().getCurrentContext(), key );
     }
 
     public static void hashDelete( final RubyHash hash, final IRubyObject key )
     {
-        hash.delete( _runtime.getCurrentContext(), key, Block.NULL_BLOCK );
+        hash.delete( hash.getRuntime().getCurrentContext(), key, Block.NULL_BLOCK );
     }
 
     public static RubyIO stringToIO( final String input )
@@ -67,10 +67,10 @@ public class RubyUtil
             public IRubyObject call( ThreadContext context, IRubyObject[] args, Block block ){
                 ChannelBuffer line = ChannelBuffers.copiedBuffer( args[0].toString(), Charset.forName( "UTF-8" ) );
                 outBuffer.writeBytes( line );
-                return _runtime.getNil();
+                return body.getRuntime().getNil();
             }
         };
-        RubyEnumerable.callEach( _runtime, _runtime.getCurrentContext(), body, callback );
+        RubyEnumerable.callEach( body.getRuntime(), body.getRuntime().getCurrentContext(), body, callback );
         return outBuffer;
     }
 }

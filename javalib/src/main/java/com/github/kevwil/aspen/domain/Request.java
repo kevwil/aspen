@@ -30,11 +30,13 @@ public class Request
     private URL _url;
     private String _uri;
     private RubyHash _rubyHeaders;
+    private final Ruby _runtime;
 
-    public Request( final ChannelHandlerContext context, final HttpRequest request )
+    public Request( final ChannelHandlerContext context, final HttpRequest request, final Ruby runtime )
     {
         _context = context;
         _request = request;
+        _runtime = runtime;
         initialize();
     }
 
@@ -43,8 +45,13 @@ public class Request
         _uri = _request.getUri();
         _realMethod = parseRealMethod( parseQueryStringParams() );
         _url = parseUrl();
-        _rubyHeaders = RubyHash.newHash( Ruby.getGlobalRuntime() );
+        _rubyHeaders = RubyHash.newHash( _runtime );
         RackUtil.parseHeaders( _context, _request, _rubyHeaders );
+    }
+
+    public Ruby getRuntime()
+    {
+        return _runtime;
     }
 
     public URL getUrl()
@@ -64,7 +71,7 @@ public class Request
 
     public RackEnvironment getEnv()
     {
-        return new DefaultRackEnvironment( this );
+        return new DefaultRackEnvironment( _runtime, this );
     }
 
     public HttpMethod getMethod()

@@ -5,6 +5,7 @@ import com.github.kevwil.aspen.domain.Response;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.local.DefaultLocalServerChannelFactory;
 import org.jboss.netty.handler.codec.http.*;
+import org.jruby.Ruby;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
@@ -29,9 +30,10 @@ public class RackChannelUpstreamHandlerTest
         MessageEvent e = new UpstreamMessageEvent(
                 channel, hr, new InetSocketAddress( 54321 ) );
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
-        Request request = createMockBuilder( Request.class ).withConstructor( ctx, hr ).createMock();
+        Request request = createMockBuilder( Request.class ).withConstructor( ctx, hr, Ruby.getGlobalRuntime() ).createMock();
         Response response = new Response( request );
 
+        expect( rack.getRuntime() ).andReturn( Ruby.getGlobalRuntime() );
         expect( rack.process( anyObject( Request.class ) ) ).andReturn( response );
         replay( request );
         replay( rack );

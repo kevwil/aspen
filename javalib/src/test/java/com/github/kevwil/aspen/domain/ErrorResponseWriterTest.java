@@ -3,12 +3,12 @@ package com.github.kevwil.aspen.domain;
 import com.github.kevwil.aspen.RackChannelUpstreamHandler;
 import com.github.kevwil.aspen.RackProxy;
 import com.github.kevwil.aspen.exception.ServiceException;
-import org.easymock.EasyMock;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.local.DefaultLocalServerChannelFactory;
 import org.jboss.netty.handler.codec.http.*;
+import org.jruby.Ruby;
 import org.junit.*;
 
 import java.nio.charset.Charset;
@@ -44,7 +44,7 @@ public class ErrorResponseWriterTest
         pipeline.addLast( "handler", handler );
         new DefaultLocalServerChannelFactory().newChannel( pipeline );
         _context = pipeline.getContext( handler );
-        _request = new Request( _context, _httpRequest );
+        _request = new Request( _context, _httpRequest, Ruby.getGlobalRuntime() );
         _response = new Response( _request );
         _response.setException( _exception );
     }

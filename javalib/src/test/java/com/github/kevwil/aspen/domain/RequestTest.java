@@ -4,6 +4,7 @@ import com.github.kevwil.aspen.RackEnvironment;
 import com.github.kevwil.aspen.RackUtil;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.*;
+import org.jruby.Ruby;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,7 @@ public class RequestTest
     private HttpRequest httpRequest;
     private Request req;
     private ChannelHandlerContext ctx;
+    private static final Ruby _runtime = Ruby.getGlobalRuntime();
 
     @Before
     public void setUp()
@@ -30,7 +32,7 @@ public class RequestTest
             throws Exception
     {
         httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
-        req = new Request( ctx, httpRequest );
+        req = new Request( ctx, httpRequest, _runtime );
 
         assertEquals( HttpMethod.GET, req.getMethod() );
         assertEquals( HttpMethod.GET, req.getRealMethod() );
@@ -43,7 +45,7 @@ public class RequestTest
     public void shouldBuildRequestWithOnlyUri()
     {
         httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
-        req = new Request( ctx, httpRequest );
+        req = new Request( ctx, httpRequest, _runtime );
 
         assertEquals( HttpMethod.GET, req.getMethod() );
         assertEquals( HttpMethod.GET, req.getRealMethod() );
@@ -61,7 +63,7 @@ public class RequestTest
         String path = encoder.toString();
 
         httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/"+path );
-        req = new Request( ctx, httpRequest );
+        req = new Request( ctx, httpRequest, _runtime );
 
         assertEquals( HttpMethod.POST, req.getMethod() );
         assertEquals( HttpMethod.PUT, req.getRealMethod() );
@@ -74,7 +76,7 @@ public class RequestTest
     {
         httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/foo" );
         httpRequest.addHeader( "X-Http-Method-Override", "PUT" );
-        req = new Request( ctx, httpRequest );
+        req = new Request( ctx, httpRequest, _runtime );
 
         assertEquals( HttpMethod.POST, req.getMethod() );
         assertEquals( HttpMethod.PUT, req.getRealMethod() );
@@ -84,7 +86,7 @@ public class RequestTest
     public void shouldReturnAnEnvironmentWrapper()
     {
         httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
-        req = new Request( ctx, httpRequest );
+        req = new Request( ctx, httpRequest, _runtime );
         RackEnvironment env = req.getEnv();
         assertNotNull( env );
     }

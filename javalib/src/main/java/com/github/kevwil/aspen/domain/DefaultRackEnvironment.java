@@ -17,13 +17,14 @@ import java.net.*;
 public class DefaultRackEnvironment
 implements RackEnvironment
 {
-    private final Ruby _runtime = Ruby.getGlobalRuntime();
+    private final Ruby _runtime;
     private Request _request;
     private RackInput _input;
     private InputStream _stream;
 
-    public DefaultRackEnvironment( Request request )
+    public DefaultRackEnvironment( final Ruby runtime, final Request request )
     {
+        _runtime = runtime;
         _request = request;
         _stream = new ChannelBufferInputStream( _request.getBody() );
         RubyIORackInput input = new RubyIORackInput( _runtime );

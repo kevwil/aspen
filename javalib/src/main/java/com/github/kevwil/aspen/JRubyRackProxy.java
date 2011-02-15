@@ -17,7 +17,6 @@ import java.nio.charset.Charset;
 public class JRubyRackProxy
 implements RackProxy
 {
-    private final Ruby RUBY = Ruby.getGlobalRuntime();
     private final IRubyObject _app;
 
     public JRubyRackProxy( final IRubyObject app )
@@ -25,6 +24,11 @@ implements RackProxy
         _app = app;
     }
 
+    public Ruby getRuntime()
+    {
+        return _app.getRuntime();
+    }
+    
     @Override
     public Response process( final Request request )
     {
@@ -36,7 +40,7 @@ implements RackProxy
         RubyHash env = request.getEnv().toRuby();
         IRubyObject[] args = { env };
 
-        IRubyObject callResult = _app.callMethod( RUBY.getCurrentContext(),
+        IRubyObject callResult = _app.callMethod( request.getRuntime().getCurrentContext(),
                                                        "call",
                                                        args,
                                                        Block.NULL_BLOCK );
@@ -75,7 +79,7 @@ implements RackProxy
             r.setException( new ServiceException( "bad rack response: " + result.inspect().toString() ) );
             return r;
         }
-        IRubyObject body = RUBY.getNil();
+        IRubyObject body = request.getRuntime().getNil();
         try
         {
             IRubyObject result1 = result.entry( 0 );

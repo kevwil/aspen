@@ -2,19 +2,13 @@ package com.github.kevwil.aspen;
 
 import com.github.kevwil.aspen.domain.Request;
 import com.github.kevwil.aspen.domain.Response;
-import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
 import org.jruby.runtime.Block;
 import org.jruby.runtime.ThreadContext;
 import org.jruby.runtime.builtin.IRubyObject;
-import org.jruby.util.io.STDIO;
 import org.junit.*;
-
-import java.io.ByteArrayInputStream;
-import java.nio.channels.Channels;
-import java.nio.charset.Charset;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -39,7 +33,7 @@ public class JRubyRackProxyTest
         _rack = new JRubyRackProxy( _app );
         ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
         hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
-        r = new Request( ctx, hr );
+        r = new Request( ctx, hr, _runtime );
     }
 
     @After

@@ -2,8 +2,7 @@ package com.github.kevwil.aspen;
 
 import com.github.kevwil.aspen.domain.Request;
 import com.github.kevwil.aspen.domain.Response;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.jruby.Ruby;
 
 /**
  * @author kevwil
@@ -23,4 +22,6 @@ public interface RackProxy
      * @return the Response
      */
     Response process( Request request ); // TODO need to handle chunks !!
+
+    Ruby getRuntime();
 }

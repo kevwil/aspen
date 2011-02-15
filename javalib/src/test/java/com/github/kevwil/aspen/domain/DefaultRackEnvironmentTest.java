@@ -6,7 +6,6 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.*;
 import org.jruby.*;
 import org.jruby.javasupport.JavaEmbedUtils;
-import org.jruby.runtime.builtin.IRubyObject;
 import org.junit.*;
 
 import java.io.*;
@@ -30,8 +29,8 @@ public class DefaultRackEnvironmentTest
     {
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
         HttpRequest hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
-        r = new Request( ctx, hr );
-        env = new DefaultRackEnvironment( r );
+        r = new Request( ctx, hr, _runtime );
+        env = new DefaultRackEnvironment( _runtime, r );
     }
 
     @Test
@@ -70,7 +69,7 @@ public class DefaultRackEnvironmentTest
     {
         String data = "foo=bar";
         r.setBody( ChannelBuffers.copiedBuffer( data+"\n", Charset.forName( "UTF-8" ) ) );
-        env = new DefaultRackEnvironment( r );
+        env = new DefaultRackEnvironment( _runtime, r );
 
         InputStream stream = env.getInput();
         assertNotNull( stream );
