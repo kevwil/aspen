@@ -101,18 +101,18 @@ implements RackInput
         switch( args.length )
         {
             case 0:
-                return JavaEmbedUtils.javaToRuby( getRuntime(), bufferToString( _buffer ) );
+                return JavaEmbedUtils.javaToRuby( getRuntime(), bufferToString( getBuffer() ) );
             case 1:
                 int len = RubyInteger.num2int( args[0] );
-                if( len > _buffer.readableBytes() )
+                if( len > getBuffer().readableBytes() )
                 {
                     throw getRuntime().newIOError( "cannot read " + len + " bytes from input" );
                 }
-                ChannelBuffer chunk = _buffer.readBytes( len );
+                ChannelBuffer chunk = getBuffer().readBytes( len );
                 return JavaEmbedUtils.javaToRuby( getRuntime(), bufferToString( chunk ) );
             case 2:
                 len = RubyInteger.num2int( args[0] );
-                chunk = _buffer.readBytes( len );
+                chunk = getBuffer().readBytes( len );
                 RubyString buf = RubyString.stringValue( args[1] );
                 buf.append( JavaEmbedUtils.javaToRuby( getRuntime(), bufferToString( chunk ) ) );
                 return getRuntime().getNil();
@@ -124,7 +124,7 @@ implements RackInput
     @JRubyMethod()
     public IRubyObject each( final ThreadContext context, final Block block )
     {
-        ChannelBufferInputStream stream = new ChannelBufferInputStream( _buffer.slice() );
+        ChannelBufferInputStream stream = new ChannelBufferInputStream( getBuffer().slice() );
         AtomicReference<String> line = new AtomicReference<String>();
         if( !isEof().isTrue() )
         {
@@ -148,14 +148,14 @@ implements RackInput
     @JRubyMethod()
     public IRubyObject rewind( final ThreadContext context )
     {
-        _buffer.readerIndex( 0 );
+        getBuffer().readerIndex( 0 );
         return getRuntime().getNil();
     }
 
     @JRubyMethod( name = "eof?" )
     public IRubyObject isEof()
     {
-        return getRuntime().newBoolean( !_buffer.readable() );
+        return getRuntime().newBoolean( ! getBuffer().readable() );
     }
 
     @JRubyMethod( name = "binmode" )

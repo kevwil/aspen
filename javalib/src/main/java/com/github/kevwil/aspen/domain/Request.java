@@ -31,6 +31,7 @@ public class Request
     private String _uri;
     private RubyHash _rubyHeaders;
     private final Ruby _runtime;
+    private static final Object _lock = new Object();
 
     public Request( final ChannelHandlerContext context, final HttpRequest request, final Ruby runtime )
     {
@@ -51,7 +52,10 @@ public class Request
 
     public Ruby getRuntime()
     {
-        return _runtime;
+        synchronized( _lock )
+        {
+            return _runtime;
+        }
     }
 
     public URL getUrl()
@@ -71,7 +75,10 @@ public class Request
 
     public RackEnvironment getEnv()
     {
-        return new DefaultRackEnvironment( _runtime, this );
+        synchronized( _lock )
+        {
+            return new DefaultRackEnvironment( _runtime, this );
+        }
     }
 
     public HttpMethod getMethod()

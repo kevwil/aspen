@@ -18,6 +18,7 @@ public class JRubyRackProxy
 implements RackProxy
 {
     private final IRubyObject _app;
+    private static final Object _lock = new Object();
 
     public JRubyRackProxy( final IRubyObject app )
     {
@@ -26,48 +27,54 @@ implements RackProxy
 
     public Ruby getRuntime()
     {
-        return _app.getRuntime();
+        synchronized( _lock )
+        {
+            return _app.getRuntime();
+        }
     }
     
     @Override
     public Response process( final Request request )
     {
-        if( ! _app.respondsTo( "call" ) )
+        synchronized( _lock )
         {
-            throw new InvalidAppException();
-        }
+            if( ! _app.respondsTo( "call" ) )
+            {
+                throw new InvalidAppException();
+            }
 
-        RubyHash env = request.getEnv().toRuby();
-        IRubyObject[] args = { env };
+            RubyHash env = request.getEnv().toRuby();
+            IRubyObject[] args = { env };
 
-        IRubyObject callResult = _app.callMethod( request.getRuntime().getCurrentContext(),
-                                                       "call",
-                                                       args,
-                                                       Block.NULL_BLOCK );
-        if( callResult.isNil() )
-        {
-            Response err = new Response( request );
-            err.setException( new ServiceException( "'nil' was returned from the app" ) );
-            return err;
-        }
-        if( callResult.getType().toString().equals( "Rack::File" ) )
-        {
-            RubyObject.puts( callResult.inspect() );
-            // TODO: return a file-based response
-            Response err = new Response( request );
-            err.setException( new ServiceException( "body is a Rack::File - need to handle it differently" ) );
-            return err;
-        }
-        try
-        {
-            RubyArray result = (RubyArray)callResult;
-            return createResponse( request, result );
-        }
-        catch( Exception e )
-        {
-            Response err = new Response( request );
-            err.setException( e );
-            return err;
+            IRubyObject callResult = _app.callMethod( request.getRuntime().getCurrentContext(),
+                                                           "call",
+                                                           args,
+                                                           Block.NULL_BLOCK );
+            if( callResult.isNil() )
+            {
+                Response err = new Response( request );
+                err.setException( new ServiceException( "'nil' was returned from the app" ) );
+                return err;
+            }
+            if( callResult.getType().toString().equals( "Rack::File" ) )
+            {
+                RubyObject.puts( callResult.inspect() );
+                // TODO: return a file-based response
+                Response err = new Response( request );
+                err.setException( new ServiceException( "body is a Rack::File - need to handle it differently" ) );
+                return err;
+            }
+            try
+            {
+                RubyArray result = (RubyArray)callResult;
+                return createResponse( request, result );
+            }
+            catch( Exception e )
+            {
+                Response err = new Response( request );
+                err.setException( e );
+                return err;
+            }
         }
     }
 

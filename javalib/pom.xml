@@ -59,6 +59,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.1</version>
         <executions>
           <execution>
             <id>copy-dependencies</id>
@@ -69,7 +70,9 @@
             <configuration>
               <outputDirectory>${project.build.directory}</outputDirectory>
               <includeScope>compile</includeScope>
-              <excludeArtifactIds>jruby,easymock,easymockclassextension</excludeArtifactIds>
+              <excludeScope>test</excludeScope>
+              <excludeArtifactIds>jruby</excludeArtifactIds>
+              <excludeTransitive>true</excludeTransitive>
             </configuration>
           </execution>
         </executions>
