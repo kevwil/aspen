@@ -22,8 +22,9 @@ Bones do
   version ENV['VERSION'] || Aspen::VERSION::STRING
   readme_file 'README'
   ignore_file '.bnsignore'
-  depend_on 'rack', '>=1.1.0'
+  depend_on 'rack', '>=1.1.2', '<1.2.0'
   depend_on 'bones-rcov', :development => true
+  depend_on 'bones-rspec', :development => true
   depend_on 'bones-yard', :development => true
   depend_on 'rspec', '>=1.3', '<2.0', :development => true
   depend_on 'mocha', :development => true
