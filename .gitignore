@@ -7,3 +7,4 @@ out
 .bundle
 Gemfile.lock
 pkg/*
+vendor/*
