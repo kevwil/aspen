@@ -1,23 +1,7 @@
-require 'aspen/version'
+require 'java'
 
-module Aspen
-
-  autoload :Logging, 'aspen/logging'
-  autoload :Controller, 'aspen/controller'
-  autoload :Server, 'aspen/server'
-  autoload :Runner, 'aspen/runner'
-  autoload :Stats, 'aspen/stats'
-
-end  # module Aspen
+jars = File.join(File.dirname(__FILE__), 'java', '*.jar')
+Dir[jars].each { |j| require j }
 
 require 'rack'
-# gem 'rack', '=1.1.0' # match the Rails required dependency
-require 'rack/adapter/loader'
-
-module Rack
-  module Adapter
-    autoload :Rails, 'rack/adapter/rails'
-  end
-end
-
-# EOF
+require 'aspen/version'

@@ -1,7 +1,10 @@
-#!/usr/bin/env jruby
+#!/usr/bin/env ruby
 
+raise('Aspen require JRuby to run.') unless RUBY_PLATFORM =~ /java/
+
+require 'rack'
 require 'aspen'
 
-::Aspen::Runner.new(ARGV).run!
-
-# EOF
+server = Rack::Server.new
+server.options[:server] = 'aspen'
+server.start
