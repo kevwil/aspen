@@ -5,3 +5,7 @@ Dir[jars].each { |j| require j }
 
 require 'rack'
 require 'aspen/version'
+
+module Aspen
+  # should I use autoload?
+end

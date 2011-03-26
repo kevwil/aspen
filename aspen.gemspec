@@ -4,7 +4,7 @@ require "aspen/version"
 
 Gem::Specification.new do |s|
   s.name        = "aspen"
-  s.version     = Aspen::VERSION
+  s.version     = Aspen::VERSION::STRING
   s.platform    = Gem::Platform::CURRENT
   s.authors     = ["Kevin Williams"]
   s.email       = ["kevwil@gmail.com"]
