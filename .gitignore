@@ -8,3 +8,4 @@ out
 Gemfile.lock
 pkg/*
 vendor/*
+javalib/target/*
