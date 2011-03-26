@@ -1,6 +1,14 @@
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task :default => ['java:build', :spec]
+task :build => ['java:build', :spec]
+task :clean => ['java:clean', 'java:clobber', 'doc:clean']
+
 require 'fileutils'
 
 namespace :doc do
@@ -27,7 +35,7 @@ namespace :java do
 
   desc "build java code and copy jars to lib folder"
   task :build => :clean do
-    system "cd javalib;mvn --offline package;cp target/*.jar ../lib/java;cd .."
+    system "cd javalib;mvn --offline package;cp -vX target/*.jar ../lib/java/;cd .."
   end
 
 end

@@ -5,9 +5,9 @@ require 'yaml'
 require 'net/http'
 require 'rack/lint'
 require 'aspen'
-require 'spec'
+require 'rspec'
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.mock_with :mocha
 end
 
