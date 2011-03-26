@@ -14,3 +14,4 @@ vendor
 .rakeTasks
 .yardoc
 .generators
+spec/rails_app/db/*
