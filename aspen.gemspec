@@ -22,4 +22,9 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "rack"
   s.add_development_dependency "rspec"
   s.add_development_dependency "mocha"
+  s.add_development_dependency "rcov"
+  s.add_development_dependency "ruby-debug-base"
+  s.add_development_dependency "ruby-debug"
+  s.add_development_dependency "ruby-debug-ide"
+  s.add_development_dependency "yard"
 end

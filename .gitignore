@@ -9,3 +9,4 @@ Gemfile.lock
 pkg/*
 vendor/*
 javalib/target/*
+.rakeTasks
