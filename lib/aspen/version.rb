@@ -12,7 +12,7 @@ module Aspen
     TINY     = 0
 
     # version digits joined as a string
-    STRING   = [MAJOR, MINOR, TINY].join('.')
+    STRING   = [MAJOR, MINOR, TINY].join('.').freeze
 
     # Rack protocol version
     RACK     = [1, 1].freeze

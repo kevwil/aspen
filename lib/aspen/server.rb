@@ -1,133 +1,48 @@
-# require 'g'
-require File.dirname(__FILE__) + '/logging.rb'
-require 'java'
-require File.dirname(__FILE__) + '/aspenj.jar'
-import com.github.kevwil.aspen.AspenServer
-import com.github.kevwil.aspen.JRubyRackProxy
-
 module Aspen
-  
-  # the Server is the launching point and core of Aspen.
-  #
-  # == TCP Server
-  # It will listen for incoming requests on TCP sockets
-  # at <tt>host:port</tt> by specifying +host+ and +port+.
-  #
-  # == Rack Application
-  # All requests will be processed through +app+ that must be a valid Rack adapter.
-  # A valid Rack adapter (application) must respond to <tt>call(env#Hash)</tt> and
-  # return an array of <tt>[status, headers, [body]]</tt>.
-  # @author Kevin Williams
-  # @since 1.0.0
-  # @version 1.0.0
+
   class Server
-    include Logging
     
-    # default values
-    DEFAULT_HOST = '0.0.0.0'
-    DEFAULT_PORT = 3000
+    include_class org.jboss.netty.channel.group.DefaultChannelGroup
+    include_class org.jboss.netty.channel.group.ChannelGroupFuture
+    include_class org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory
+    include_class java.util.concurrent.Executors
+    include_class org.jboss.netty.bootstrap.ServerBootstrap
+    include_class org.jboss.netty.channel.Channel
+    include_class com.github.kevwil.aspen.RackHttpServerPipelineFactory
+    include_class com.github.kevwil.aspen.JRubyRackProxy
     
-    # Application (Rack adapter) called with the request that produces the response.
-    attr_accessor :app
-    
-    # IP address of to bind sockets to, usually the address of the host,
-    # the loopback address (127.0.0.1), or the 'all' binding address
-    # of 0.0.0.0 (which is the default).
-    attr_accessor :host
-    
-    # port number for the server to listen on
-    attr_accessor :port
-    
-    def initialize(*args, &block)
-      host, port, options = DEFAULT_HOST, DEFAULT_PORT, {}
-      @app = nil
+    def self.run(app, options)
+
+      @running = false
+      @all_channels = DefaultChannelGroup.new('aspen-server')
+      @channel_factory = NioServerSocketChannelFactory.new(
+        Executors.newCachedThreadPool, Executors.newCachedThreadPool )
+      @bootstrap = ServerBootstrap.new(@channel_factory)
+
+      @bootstrap.set_option( "child.tcpNoDelay", true )
+      @bootstrap.set_option( "child.keepAlive", true )
       
-      # Guess each parameter by its type so they can be
-      # received in any order
-      args.each do |arg|
-        case arg
-        when Fixnum, /^\d+$/  then @port = arg.to_i
-        when String           then @host = arg
-        when Hash             then options = arg
-        else
-          @app = arg if arg.respond_to?(:call)
-        end
+      @bootstrap.set_pipeline_factory( RackHttpServerPipelineFactory.new( JRubyRackProxy.new( app ) ) )
+
+      channel = @bootstrap.bind( new InetSocketAddress( options[:host], options[:port] ) )
+      @all_channels.add channel
+      @running = true
+    end
+    
+    def self.stop
+      raise("cannot stop, not running") unless @running
+      begin
+        future = @all_channels.close
+        future.await_interruptably
+        @channel_factory.release_external_resources
+        @bootstrap.release_external_resources
+        @running = false
+      rescue
+        raise "error stopping Netty channels"
       end
-      
-      # Allow using Rack builder as a block
-      @app = Rack::Builder.new(&block).to_app if block
-      
-      # If in debug mode, wrap in logger adapter
-      @app = Rack::CommonLogger.new(@app) if Logging.debug?
-
-      @proxy = JRubyRackProxy.new(@app)
-      
-      @backend = AspenServer.new(@host,@port,@proxy)
-    end
-
-    def app=(newapp)
-      @app = newapp
-      @proxy = JRubyRackProxy.new(@app)
-      @backend = AspenServer.new(@host,@port,@proxy)
-    end
-    
-    # Lil' shortcut to turn this:
-    #
-    #   Server.new(...).start
-    #
-    # into this:
-    #
-    #   Server.start(...)
-    #
-    def self.start(*args, &block)
-      new(*args, &block).start!
-    end
-    
-    # Start the server and listen for connections.
-    def start
-      raise ArgumentError, 'app required' unless @app
-
-      log   ">> Aspen web server (#{::Aspen::SERVER})"
-      debug ">> Debugging ON"
-      trace ">> Tracing ON"
-
-      log ">> Listening on #{@host}:#{@port}, CTRL+C to stop"
-
-      @backend.start
-    end
-    alias :start! :start
-
-    def running?
-      return @backend.is_running
-    end
-
-    # == Gracefull shutdown
-    # Stops the server after processing all current connections.
-    # As soon as this method is called, the server stops accepting
-    # new requests and wait for all current connections to finish.
-    # Calling twice is the equivalent of calling <tt>stop!</tt>.
-    def stop
-      if running?
-        @backend.stop
-        unless @backend.empty?
-          log ">> Waiting for #{@backend.size} connection(s) to finish, " +
-                "can take up to #{timeout} sec, CTRL+C to stop now"
-        end
-      else
-        stop!
-      end
-    end
-
-    # == Force shutdown
-    # Stops the server closing all current connections right away.
-    # This doesn't wait for connection to finish their work and send data.
-    # All current requests will be dropped.
-    def stop!
-      log ">> Stopping ..."
-
-      @backend.stop!
     end
     
   end
-  
+
 end
+
