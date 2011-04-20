@@ -8,6 +8,8 @@ require 'aspen/version'
 
 module Aspen
   # should I use autoload?
-  require 'aspen/runner'
+  # require 'aspen/runner'
+  require 'aspen/pipeline_factory'
+  require 'aspen/channel_handler'
   require 'aspen/server'
 end
