@@ -20,11 +20,11 @@ module Aspen
 
     def message_received(context, event)
       $stderr.write event.inspect
-      resp = DefaultHttpResponse.new(HttpVersion.HTTP_1_1, HttpResponseStatus.OK)
+      resp = DefaultHttpResponse.new(HttpVersion::HTTP_1_1, HttpResponseStatus::OK)
       buffer = ChannelBuffers.copied_buffer('hello world', Charset.for_name('UTF-8'))
       resp.set_content(buffer)
-      resp.set_header(HttpHeaders.Names.CONNECTION, 'close')
-      context.get_channel.write(resp).add_listener(ChannelFutureListener.CLOSE)
+      resp.set_header(HttpHeaders::Names::CONNECTION, 'close')
+      context.get_channel.write(resp).add_listener(ChannelFutureListener::CLOSE)
     end
 
   end

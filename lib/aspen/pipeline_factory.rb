@@ -20,7 +20,7 @@ module Aspen
       pl.add_last("logger", LoggingHandler.new(InternalLogLevel::DEBUG))
       pl.add_last("decoder", HttpRequestDecoder.new)
       pl.add_last("encoder", HttpResponseEncoder.new)
-      pl.add_last("handler", ::Aspen::ChannelHandler.new(@app))
+      pl.add_last("handler", ChannelHandler.new(@app))
       pl
     end
   end

@@ -9,6 +9,8 @@ module Aspen
     java_import org.jboss.netty.bootstrap.ServerBootstrap
     java_import org.jboss.netty.channel.Channel
     java_import java.net.InetSocketAddress
+    java_import org.jboss.netty.logging.InternalLoggerFactory
+    java_import org.jboss.netty.logging.JdkLoggerFactory
 #    java_import com.github.kevwil.aspen.RackHttpServerPipelineFactory
 #    java_import com.github.kevwil.aspen.JRubyRackProxy
     
@@ -24,7 +26,8 @@ module Aspen
 
       @bootstrap.set_option( "child.tcpNoDelay", true )
       @bootstrap.set_option( "child.keepAlive", true )
-      
+
+      InternalLoggerFactory.set_default_factory JdkLoggerFactory.new
 #      @bootstrap.set_pipeline_factory( RackHttpServerPipelineFactory.new( JRubyRackProxy.new( app ) ) )
       @bootstrap.set_pipeline_factory ::Aspen::AspenPipelineFactory.new(app)
 
