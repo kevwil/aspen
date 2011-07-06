@@ -146,7 +146,7 @@ public class Request
         catch( MalformedURLException e )
         {
             InetSocketAddress local = (InetSocketAddress) getLocalAddress();
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append( getProtocolFromLocalAddress( local ) )
                     .append( local.getHostName() )
                     .append( getPortFromLocalAddress( local ) )
