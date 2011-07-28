@@ -10,3 +10,4 @@ pkg/*
 vendor/*
 javalib/target/*
 .rakeTasks
+*.sqlite3
