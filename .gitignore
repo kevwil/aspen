@@ -3,3 +3,5 @@
 .yardoc
 aspen.i*
 javalib/
+out/
+pkg/
