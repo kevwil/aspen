@@ -1,12 +1,12 @@
 aspen
     by Kevin Williams
-    http://kevwil.github.com/aspen/
+    https://kevwil.github.io/aspen/
 
 == DESCRIPTION:
 
 Aspen is a web server engine for JRuby. The design is very similar
-to Thin (http://code.macournoyer.com/thin/), except
-using Netty (http://jboss.org/netty) for high-speed concurrent sockets.
+to Thin (https://rubygems.org/gems/thin), except
+using Netty (https://netty.io) for high-speed concurrent sockets.
 
 == FEATURES/PROBLEMS:
 
@@ -20,8 +20,8 @@ using Netty (http://jboss.org/netty) for high-speed concurrent sockets.
 
 == REQUIREMENTS:
 
-* Java >= 1.5 (I'm using 1.6 but 1.5 *should* work)
-* JRuby >= 1.6.0.RC1
+* Java 8 (I'm using 22 but targeting 8)
+* JRuby (currently 9.4.8.0)
 * Rack >= 1.1 (I'm using 1.2 but trying to retain 1.1 compatibility)
 
 == INSTALL:
@@ -29,20 +29,20 @@ using Netty (http://jboss.org/netty) for high-speed concurrent sockets.
 	# From Gemcutter / Rubyforge ...
 	$ (sudo) jruby -S gem install aspen
 	
-	# if using JRuby via RVM (http://rvm.beginrescueend.com/) which I highly recommend doing
+	# if using JRuby via RVM (https://rvm.io/) which I highly recommend doing
 	$ gem install aspen
 
 == INSTALL FROM SOURCE:
 
     # get source from Github
-    $ git clone git://github.com/kevwil/aspen.git
+    $ git clone https://github.com/kevwil/aspen.git
     $ cd aspen
 
     # You must have JRuby set up, with the dependent gems installed.
     # see the Rakefile for the dev-time dependencies
     $ jgem install bones-rcov bones-yard bones-extras rspec mocha
 
-    # You must have Ant (http://ant.apache.org) and Maven (http://maven.apache.org) set up.
+    # You must have Ant (https://ant.apache.org) and Maven (https://maven.apache.org) set up.
     # *note* the Rakefile will call Maven in "offline mode".
     # If you get any errors about unresolved dependencies, do this:
     $ cd javalib
