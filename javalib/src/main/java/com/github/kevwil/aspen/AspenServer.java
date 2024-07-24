@@ -1,12 +1,10 @@
 package com.github.kevwil.aspen;
 
-import org.jboss.netty.bootstrap.ServerBootstrap;
-import org.jboss.netty.channel.*;
-import org.jboss.netty.channel.group.*;
-import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
 
 /**
  * @author kevwil
@@ -14,12 +12,10 @@ import java.util.concurrent.Executors;
  */
 public class AspenServer
 {
-    private String _host;
-    private int _port;
     private Boolean _running;
-    private ServerBootstrap _bootstrap;
-    private ChannelGroup _allChannels;
-    private ChannelFactory _channelFactory;
+    private final ServerBootstrap _bootstrap;
+    private final EventLoopGroup bossGroup;
+    private final EventLoopGroup workerGroup;
 
     /**
      * bootstrap the Netty channel factory
@@ -30,16 +26,16 @@ public class AspenServer
     public AspenServer( final String host, final int port, final RackProxy rack )
     {
         _running = false;
-        _host = host;
-        _port = port;
-        _allChannels = new DefaultChannelGroup( "aspen-server" );
-        _channelFactory = new NioServerSocketChannelFactory(
-                Executors.newCachedThreadPool(),
-                Executors.newCachedThreadPool() );
-        _bootstrap = new ServerBootstrap( _channelFactory );
-        _bootstrap.setOption( "child.tcpNoDelay", true );
-        _bootstrap.setOption( "child.keepAlive", true );
-        _bootstrap.setPipelineFactory( new RackHttpServerPipelineFactory( rack ) );
+        bossGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
+        _bootstrap = new ServerBootstrap();
+        _bootstrap.group(bossGroup, workerGroup)
+                  .channel(NioServerSocketChannel.class)
+                  .localAddress(host, port)
+                  .option(ChannelOption.SO_BACKLOG, 100)
+                  .childOption(ChannelOption.TCP_NODELAY, true)
+                  .childOption(ChannelOption.SO_KEEPALIVE, true)
+                  .childHandler(new RackHttpServerChannelInitializer(rack));
     }
 
     /**
@@ -47,16 +43,16 @@ public class AspenServer
      */
     public void start()
     {
-        if( _running )
+        if( isRunning() )
         {
             System.err.println( "Unable to start - already running" );
             return;
         }
         try
         {
-            Channel channel = _bootstrap.bind( new InetSocketAddress( _host, _port ) );
-            _allChannels.add( channel );
+            ChannelFuture future = _bootstrap.bind().sync();
             _running = true;
+            future.channel().closeFuture().sync();
         }
         catch( Exception e )
         {
@@ -71,14 +67,14 @@ public class AspenServer
     @SuppressWarnings({"ThrowableInstanceNeverThrown"})
     public void stop()
     {
-        if( _running )
+        if( isRunning() )
         {
             try
             {
-                ChannelGroupFuture future = _allChannels.close();
-                future.awaitUninterruptibly();
-                _channelFactory.releaseExternalResources();
-                _bootstrap.releaseExternalResources();
+                bossGroup.shutdownGracefully();
+                workerGroup.shutdownGracefully();
+                bossGroup.terminationFuture().sync();
+                workerGroup.terminationFuture().sync();
                 _running = false;
             }
             catch( Exception e )

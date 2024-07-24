@@ -1,16 +1,13 @@
 package com.github.kevwil.aspen.domain;
 
-import com.github.kevwil.aspen.RackChannelUpstreamHandler;
-import com.github.kevwil.aspen.RackProxy;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.*;
-import org.jboss.netty.channel.local.DefaultLocalServerChannelFactory;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
+import io.netty.handler.codec.http.*;
 import org.jruby.Ruby;
 import org.junit.*;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static org.easymock.EasyMock.*;
 
@@ -21,48 +18,60 @@ import static org.easymock.EasyMock.*;
 public class DefaultResponseWriterTest
 {
     private MockDefaultResponseWriter _writer;
-    private HttpResponse _httpResponse;
-    private HttpRequest _httpRequest;
+    private FullHttpResponse _httpResponse;
+    private FullHttpRequest _httpRequest;
     private Request _request;
     private Response _response;
     private ChannelHandlerContext _context;
-    private RackProxy _rack;
+    private Channel _channel;
+    private ChannelPipeline _pipeline;
+    private ChannelFuture _future;
 
     @Before
     public void setUp()
     {
-        _httpResponse = createMock( HttpResponse.class );
         _writer = new MockDefaultResponseWriter();
+        _httpResponse = createMock( FullHttpResponse.class );
+        _channel = createMock(Channel.class);
+        _pipeline = createMock(ChannelPipeline.class);
+        _context = createMock(ChannelHandlerContext.class);
+        _future = createMock(ChannelFuture.class);
+
+        expect(_context.channel()).andReturn(_channel);
+        expect(_channel.write(anyObject(FullHttpResponse.class))).andReturn(_future);
+        expect(_future.addListener(anyObject())).andReturn(_future);
+        expect(_httpResponse.touch(anyObject())).andReturn(_httpResponse).anyTimes();
+
         _writer.setResponse( _httpResponse );
-        _httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
-        _rack = createMock( RackProxy.class );
-        ChannelHandler handler = new RackChannelUpstreamHandler( _rack );
-        ChannelPipeline pipeline = Channels.pipeline();
-        pipeline.addLast( "handler", handler );
-        new DefaultLocalServerChannelFactory().newChannel( pipeline );
-        _context = pipeline.getContext( handler );
+        _httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
+
         _request = new Request( _context, _httpRequest, Ruby.getGlobalRuntime() );
         _response = new Response( _request );
     }
 
     @After
-    public void tearDown()
-    {
+    public void tearDown() {
         verify( _httpResponse );
-        verify( _rack );
+        verify( _channel );
+        verify( _pipeline );
+        verify( _context );
+        verify( _future );
     }
 
     private void replayAll()
     {
-        replay( _rack );
         replay( _httpResponse );
+        replay( _channel );
+        replay( _pipeline );
+        replay( _context );
+        replay( _future );
     }
 
     @Test
     public void shouldSetContentIfBodyPresent()
     {
-        HttpHeaders.setKeepAlive( _httpRequest, false );
-        _httpResponse.setContent( anyObject( ChannelBuffer.class ) );
+        HttpUtil.setKeepAlive( _httpRequest, false );
+        expect(_httpResponse.replace(anyObject(ByteBuf.class))).andReturn(_httpResponse);
         expectNonKeepAlive( _httpResponse );
         replayAll();
         _response.setBody( "hello" );
@@ -72,7 +81,7 @@ public class DefaultResponseWriterTest
     @Test
     public void shouldNotSetContentIfNoBodyPresent()
     {
-        HttpHeaders.setKeepAlive( _httpRequest, false );
+        HttpUtil.setKeepAlive( _httpRequest, false );
         expectNonKeepAlive( _httpResponse );
         replayAll();
         _writer.write( _context, _request, _response );
@@ -81,9 +90,9 @@ public class DefaultResponseWriterTest
     @Test
     public void shouldSetContentLengthIfKeepAlive()
     {
-        _httpResponse.setContent( anyObject( ChannelBuffer.class ) );
-        expectKeepAlive( ChannelBuffers.copiedBuffer( "hello\r\n",
-                                                      Charset.forName( "UTF-8" ) ),
+        expect(_httpResponse.replace(anyObject(ByteBuf.class))).andReturn(_httpResponse);
+        expectKeepAlive( Unpooled.copiedBuffer( "hello\r\n",
+                                                      StandardCharsets.UTF_8 ),
                          _httpResponse );
         replayAll();
         _response.setBody( "hello" );
@@ -93,35 +102,39 @@ public class DefaultResponseWriterTest
     @Test
     public void shouldSetConnectionHeaderIfNotKeepAlive()
     {
-        HttpHeaders.setKeepAlive( _httpRequest, false );
+        HttpUtil.setKeepAlive( _httpRequest, false );
         expectNonKeepAlive( _httpResponse );
         replayAll();
         _writer.write( _context, _request, _response );
     }
 
-    private void expectNonKeepAlive( HttpResponse httpResponse )
+    private void expectNonKeepAlive( FullHttpResponse httpResponse )
     {
-        httpResponse.setHeader( HttpHeaders.Names.CONNECTION, "close" );
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.set(HttpHeaderNames.CONNECTION, "close");
+        expect(httpResponse.headers()).andReturn(headers);
     }
 
-    private void expectKeepAlive( ChannelBuffer content, HttpResponse httpResponse )
+    private void expectKeepAlive(ByteBuf content, FullHttpResponse httpResponse )
     {
-        expect( httpResponse.getContent() ).andReturn( content );
-        httpResponse.setHeader( eq( HttpHeaders.Names.CONTENT_LENGTH ), anyObject( String.class ) );
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
+        expect( httpResponse.content() ).andReturn( content );
+        expect(httpResponse.headers()).andReturn(headers);
     }
 
-    private class MockDefaultResponseWriter
+    private static class MockDefaultResponseWriter
     extends DefaultResponseWriter
     {
-        private HttpResponse _response;
+        private FullHttpResponse _response;
 
-        public void setResponse( final HttpResponse response )
+        public void setResponse( final FullHttpResponse response )
         {
             _response = response;
         }
 
         @Override
-        public HttpResponse createHttpResponse( final Response response )
+        public FullHttpResponse createHttpResponse( final Response response )
         {
             return _response;
         }

@@ -1,9 +1,8 @@
 package com.github.kevwil.aspen.domain;
 
 import com.github.kevwil.aspen.RubyUtil;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.jruby.RubyHash;
-import org.jruby.javasupport.JavaClass;
 import org.jruby.runtime.builtin.IRubyObject;
 
 import java.util.*;
@@ -17,8 +16,8 @@ public class Response
     private HttpResponseStatus _statusCode = HttpResponseStatus.OK;
     private Throwable _exception = null;
     private Object _body;
-    private Map<String,List<String>> _headers = new HashMap<String,List<String>>();
-    private Request _req;
+    private final Map<String,List<String>> _headers = new HashMap<>();
+    private final Request _req;
 
     public Response( Request request )
     {
@@ -75,7 +74,7 @@ public class Response
         List<String> values = _headers.get( name );
         if( values == null )
         {
-            values = new ArrayList<String>();
+            values = new ArrayList<>();
         }
         values.add( value );
         _headers.put( name, values );
@@ -127,7 +126,8 @@ public class Response
         {
             IRubyObject value = RubyUtil.hashGet( headers, key );
             // if hash value
-            if( JavaClass.assignable( value.getClass(), headers.getClass() ) )
+            if(value.getClass().isAssignableFrom(headers.getClass()))
+//            if( JavaClass.assignable( value.getClass(), headers.getClass() ) )
             {
                 RubyHash valueHash = (RubyHash)value;
                 for( IRubyObject key1 : valueHash.keys().toJavaArray() )

@@ -3,8 +3,8 @@ package com.github.kevwil.aspen.domain;
 import com.github.kevwil.aspen.*;
 import com.github.kevwil.aspen.io.RubyIORackErrors;
 import com.github.kevwil.aspen.io.RubyIORackInput;
-import org.jboss.netty.buffer.ChannelBufferInputStream;
-import org.jboss.netty.handler.codec.http.HttpHeaders;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.handler.codec.http.HttpHeaderNames;
 import org.jruby.*;
 
 import java.io.*;
@@ -18,15 +18,15 @@ public class DefaultRackEnvironment
 implements RackEnvironment
 {
     private final Ruby _runtime;
-    private Request _request;
+    private final Request _request;
     private RackInput _input;
-    private InputStream _stream;
+    private final InputStream _stream;
 
     public DefaultRackEnvironment( final Ruby runtime, final Request request )
     {
         _runtime = runtime;
         _request = request;
-        _stream = new ChannelBufferInputStream( _request.getBody() );
+        _stream = new ByteBufInputStream( _request.getBody() );
         RubyIORackInput input = new RubyIORackInput( _runtime );
         input.setBuffer( _request.getBody() );
         setRackInput( input );
@@ -89,9 +89,9 @@ implements RackEnvironment
         env.put( "REMOTE_ADDR", remote );
         if( !env.containsKey( "SERVER_NAME" ) && !env.containsKey( "SERVER_PORT" ) )
         {
-            if( request.containsHeader( HttpHeaders.Names.HOST ) )
+            if( request.containsHeader( HttpHeaderNames.HOST.toString() ) )
             {
-                String[] parts = request.getHeader( HttpHeaders.Names.HOST ).split( ":" );
+                String[] parts = request.getHeader( HttpHeaderNames.HOST.toString() ).split( ":" );
                 if( parts.length > 0 )
                 {
                     env.put( "SERVER_NAME", parts[0] );
@@ -108,15 +108,14 @@ implements RackEnvironment
                 env.put( "SERVER_PORT", String.valueOf( localAddress.getPort() ) );
             }
         }
-        env.put( "SERVER_PROTOCOL", request.getHttpRequest().getProtocolVersion().toString() );
-        env.put( "HTTP_VERSION", request.getHttpRequest().getProtocolVersion().toString() );
+        env.put( "SERVER_PROTOCOL", request.getHttpRequest().protocolVersion().toString() );
+        env.put( "HTTP_VERSION", request.getHttpRequest().protocolVersion().toString() );
     }
 
     void tweakCgiVariables( final RubyHash env, final String path )
     {
         // Rack-specified rules
-        if( env.get( "SCRIPT_NAME" ) == null )
-            env.put( "SCRIPT_NAME", "" );
+        env.putIfAbsent("SCRIPT_NAME", "");
         if( env.get( "SCRIPT_NAME" ).equals( "/" ) )
             env.put( "SCRIPT_NAME", "" );
         if( env.get( "PATH_INFO" ) != null && env.get( "PATH_INFO" ).equals( "" ) )

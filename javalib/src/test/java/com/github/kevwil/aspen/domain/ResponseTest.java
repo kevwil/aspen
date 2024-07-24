@@ -1,8 +1,8 @@
 package com.github.kevwil.aspen.domain;
 
 import com.github.kevwil.aspen.RackUtil;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.*;
 import org.jruby.Ruby;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class ResponseTest
     @Test
     public void shouldBuildDefaultParams()
     {
-        HttpRequest hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
+        FullHttpRequest hr = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
         Request req = new Request( ctx, hr, Ruby.getGlobalRuntime() );
         Response resp = new Response( req );

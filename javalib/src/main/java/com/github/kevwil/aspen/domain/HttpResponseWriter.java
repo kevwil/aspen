@@ -1,6 +1,6 @@
 package com.github.kevwil.aspen.domain;
 
-import org.jboss.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  * @author kevwil

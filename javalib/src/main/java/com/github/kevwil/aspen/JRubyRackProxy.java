@@ -3,12 +3,12 @@ package com.github.kevwil.aspen;
 import com.github.kevwil.aspen.domain.*;
 import com.github.kevwil.aspen.exception.InvalidAppException;
 import com.github.kevwil.aspen.exception.ServiceException;
-import org.jboss.netty.buffer.ChannelBuffer;
+import io.netty.buffer.ByteBuf;
 import org.jruby.*;
 import org.jruby.runtime.*;
 import org.jruby.runtime.builtin.IRubyObject;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author kevwil
@@ -58,7 +58,7 @@ implements RackProxy
             }
             if( callResult.getType().toString().equals( "Rack::File" ) )
             {
-                RubyObject.puts( callResult.inspect() );
+                System.out.println( callResult.inspect() );
                 // TODO: return a file-based response
                 Response err = new Response( request );
                 err.setException( new ServiceException( "body is a Rack::File - need to handle it differently" ) );
@@ -66,7 +66,7 @@ implements RackProxy
             }
             try
             {
-                RubyArray result = (RubyArray)callResult;
+                RubyArray<IRubyObject> result = (RubyArray<IRubyObject>) callResult;
                 return createResponse( request, result );
             }
             catch( Exception e )
@@ -78,7 +78,7 @@ implements RackProxy
         }
     }
 
-    Response createResponse( final Request request, final RubyArray result )
+    Response createResponse( final Request request, final RubyArray<IRubyObject> result )
     {
         Response r = new Response( request );
         if( result.size() != 3 )
@@ -122,11 +122,11 @@ implements RackProxy
 
     void writeBodyToResponse( final IRubyObject body, final Response response )
     {
-        if( !body.respondsTo( "each" ) )
-        {
-            throw new ServiceException( "response body does not respond to :each" );
-        }
-        ChannelBuffer bodyBuffer = RubyUtil.bodyToBuffer( body );
-        response.setBody( bodyBuffer.toString( Charset.forName( "UTF-8" ) ) );
+//        if( !body.respondsTo( "each" ) )
+//        {
+//            throw new ServiceException( "response body does not respond to :each" );
+//        }
+        ByteBuf bodyBuffer = RubyUtil.bodyToBuffer( body );
+        response.setBody( bodyBuffer.toString(StandardCharsets.UTF_8) );
     }
 }

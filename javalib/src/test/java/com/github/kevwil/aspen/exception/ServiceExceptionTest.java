@@ -1,6 +1,6 @@
 package com.github.kevwil.aspen.exception;
 
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +17,7 @@ public class ServiceExceptionTest
     {
         ServiceException se = new ServiceException();
         assertNotNull( se.getStatus() );
-        assertEquals( 500, se.getStatus().getCode() );
+        assertEquals( 500, se.getStatus().code() );
     }
 
     @Test
@@ -36,6 +36,6 @@ public class ServiceExceptionTest
         ServiceException se = new ServiceException();
         se.setStatus( HttpResponseStatus.NOT_FOUND );
         assertNotNull( se.getStatus() );
-        assertEquals( 404, se.getStatus().getCode() );
+        assertEquals( 404, se.getStatus().code() );
     }
 }

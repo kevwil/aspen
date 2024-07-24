@@ -2,8 +2,8 @@ package com.github.kevwil.aspen;
 
 import com.github.kevwil.aspen.domain.Request;
 import com.github.kevwil.aspen.domain.Response;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.*;
 import org.jruby.*;
 import org.jruby.runtime.Block;
 import org.jruby.runtime.ThreadContext;
@@ -22,8 +22,6 @@ public class JRubyRackProxyTest
     private final Ruby _runtime = Ruby.getGlobalRuntime();
     private JRubyRackProxy _rack;
     private IRubyObject _app;
-    private ChannelHandlerContext ctx;
-    private HttpRequest hr;
     private Request r;
 
     @Before
@@ -31,9 +29,9 @@ public class JRubyRackProxyTest
     {
         _app = createMock( IRubyObject.class );
         _rack = new JRubyRackProxy( _app );
-        ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
-        hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
-        r = new Request( ctx, hr, _runtime );
+        ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext("localhost", "80");
+        FullHttpRequest hr = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/");
+        r = new Request(ctx, hr, _runtime );
     }
 
     @After
@@ -77,7 +75,7 @@ public class JRubyRackProxyTest
         assertNotNull( response );
         assertTrue( response.hasBody() );
         assertFalse( response.hasException() );
-        assertEquals( 200, response.getResponseStatus().getCode() );
+        assertEquals( 200, response.getResponseStatus().code() );
         assertFalse( response.getHeaderNames().isEmpty() );
         assertEquals( "Hello World!", response.getBody().toString() );
     }
@@ -103,7 +101,7 @@ public class JRubyRackProxyTest
         assertNotNull( response );
         assertTrue( response.hasBody() );
         assertFalse( response.hasException() );
-        assertEquals( 200, response.getResponseStatus().getCode() );
+        assertEquals( 200, response.getResponseStatus().code() );
         assertFalse( response.getHeaderNames().isEmpty() );
         assertEquals( "Hello World!", response.getBody().toString() );
     }

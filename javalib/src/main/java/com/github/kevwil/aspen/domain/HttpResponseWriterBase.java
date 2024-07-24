@@ -1,6 +1,6 @@
 package com.github.kevwil.aspen.domain;
 
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.*;
 
 /**
  * @author kevwil
@@ -9,8 +9,8 @@ import org.jboss.netty.handler.codec.http.*;
 public abstract class HttpResponseWriterBase
 implements HttpResponseWriter
 {
-    public HttpResponse createHttpResponse( Response response )
+    public FullHttpResponse createHttpResponse( Response response )
     {
-        return new DefaultHttpResponse( HttpVersion.HTTP_1_1, response.getResponseStatus() );
+        return new DefaultFullHttpResponse( HttpVersion.HTTP_1_1, response.getResponseStatus() );
     }
 }

@@ -1,13 +1,13 @@
 package com.github.kevwil.aspen.domain;
 
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.*;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author kevwil
@@ -20,8 +20,8 @@ extends HttpResponseWriterBase
     @Override
     public void write( final ChannelHandlerContext context, final Request request, final Response response )
     {
-        HttpResponse httpResponse = createHttpResponse( response );
-		httpResponse.setHeader( HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8" );
+        FullHttpResponse httpResponse = createHttpResponse( response );
+		httpResponse.headers().set( HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8" );
         StringWriter builder =new StringWriter();
         response.getException().printStackTrace( new PrintWriter( builder ) );
 //		StringBuilder builder = new StringBuilder( "Failure: " );
@@ -32,9 +32,9 @@ extends HttpResponseWriterBase
 //            builder.append( ste.toString() );
 //		    builder.append( "\r\n" );
 //        }
-		httpResponse.setContent(
-                ChannelBuffers.copiedBuffer( builder.toString(),
-                                             Charset.forName( "UTF-8" ) ) );
+		httpResponse.replace(
+                Unpooled.copiedBuffer( builder.toString(),
+                                             StandardCharsets.UTF_8 ) );
 
 		if( request.isKeepAlive() )
         {
@@ -43,19 +43,19 @@ extends HttpResponseWriterBase
         }
 		else
 		{
-			httpResponse.setHeader( HttpHeaders.Names.CONNECTION, "close" );
+			httpResponse.headers().set( HttpHeaderNames.CONNECTION, "close" );
             writeToChannel( context, httpResponse, ChannelFutureListener.CLOSE );
 		}
     }
 
-    private void writeContentLength( final HttpResponse httpResponse )
+    private void writeContentLength( final FullHttpResponse httpResponse )
     {
-        httpResponse.setHeader( HttpHeaders.Names.CONTENT_LENGTH,
-                                String.valueOf( httpResponse.getContent().readableBytes() ) );
+        httpResponse.headers().set( HttpHeaderNames.CONTENT_LENGTH,
+                                String.valueOf( httpResponse.content().readableBytes() ) );
     }
 
     private void writeToChannel( final ChannelHandlerContext context, final HttpResponse response, ChannelFutureListener future )
     {
-        context.getChannel().write( response ).addListener( future );
+        context.channel().write( response ).addListener( future );
     }
 }

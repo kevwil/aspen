@@ -1,6 +1,6 @@
 package com.github.kevwil.aspen.io;
 
-import org.jboss.netty.buffer.ChannelBuffers;
+import io.netty.buffer.Unpooled;
 import org.jruby.*;
 import org.jruby.exceptions.RaiseException;
 import org.jruby.javasupport.JavaEmbedUtils;
@@ -24,7 +24,7 @@ public class RubyIORackInputTest
     @Before
     public void setUp()
     {
-        _input = new RubyIORackInput( _runtime );
+        _input = new RubyIORackInput( _runtime, RubyIORackInput.createRackInputClass(_runtime) );
     }
 
     @Test( expected = RaiseException.class )
@@ -44,7 +44,7 @@ public class RubyIORackInputTest
     {
         String data = "hello";
         int dataLen = data.length();
-        _input.setBuffer( ChannelBuffers.copiedBuffer( data.getBytes() ) );
+        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
         IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby( _runtime, dataLen );
         IRubyObject result = _input.read( _runtime.getCurrentContext(), new IRubyObject[]{dataLenRuby} );
         assertNotNull( result );
@@ -58,7 +58,7 @@ public class RubyIORackInputTest
     {
         String data = "hello";
         int dataLen = 10; // read too much
-        _input.setBuffer( ChannelBuffers.copiedBuffer( data.getBytes() ) );
+        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
         IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby( _runtime, dataLen );
         _input.read( _runtime.getCurrentContext(), new IRubyObject[]{dataLenRuby} );
     }
@@ -67,7 +67,7 @@ public class RubyIORackInputTest
     public void shouldRewindAndReadMultipleTimes()
     {
         String data = "hello";
-        _input.setBuffer( ChannelBuffers.copiedBuffer( data.getBytes() ) );
+        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
         IRubyObject result1 = _input.read( _runtime.getCurrentContext(), new IRubyObject[]{} );
         assertNotNull( result1 );
         assertTrue( result1 instanceof RubyString );
@@ -88,7 +88,7 @@ public class RubyIORackInputTest
         String data = "hello";
         int dataLen = data.length();
         IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby( _runtime, dataLen );
-        _input.setBuffer( ChannelBuffers.copiedBuffer( data.getBytes() ) );
+        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
 
         RubyString buf = RubyString.newEmptyString( _runtime );
         IRubyObject[] args = new IRubyObject[]{dataLenRuby, buf};
@@ -101,7 +101,7 @@ public class RubyIORackInputTest
     public void shouldReadFirstLineWhenCallingGets()
     {
         String data = "hello\r\nworld";
-        _input.setBuffer( ChannelBuffers.copiedBuffer( data.getBytes() ) );
+        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
 
         IRubyObject result = _input.gets( _runtime.getCurrentContext() );
 
@@ -114,7 +114,7 @@ public class RubyIORackInputTest
     {
         final AtomicInteger yieldCount = new AtomicInteger();
         final String data = "line1\r\nline2\r\nline3";
-        _input.setBuffer( ChannelBuffers.copiedBuffer( data.getBytes() ) );
+        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
 
         BlockCallback callback = new BlockCallback(){
             public IRubyObject call( ThreadContext context, IRubyObject[] args, Block block ){
@@ -124,11 +124,11 @@ public class RubyIORackInputTest
             }
         };
         Block block = CallBlock.newCallClosure(
+                _runtime.getCurrentContext(),
                 _input,
-                _runtime.getOrCreateModule( "Aspen" ),
-                Arity.createArity( 1 ),
-                callback,
-                _runtime.getCurrentContext() );
+                Signature.fromArityValue(1),
+                callback
+        );
         _input.each( _runtime.getCurrentContext(), block );
         assertEquals( 3, yieldCount.get() );
     }

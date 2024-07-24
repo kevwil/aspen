@@ -2,8 +2,8 @@ package com.github.kevwil.aspen.domain;
 
 import com.github.kevwil.aspen.RackEnvironment;
 import com.github.kevwil.aspen.RackUtil;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.*;
 import org.jruby.Ruby;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class RequestTest
 {
-    private HttpRequest httpRequest;
+    private FullHttpRequest httpRequest;
     private Request req;
     private ChannelHandlerContext ctx;
     private static final Ruby _runtime = Ruby.getGlobalRuntime();
@@ -29,14 +29,13 @@ public class RequestTest
 
     @Test
     public void shouldBuildBasicRequest()
-            throws Exception
     {
-        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
+        httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         req = new Request( ctx, httpRequest, _runtime );
 
         assertEquals( HttpMethod.GET, req.getMethod() );
         assertEquals( HttpMethod.GET, req.getRealMethod() );
-        assertEquals( 0, req.getBody().toByteBuffer().capacity() );
+        assertEquals( 0, req.getBody().capacity() );
         assertEquals( "http://localhost/", req.getUri() );
         assertEquals( "http://localhost/", req.getUrl().toString() );
     }
@@ -44,12 +43,12 @@ public class RequestTest
     @Test
     public void shouldBuildRequestWithOnlyUri()
     {
-        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
+        httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
         req = new Request( ctx, httpRequest, _runtime );
 
         assertEquals( HttpMethod.GET, req.getMethod() );
         assertEquals( HttpMethod.GET, req.getRealMethod() );
-        assertEquals( 0, req.getBody().toByteBuffer().capacity() );
+        assertEquals( 0, req.getBody().capacity() );
         assertEquals( "/", req.getUri() );
         assertEquals( "http://localhost/", req.getUrl().toString() );
     }
@@ -62,7 +61,7 @@ public class RequestTest
         encoder.addParam( Request.METHOD_OVERRIDE_PARAMETER, "PUT" );
         String path = encoder.toString();
 
-        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/"+path );
+        httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/"+path );
         req = new Request( ctx, httpRequest, _runtime );
 
         assertEquals( HttpMethod.POST, req.getMethod() );
@@ -74,8 +73,8 @@ public class RequestTest
     @Test
     public void shouldHandleMethodOverrideFromHeader()
     {
-        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/foo" );
-        httpRequest.addHeader( "X-Http-Method-Override", "PUT" );
+        httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/foo" );
+        httpRequest.headers().add( "X-Http-Method-Override", "PUT" );
         req = new Request( ctx, httpRequest, _runtime );
 
         assertEquals( HttpMethod.POST, req.getMethod() );
@@ -85,7 +84,7 @@ public class RequestTest
     @Test
     public void shouldReturnAnEnvironmentWrapper()
     {
-        httpRequest = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
+        httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
         req = new Request( ctx, httpRequest, _runtime );
         RackEnvironment env = req.getEnv();
         assertNotNull( env );

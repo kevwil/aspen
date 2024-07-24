@@ -1,7 +1,7 @@
 package com.github.kevwil.aspen;
 
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.*;
 import org.jruby.*;
 import static org.junit.Assert.*;
 import org.junit.*;
@@ -40,9 +40,9 @@ public class RackUtilTest
     public void shouldCreateDummyChannelHandlerContextWithLocalServerAddress() throws Exception
     {
         assertNotNull( ctx );
-        assertNotNull( ctx.getChannel() );
-        assertNotNull( ctx.getChannel().getLocalAddress() );
-        InetSocketAddress socketAddress = (InetSocketAddress) ctx.getChannel().getLocalAddress();
+        assertNotNull( ctx.channel() );
+        assertNotNull( ctx.channel().localAddress() );
+        InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().localAddress();
         assertEquals( server, socketAddress.getHostName() );
         assertEquals( port, Integer.toString( socketAddress.getPort() ) );
     }
@@ -52,9 +52,9 @@ public class RackUtilTest
     {
         ctx = RackUtil.buildDummyChannelHandlerContext( server, null );
         assertNotNull( ctx );
-        assertNotNull( ctx.getChannel() );
-        assertNotNull( ctx.getChannel().getLocalAddress() );
-        InetSocketAddress socketAddress = (InetSocketAddress) ctx.getChannel().getLocalAddress();
+        assertNotNull( ctx.channel() );
+        assertNotNull( ctx.channel().localAddress() );
+        InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().localAddress();
         assertEquals( server, socketAddress.getHostName() );
         assertEquals( 80, socketAddress.getPort() );
     }
@@ -75,7 +75,7 @@ public class RackUtilTest
     @Test
     public void shouldParseUriFromHostHeader() throws Exception
     {
-        r.addHeader( HttpHeaders.Names.HOST, server+":"+port );
+        r.headers().add( HttpHeaderNames.HOST, server+":"+port );
 
         RackUtil.doUriRelated( null, r, env );
 
@@ -103,57 +103,57 @@ public class RackUtilTest
     @Test
     public void shouldHandleHeaders() throws Exception
     {
-        r.addHeader( HttpHeaders.Names.ACCEPT, "*/*" );
-        r.addHeader( HttpHeaders.Names.ACCEPT_CHARSET, "accept-charset" );
-        r.addHeader( HttpHeaders.Names.ACCEPT_ENCODING, "accept-encoding" );
-        r.addHeader( HttpHeaders.Names.ACCEPT_LANGUAGE, "accept-language" );
-        r.addHeader( HttpHeaders.Names.ACCEPT_RANGES, "accept-ranges" );
-        r.addHeader( HttpHeaders.Names.AGE, "age" );
-        r.addHeader( HttpHeaders.Names.ALLOW, "allow" );
-        r.addHeader( HttpHeaders.Names.AUTHORIZATION, "authorization" );
-        r.addHeader( HttpHeaders.Names.CACHE_CONTROL, "cache_control" );
-        r.addHeader( HttpHeaders.Names.CONNECTION, "connection" );
-        r.addHeader( HttpHeaders.Names.CONTENT_ENCODING, "content_encoding" );
-        r.addHeader( HttpHeaders.Names.CONTENT_LANGUAGE, "content_language" );
-        r.addHeader( HttpHeaders.Names.CONTENT_LENGTH, "12" );
-        r.addHeader( HttpHeaders.Names.CONTENT_LOCATION, "content_location" );
-        r.addHeader( HttpHeaders.Names.CONTENT_MD5, "content_md5" );
-        r.addHeader( HttpHeaders.Names.CONTENT_RANGE, "content_range" );
-        r.addHeader( HttpHeaders.Names.CONTENT_TRANSFER_ENCODING, "content_transfer_encoding" );
-        r.addHeader( HttpHeaders.Names.CONTENT_TYPE, "content_type" );
-        r.addHeader( HttpHeaders.Names.COOKIE, "cookie" );
-        r.addHeader( HttpHeaders.Names.DATE, "date" );
-        r.addHeader( HttpHeaders.Names.ETAG, "etag" );
-        r.addHeader( HttpHeaders.Names.EXPECT, "expect" );
-        r.addHeader( HttpHeaders.Names.EXPIRES, "expires" );
-        r.addHeader( HttpHeaders.Names.FROM, "from" );
-        r.addHeader( HttpHeaders.Names.HOST, "host" );
-        r.addHeader( HttpHeaders.Names.IF_MATCH, "if-match" );
-        r.addHeader( HttpHeaders.Names.IF_MODIFIED_SINCE, "if-modified-since" );
-        r.addHeader( HttpHeaders.Names.IF_NONE_MATCH, "if-none-match" );
-        r.addHeader( HttpHeaders.Names.IF_RANGE, "if-range" );
-        r.addHeader( HttpHeaders.Names.IF_UNMODIFIED_SINCE, "if-unmodified-since" );
-        r.addHeader( HttpHeaders.Names.LAST_MODIFIED, "last-modified" );
-        r.addHeader( HttpHeaders.Names.LOCATION, "location" );
-        r.addHeader( HttpHeaders.Names.MAX_FORWARDS, "max-forwards" );
-        r.addHeader( HttpHeaders.Names.PRAGMA, "pragma" );
-        r.addHeader( HttpHeaders.Names.PROXY_AUTHENTICATE, "proxy-authenticate" );
-        r.addHeader( HttpHeaders.Names.PROXY_AUTHORIZATION, "proxy-authorization" );
-        r.addHeader( HttpHeaders.Names.RANGE, "range" );
-        r.addHeader( HttpHeaders.Names.REFERER, "referer" );
-        r.addHeader( HttpHeaders.Names.RETRY_AFTER, "retry-after" );
-        r.addHeader( HttpHeaders.Names.SERVER, "server" );
-        r.addHeader( HttpHeaders.Names.SET_COOKIE, "set-cookie" );
-        r.addHeader( HttpHeaders.Names.SET_COOKIE2, "range" );
-        r.addHeader( HttpHeaders.Names.TE, "te" );
-        r.addHeader( HttpHeaders.Names.TRAILER, "trailer" );
-        r.addHeader( HttpHeaders.Names.TRANSFER_ENCODING, "transfer-encoding" );
-        r.addHeader( HttpHeaders.Names.UPGRADE, "upgrade" );
-        r.addHeader( HttpHeaders.Names.USER_AGENT, "user-agent" );
-        r.addHeader( HttpHeaders.Names.VARY, "vary" );
-        r.addHeader( HttpHeaders.Names.VIA, "via" );
-        r.addHeader( HttpHeaders.Names.WARNING, "warning" );
-        r.addHeader( HttpHeaders.Names.WWW_AUTHENTICATE, "www-authenticate" );
+        r.headers().add( HttpHeaderNames.ACCEPT, "*/*" );
+        r.headers().add( HttpHeaderNames.ACCEPT_CHARSET, "accept-charset" );
+        r.headers().add( HttpHeaderNames.ACCEPT_ENCODING, "accept-encoding" );
+        r.headers().add( HttpHeaderNames.ACCEPT_LANGUAGE, "accept-language" );
+        r.headers().add( HttpHeaderNames.ACCEPT_RANGES, "accept-ranges" );
+        r.headers().add( HttpHeaderNames.AGE, "age" );
+        r.headers().add( HttpHeaderNames.ALLOW, "allow" );
+        r.headers().add( HttpHeaderNames.AUTHORIZATION, "authorization" );
+        r.headers().add( HttpHeaderNames.CACHE_CONTROL, "cache_control" );
+        r.headers().add( HttpHeaderNames.CONNECTION, "connection" );
+        r.headers().add( HttpHeaderNames.CONTENT_ENCODING, "content_encoding" );
+        r.headers().add( HttpHeaderNames.CONTENT_LANGUAGE, "content_language" );
+        r.headers().add( HttpHeaderNames.CONTENT_LENGTH, "12" );
+        r.headers().add( HttpHeaderNames.CONTENT_LOCATION, "content_location" );
+        r.headers().add( HttpHeaderNames.CONTENT_MD5, "content_md5" );
+        r.headers().add( HttpHeaderNames.CONTENT_RANGE, "content_range" );
+        r.headers().add( HttpHeaderNames.CONTENT_TRANSFER_ENCODING, "content_transfer_encoding" );
+        r.headers().add( HttpHeaderNames.CONTENT_TYPE, "content_type" );
+        r.headers().add( HttpHeaderNames.COOKIE, "cookie" );
+        r.headers().add( HttpHeaderNames.DATE, "date" );
+        r.headers().add( HttpHeaderNames.ETAG, "etag" );
+        r.headers().add( HttpHeaderNames.EXPECT, "expect" );
+        r.headers().add( HttpHeaderNames.EXPIRES, "expires" );
+        r.headers().add( HttpHeaderNames.FROM, "from" );
+        r.headers().add( HttpHeaderNames.HOST, "host" );
+        r.headers().add( HttpHeaderNames.IF_MATCH, "if-match" );
+        r.headers().add( HttpHeaderNames.IF_MODIFIED_SINCE, "if-modified-since" );
+        r.headers().add( HttpHeaderNames.IF_NONE_MATCH, "if-none-match" );
+        r.headers().add( HttpHeaderNames.IF_RANGE, "if-range" );
+        r.headers().add( HttpHeaderNames.IF_UNMODIFIED_SINCE, "if-unmodified-since" );
+        r.headers().add( HttpHeaderNames.LAST_MODIFIED, "last-modified" );
+        r.headers().add( HttpHeaderNames.LOCATION, "location" );
+        r.headers().add( HttpHeaderNames.MAX_FORWARDS, "max-forwards" );
+        r.headers().add( HttpHeaderNames.PRAGMA, "pragma" );
+        r.headers().add( HttpHeaderNames.PROXY_AUTHENTICATE, "proxy-authenticate" );
+        r.headers().add( HttpHeaderNames.PROXY_AUTHORIZATION, "proxy-authorization" );
+        r.headers().add( HttpHeaderNames.RANGE, "range" );
+        r.headers().add( HttpHeaderNames.REFERER, "referer" );
+        r.headers().add( HttpHeaderNames.RETRY_AFTER, "retry-after" );
+        r.headers().add( HttpHeaderNames.SERVER, "server" );
+        r.headers().add( HttpHeaderNames.SET_COOKIE, "set-cookie" );
+        r.headers().add( HttpHeaderNames.SET_COOKIE2, "range" );
+        r.headers().add( HttpHeaderNames.TE, "te" );
+        r.headers().add( HttpHeaderNames.TRAILER, "trailer" );
+        r.headers().add( HttpHeaderNames.TRANSFER_ENCODING, "transfer-encoding" );
+        r.headers().add( HttpHeaderNames.UPGRADE, "upgrade" );
+        r.headers().add( HttpHeaderNames.USER_AGENT, "user-agent" );
+        r.headers().add( HttpHeaderNames.VARY, "vary" );
+        r.headers().add( HttpHeaderNames.VIA, "via" );
+        r.headers().add( HttpHeaderNames.WARNING, "warning" );
+        r.headers().add( HttpHeaderNames.WWW_AUTHENTICATE, "www-authenticate" );
 
         RackUtil.parseHeaders( ctx, r, env );
 

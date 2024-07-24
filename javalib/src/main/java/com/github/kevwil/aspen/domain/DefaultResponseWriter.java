@@ -1,12 +1,12 @@
 package com.github.kevwil.aspen.domain;
 
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.*;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author kevwil
@@ -18,23 +18,22 @@ extends HttpResponseWriterBase
     @Override
     public void write( final ChannelHandlerContext context, final Request request, final Response response )
     {
-        HttpResponse httpResponse = createHttpResponse( response );
+        FullHttpResponse httpResponse = createHttpResponse( response );
         addHeaders( response, httpResponse );
         if( response.hasBody() )
         {
-            StringBuilder sb = new StringBuilder( response.getBody().toString() ).append( "\r\n" );
-            ChannelBuffer cb = ChannelBuffers.copiedBuffer( sb.toString(), Charset.forName( "UTF-8" ) );
-            httpResponse.setContent( cb );
+            ByteBuf buf = Unpooled.copiedBuffer(response.getBody().toString() + "\r\n", StandardCharsets.UTF_8);
+            httpResponse.replace(buf);
         }
         if( request.isKeepAlive() )
         {
-            httpResponse.setHeader( HttpHeaders.Names.CONTENT_LENGTH, String.valueOf( httpResponse.getContent().readableBytes() ) );
-            context.getChannel().write( httpResponse ).addListener( ChannelFutureListener.CLOSE_ON_FAILURE );
+            httpResponse.headers().set( HttpHeaderNames.CONTENT_LENGTH, String.valueOf( httpResponse.content().readableBytes() ) );
+            context.channel().write( httpResponse ).addListener( ChannelFutureListener.CLOSE_ON_FAILURE );
         }
         else
         {
-            httpResponse.setHeader( HttpHeaders.Names.CONNECTION, "close" );
-            context.getChannel().write( httpResponse ).addListener( ChannelFutureListener.CLOSE );
+            httpResponse.headers().set( HttpHeaderNames.CONNECTION, "close" );
+            context.channel().write( httpResponse ).addListener( ChannelFutureListener.CLOSE );
         }
     }
 
@@ -44,7 +43,7 @@ extends HttpResponseWriterBase
         {
             for( String value : response.getHeaders( name ) )
             {
-                httpResponse.addHeader( name, value );
+                httpResponse.headers().add( name, value );
             }
         }
     }

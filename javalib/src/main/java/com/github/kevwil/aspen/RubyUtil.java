@@ -1,7 +1,7 @@
 package com.github.kevwil.aspen;
 
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.jruby.*;
 import org.jruby.runtime.*;
 import org.jruby.runtime.builtin.IRubyObject;
@@ -9,7 +9,7 @@ import org.jruby.runtime.builtin.IRubyObject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.channels.Channels;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author kevwil
@@ -23,7 +23,7 @@ public class RubyUtil
 
     public static int toInt( final IRubyObject obj )
     {
-        return (Integer) obj.convertToInteger().toJava( Integer.class );
+        return obj.convertToInteger().toJava( Integer.class );
     }
 
     public static IRubyObject call( final String method, final IRubyObject target )
@@ -44,7 +44,7 @@ public class RubyUtil
     public static RubyIO stringToIO( final String input )
     {
         InputStream dataStream = new ByteArrayInputStream(
-                input.getBytes( Charset.forName( "UTF-8" ) ) );
+                input.getBytes( StandardCharsets.UTF_8 ) );
         return RubyIO.newIO( _runtime, Channels.newChannel( dataStream ) );
     }
 
@@ -60,17 +60,8 @@ public class RubyUtil
         }
     }
 
-    public static ChannelBuffer bodyToBuffer( final IRubyObject body )
+    public static ByteBuf bodyToBuffer(final IRubyObject body )
     {
-        final ChannelBuffer outBuffer = ChannelBuffers.dynamicBuffer();
-        BlockCallback callback = new BlockCallback(){
-            public IRubyObject call( ThreadContext context, IRubyObject[] args, Block block ){
-                ChannelBuffer line = ChannelBuffers.copiedBuffer( args[0].toString(), Charset.forName( "UTF-8" ) );
-                outBuffer.writeBytes( line );
-                return body.getRuntime().getNil();
-            }
-        };
-        RubyEnumerable.callEach( body.getRuntime(), body.getRuntime().getCurrentContext(), body, callback );
-        return outBuffer;
+        return Unpooled.copiedBuffer(body.toString(), StandardCharsets.UTF_8);
     }
 }

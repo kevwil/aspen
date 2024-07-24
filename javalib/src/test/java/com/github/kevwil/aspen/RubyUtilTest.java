@@ -1,11 +1,11 @@
 package com.github.kevwil.aspen;
 
-import org.jboss.netty.buffer.ChannelBuffer;
+import io.netty.buffer.ByteBuf;
 import org.jruby.*;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.junit.Test;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
 
@@ -60,7 +60,7 @@ public class RubyUtilTest
         String data = "foo\nbar";
         RubyIO result = RubyUtil.stringToIO( data );
         assertFalse( result.isNil() );
-        assertTrue( result.respondsTo( "each" ) );
+        assertTrue( result.respondsTo( "each_line" ) );
         assertTrue( result.respondsTo( "rewind" ) );
         assertTrue( result.respondsTo( "close" ) );
     }
@@ -70,9 +70,9 @@ public class RubyUtilTest
     {
         String data = "foo\nbar";
         IRubyObject rubyData = RubyString.newString( _runtime, data );
-        ChannelBuffer buffer = RubyUtil.bodyToBuffer( rubyData );
+        ByteBuf buffer = RubyUtil.bodyToBuffer( rubyData );
         assertNotNull( buffer );
-        String bufferData = buffer.toString( Charset.forName( "UTF-8" ) );
+        String bufferData = buffer.toString( StandardCharsets.UTF_8 );
         assertEquals( data, bufferData );
     }
 
@@ -82,7 +82,7 @@ public class RubyUtilTest
         RubyHash env = RubyHash.newHash( _runtime );
         env.op_aset( _runtime.getCurrentContext(), RubyString.newString( _runtime, "FOO" ), _runtime.getNil() );
         env.op_aset( _runtime.getCurrentContext(), RubyString.newString( _runtime, "BAR" ), RubyString.newString( _runtime, "" ) );
-        env.op_aset( _runtime.getCurrentContext(), RubyString.newString( _runtime, "AOEU" ), RubyString.newString( _runtime, "dovorak" ) );
+        env.op_aset( _runtime.getCurrentContext(), RubyString.newString( _runtime, "AOEU" ), RubyString.newString( _runtime, "dvorak" ) );
         RubyUtil.trimEmptyValues( env );
 
         assertFalse( env.containsKey( "FOO" ) );

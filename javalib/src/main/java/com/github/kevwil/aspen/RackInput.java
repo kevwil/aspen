@@ -41,7 +41,7 @@ public interface RackInput
      * @param block that receives yield of Strings
      * @return pretty much nil
      */
-    public IRubyObject each( ThreadContext context, Block block );
+    IRubyObject each( ThreadContext context, Block block );
 
     /**
      * rewind must be called without arguments. It rewinds the input stream back
@@ -51,12 +51,12 @@ public interface RackInput
      * @param context it's a JRuby thing
      * @return pretty much nil
      */
-    public IRubyObject rewind( ThreadContext context );
+    IRubyObject rewind( ThreadContext context );
 
     /**
      * Close the input. Exposed only to the Java side because the Rack spec says
      * that application code must not call close, so we don't expose a close method to Ruby.
      */
-    public void close();
+    void close();
 }
 

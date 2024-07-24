@@ -1,9 +1,10 @@
 package com.github.kevwil.aspen.io;
 
 import com.github.kevwil.aspen.RackInput;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBufferInputStream;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import org.jruby.*;
+import org.jruby.anno.JRubyClass;
 import org.jruby.anno.JRubyMethod;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.*;
@@ -16,39 +17,22 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author kevwil
  * @since Jan 27, 2011
  */
+@JRubyClass(name = "AspenRackInput")
 public class RubyIORackInput
 extends RubyObject
 implements RackInput
 {
-    private static final ObjectAllocator ALLOCATOR = new ObjectAllocator()
+    public static RubyClass createRackInputClass(Ruby runtime)
     {
-        public IRubyObject allocate( Ruby runtime, RubyClass klass )
-        {
-            return new RubyIORackInput( runtime, klass );
-        }
-    };
-
-    public static RubyClass getClass(
-            Ruby runtime,
-            String name,
-            RubyClass parent,
-            ObjectAllocator allocator,
-            Class annoClass)
-    {
-        RubyModule aspenMod = runtime.getOrCreateModule( "Aspen" );
-        RubyClass klass = aspenMod.getClass( name );
-        if( klass == null )
-        {
-            klass = aspenMod.defineClassUnder( name, parent, allocator );
-            klass.defineAnnotatedMethods( annoClass );
-        }
-        return klass;
+        RubyClass myClass = runtime.defineClass("AspenRackInput", runtime.getObject(), RubyIORackInput::new);
+        myClass.setReifiedClass(RubyIORackInput.class);
+        myClass.defineAnnotatedMethods(RubyIORackInput.class);
+        return myClass;
     }
 
-    public static RubyClass getRubyIORackInputClass( Ruby runtime )
+    public RubyIORackInput(Ruby runtime)
     {
-        return getClass( runtime, "RubyIORackInput", runtime.getObject(),
-                ALLOCATOR, RubyIORackInput.class );
+        super(runtime, RubyIORackInput.createRackInputClass(runtime));
     }
 
     public RubyIORackInput( Ruby runtime, RubyClass metaClass )
@@ -56,21 +40,16 @@ implements RackInput
         super( runtime, metaClass );
     }
 
-    public RubyIORackInput( Ruby runtime )
-    {
-        super( runtime, getRubyIORackInputClass( runtime ) );
-    }
-
     /* CLASS DATA */
 
-    private ChannelBuffer _buffer;
+    private ByteBuf _buffer;
 
-    public ChannelBuffer getBuffer()
+    public ByteBuf getBuffer()
     {
         return _buffer;
     }
 
-    public void setBuffer( final ChannelBuffer buffer )
+    public void setBuffer( final ByteBuf buffer )
     {
         _buffer = buffer;
     }
@@ -83,7 +62,7 @@ implements RackInput
         try
         {
             String line = readLine( getBuffer() );
-            if( line == null )
+            if( line.isEmpty() )
             {
                 throw getRuntime().newEOFError();
             }
@@ -98,17 +77,19 @@ implements RackInput
     @JRubyMethod( optional = 2 )
     public IRubyObject read( final ThreadContext context, final IRubyObject[] args )
     {
+        int len;
+        ByteBuf chunk;
         switch( args.length )
         {
             case 0:
                 return JavaEmbedUtils.javaToRuby( getRuntime(), bufferToString( getBuffer() ) );
             case 1:
-                int len = RubyInteger.num2int( args[0] );
+                len = RubyInteger.num2int( args[0] );
                 if( len > getBuffer().readableBytes() )
                 {
                     throw getRuntime().newIOError( "cannot read " + len + " bytes from input" );
                 }
-                ChannelBuffer chunk = getBuffer().readBytes( len );
+                chunk = getBuffer().readBytes( len );
                 return JavaEmbedUtils.javaToRuby( getRuntime(), bufferToString( chunk ) );
             case 2:
                 len = RubyInteger.num2int( args[0] );
@@ -124,23 +105,21 @@ implements RackInput
     @JRubyMethod()
     public IRubyObject each( final ThreadContext context, final Block block )
     {
-        ChannelBufferInputStream stream = new ChannelBufferInputStream( getBuffer().slice() );
-        AtomicReference<String> line = new AtomicReference<String>();
-        if( !isEof().isTrue() )
-        {
-            try
-            {
-                do
-                {
-                    line.set( stream.readLine() );
-                    block.yield( context, JavaEmbedUtils.javaToRuby( getRuntime(), line.get() ) );
+        try (ByteBufInputStream stream = new ByteBufInputStream(getBuffer().slice())) {
+            AtomicReference<String> line = new AtomicReference<>();
+            if (!isEof().isTrue()) {
+                try {
+                    do {
+                        line.set(stream.readLine());
+                        block.yield(context, JavaEmbedUtils.javaToRuby(getRuntime(), line.get()));
+                    }
+                    while (line.get() != null && stream.available() > 0);
+                } catch (IOException e) {
+                    throw getRuntime().newIOError(e.getLocalizedMessage());
                 }
-                while( line.get() != null && stream.available() > 0 );
             }
-            catch( IOException e )
-            {
-                throw getRuntime().newIOError( e.getLocalizedMessage() );
-            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return getRuntime().getNil();
     }
@@ -155,7 +134,7 @@ implements RackInput
     @JRubyMethod( name = "eof?" )
     public IRubyObject isEof()
     {
-        return getRuntime().newBoolean( ! getBuffer().readable() );
+        return getRuntime().newBoolean( ! getBuffer().isReadable() );
     }
 
     @JRubyMethod( name = "binmode" )
@@ -171,18 +150,20 @@ implements RackInput
     }
 
 
-    private String readLine( final ChannelBuffer buf )
+    private String readLine( final ByteBuf buf )
     throws IOException
     {
         int startIndex = buf.readerIndex();
-        ChannelBufferInputStream stream = new ChannelBufferInputStream( buf.slice() );
-        String line = stream.readLine();
+        String line;
+        try (ByteBufInputStream stream = new ByteBufInputStream(buf.slice())) {
+            line = stream.readLine();
+        }
         int newIndex = startIndex + line.length();
         buf.readerIndex( newIndex );
         return line;
     }
 
-    private String bufferToString( ChannelBuffer buffer )
+    private String bufferToString( ByteBuf buffer )
     {
         byte[] dest = new byte[buffer.readableBytes()];
         buffer.readBytes( dest );

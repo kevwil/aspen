@@ -1,15 +1,15 @@
 package com.github.kevwil.aspen.domain;
 
 import com.github.kevwil.aspen.*;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.*;
 import org.jruby.*;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.junit.*;
 
 import java.io.*;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -28,7 +28,7 @@ public class DefaultRackEnvironmentTest
     public void startUp()
     {
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
-        HttpRequest hr = new DefaultHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
+        FullHttpRequest hr = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         r = new Request( ctx, hr, _runtime );
         env = new DefaultRackEnvironment( _runtime, r );
     }
@@ -68,7 +68,7 @@ public class DefaultRackEnvironmentTest
     public void shouldBuildInputStream() throws Exception
     {
         String data = "foo=bar";
-        r.setBody( ChannelBuffers.copiedBuffer( data+"\n", Charset.forName( "UTF-8" ) ) );
+        r.setBody( Unpooled.copiedBuffer( data+"\n", StandardCharsets.UTF_8 ) );
         env = new DefaultRackEnvironment( _runtime, r );
 
         InputStream stream = env.getInput();

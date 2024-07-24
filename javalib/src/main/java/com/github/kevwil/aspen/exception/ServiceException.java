@@ -1,6 +1,6 @@
 package com.github.kevwil.aspen.exception;
 
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  * @author kevwil
