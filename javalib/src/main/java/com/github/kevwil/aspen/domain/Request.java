@@ -66,7 +66,7 @@ public class Request
         return _rubyHeaders;
     }
 
-    public HttpRequest getHttpRequest()
+    public FullHttpRequest getHttpRequest()
     {
         return _request;
     }

@@ -11,3 +11,4 @@ vendor/*
 javalib/target/*
 .rakeTasks
 *.sqlite3
+.ruby-version
