@@ -17,38 +17,39 @@ import static org.junit.Assert.*;
  * @author kevwil
  * @since Jan 07, 2011
  */
+@SuppressWarnings("rawtypes")
 public class JRubyRackProxyTest
 {
-    private final Ruby _runtime = Ruby.getGlobalRuntime();
-    private JRubyRackProxy _rack;
-    private IRubyObject _app;
+    private final Ruby runtime = Ruby.getGlobalRuntime();
+    private JRubyRackProxy rack;
+    private IRubyObject app;
     private Request r;
 
     @Before
     public void startUp()
     {
-        _app = createMock( IRubyObject.class );
-        _rack = new JRubyRackProxy( _app );
+        app = createMock( IRubyObject.class );
+        rack = new JRubyRackProxy(app);
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext("localhost", "80");
         FullHttpRequest hr = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/");
-        r = new Request(ctx, hr, _runtime );
+        r = new Request(ctx, hr, runtime);
     }
 
     @After
     public void tearDown()
     {
-        verify( _app );
+        verify(app);
     }
 
     @Test
     public void shouldWriteBodyToResponse()
     {
-        replay( _app );
+        replay(app);
         Response response = new Response( r );
         String data = "line one\r\nline two\r\nline three";
-        RubyString body = RubyString.newString( _runtime, data );
+        RubyString body = RubyString.newString(runtime, data );
 
-        _rack.writeBodyToResponse( body, response );
+        rack.writeBodyToResponse( body, response );
 
         assertTrue( response.hasBody() );
         assertFalse( response.hasException() );
@@ -58,19 +59,19 @@ public class JRubyRackProxyTest
     @Test
     public void shouldCreateResponseFromRackArray()
     {
-        replay( _app );
-        RubyArray array = RubyArray.newArray( _runtime );
+        replay(app);
+        RubyArray array = RubyArray.newArray(runtime);
         array.add( 200 );
-        RubyHash headers = RubyHash.newHash( _runtime );
+        RubyHash headers = RubyHash.newHash(runtime);
         headers.put( "X-Content", "foo" );
-        RubyHash cookies = RubyHash.newHash( _runtime );
+        RubyHash cookies = RubyHash.newHash(runtime);
         cookies.put( "foo_content", "foo" );
         cookies.put( "bar_content", "bar" );
         headers.put( "Cookie", cookies );
         array.add( headers );
         array.add( "Hello World!" );
 
-        Response response = _rack.createResponse( r, array );
+        Response response = rack.createResponse( r, array );
 
         assertNotNull( response );
         assertTrue( response.hasBody() );
@@ -83,21 +84,21 @@ public class JRubyRackProxyTest
     @Test
     public void shouldCallRackApp()
     {
-        RubyArray array = RubyArray.newArray( _runtime );
+        RubyArray array = RubyArray.newArray(runtime);
         array.add( 200 );
-        RubyHash headers = RubyHash.newHash( _runtime );
+        RubyHash headers = RubyHash.newHash(runtime);
         headers.put( "X-Content", "foo" );
         array.add( headers );
         array.add( "Hello World!" );
 
-        expect( _app.respondsTo( eq( "call" ) ) ).andReturn( true );
-        expect( _app.callMethod( anyObject( ThreadContext.class ),
+        expect( app.respondsTo( eq( "call" ) ) ).andReturn( true );
+        expect( app.callMethod( anyObject( ThreadContext.class ),
                                  eq( "call" ),
                                  anyObject( IRubyObject[].class ),
                                  eq( Block.NULL_BLOCK ) ) ).andReturn( array );
-        replay( _app );
+        replay(app);
 
-        Response response = _rack.process( r );
+        Response response = rack.process( r );
         assertNotNull( response );
         assertTrue( response.hasBody() );
         assertFalse( response.hasException() );

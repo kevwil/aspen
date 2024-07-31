@@ -18,25 +18,25 @@ import static org.junit.Assert.*;
  */
 public class RubyIORackInputTest
 {
-    private static final Ruby _runtime = Ruby.getGlobalRuntime();
-    private RubyIORackInput _input;
+    private static final Ruby RUNTIME = Ruby.getGlobalRuntime();
+    private RubyIORackInput input;
 
     @Before
     public void setUp()
     {
-        _input = new RubyIORackInput( _runtime, RubyIORackInput.createRackInputClass(_runtime) );
+        input = new RubyIORackInput(RUNTIME, RubyIORackInput.createRackInputClass(RUNTIME) );
     }
 
     @Test( expected = RaiseException.class )
     public void shouldThrowErrorOnClose()
     {
-        _input.close();
+        input.close();
     }
 
     @Test
     public void shouldReturnTrueForBinmode()
     {
-        assertTrue( _input.getBinmode().isTrue() );
+        assertTrue( input.getBinmode().isTrue() );
     }
 
     @Test
@@ -44,13 +44,13 @@ public class RubyIORackInputTest
     {
         String data = "hello";
         int dataLen = data.length();
-        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
-        IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby( _runtime, dataLen );
-        IRubyObject result = _input.read( _runtime.getCurrentContext(), new IRubyObject[]{dataLenRuby} );
+        input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
+        IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby(RUNTIME, dataLen );
+        IRubyObject result = input.read( RUNTIME.getCurrentContext(), new IRubyObject[]{dataLenRuby} );
         assertNotNull( result );
         assertTrue( result instanceof RubyString );
         assertEquals( data, result.toString() );
-        assertTrue( _input.isEof().isTrue() );
+        assertTrue( input.isEof().isTrue() );
     }
 
     @Test( expected = RaiseException.class )
@@ -58,25 +58,25 @@ public class RubyIORackInputTest
     {
         String data = "hello";
         int dataLen = 10; // read too much
-        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
-        IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby( _runtime, dataLen );
-        _input.read( _runtime.getCurrentContext(), new IRubyObject[]{dataLenRuby} );
+        input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
+        IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby(RUNTIME, dataLen );
+        input.read( RUNTIME.getCurrentContext(), new IRubyObject[]{dataLenRuby} );
     }
 
     @Test
     public void shouldRewindAndReadMultipleTimes()
     {
         String data = "hello";
-        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
-        IRubyObject result1 = _input.read( _runtime.getCurrentContext(), new IRubyObject[]{} );
+        input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
+        IRubyObject result1 = input.read( RUNTIME.getCurrentContext(), new IRubyObject[]{} );
         assertNotNull( result1 );
         assertTrue( result1 instanceof RubyString );
         assertEquals( data, result1.toString() );
 
-        IRubyObject out = _input.rewind( _runtime.getCurrentContext() );
-        assertEquals( _runtime.getNil(), out );
+        IRubyObject out = input.rewind( RUNTIME.getCurrentContext() );
+        assertEquals( RUNTIME.getNil(), out );
 
-        IRubyObject result2 = _input.read( _runtime.getCurrentContext(), new IRubyObject[]{} );
+        IRubyObject result2 = input.read( RUNTIME.getCurrentContext(), new IRubyObject[]{} );
         assertNotNull( result2 );
         assertTrue( result2 instanceof RubyString );
         assertEquals( data, result2.toString() );
@@ -87,13 +87,13 @@ public class RubyIORackInputTest
     {
         String data = "hello";
         int dataLen = data.length();
-        IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby( _runtime, dataLen );
-        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
+        IRubyObject dataLenRuby = JavaEmbedUtils.javaToRuby(RUNTIME, dataLen );
+        input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
 
-        RubyString buf = RubyString.newEmptyString( _runtime );
+        RubyString buf = RubyString.newEmptyString(RUNTIME);
         IRubyObject[] args = new IRubyObject[]{dataLenRuby, buf};
-        IRubyObject result = _input.read( _runtime.getCurrentContext(), args );
-        assertEquals( _runtime.getNil(), result );
+        IRubyObject result = input.read( RUNTIME.getCurrentContext(), args );
+        assertEquals( RUNTIME.getNil(), result );
         assertEquals( data, buf.toString() );
     }
 
@@ -101,9 +101,9 @@ public class RubyIORackInputTest
     public void shouldReadFirstLineWhenCallingGets()
     {
         String data = "hello\r\nworld";
-        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
+        input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
 
-        IRubyObject result = _input.gets( _runtime.getCurrentContext() );
+        IRubyObject result = input.gets( RUNTIME.getCurrentContext() );
 
         assertNotNull( result );
         assertEquals( data.substring( 0, 5 ), result.toString() );
@@ -114,22 +114,22 @@ public class RubyIORackInputTest
     {
         final AtomicInteger yieldCount = new AtomicInteger();
         final String data = "line1\r\nline2\r\nline3";
-        _input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
+        input.setBuffer( Unpooled.copiedBuffer( data.getBytes() ) );
 
         BlockCallback callback = new BlockCallback(){
             public IRubyObject call( ThreadContext context, IRubyObject[] args, Block block ){
                 assertTrue( data.contains( args[0].toString() ) );
                 yieldCount.getAndIncrement();
-                return _runtime.getNil();
+                return RUNTIME.getNil();
             }
         };
         Block block = CallBlock.newCallClosure(
-                _runtime.getCurrentContext(),
-                _input,
+                RUNTIME.getCurrentContext(),
+                input,
                 Signature.fromArityValue(1),
                 callback
         );
-        _input.each( _runtime.getCurrentContext(), block );
+        input.each( RUNTIME.getCurrentContext(), block );
         assertEquals( 3, yieldCount.get() );
     }
 }

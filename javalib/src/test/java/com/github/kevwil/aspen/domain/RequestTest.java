@@ -19,7 +19,7 @@ public class RequestTest
     private FullHttpRequest httpRequest;
     private Request req;
     private ChannelHandlerContext ctx;
-    private static final Ruby _runtime = Ruby.getGlobalRuntime();
+    private static final Ruby RUNTIME = Ruby.getGlobalRuntime();
 
     @Before
     public void setUp()
@@ -31,7 +31,7 @@ public class RequestTest
     public void shouldBuildBasicRequest()
     {
         httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
-        req = new Request( ctx, httpRequest, _runtime );
+        req = new Request( ctx, httpRequest, RUNTIME);
 
         assertEquals( HttpMethod.GET, req.getMethod() );
         assertEquals( HttpMethod.GET, req.getRealMethod() );
@@ -44,7 +44,7 @@ public class RequestTest
     public void shouldBuildRequestWithOnlyUri()
     {
         httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
-        req = new Request( ctx, httpRequest, _runtime );
+        req = new Request( ctx, httpRequest, RUNTIME);
 
         assertEquals( HttpMethod.GET, req.getMethod() );
         assertEquals( HttpMethod.GET, req.getRealMethod() );
@@ -62,7 +62,7 @@ public class RequestTest
         String path = encoder.toString();
 
         httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/"+path );
-        req = new Request( ctx, httpRequest, _runtime );
+        req = new Request( ctx, httpRequest, RUNTIME);
 
         assertEquals( HttpMethod.POST, req.getMethod() );
         assertEquals( HttpMethod.PUT, req.getRealMethod() );
@@ -75,7 +75,7 @@ public class RequestTest
     {
         httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.POST, "http://localhost/foo" );
         httpRequest.headers().add( "X-Http-Method-Override", "PUT" );
-        req = new Request( ctx, httpRequest, _runtime );
+        req = new Request( ctx, httpRequest, RUNTIME);
 
         assertEquals( HttpMethod.POST, req.getMethod() );
         assertEquals( HttpMethod.PUT, req.getRealMethod() );
@@ -85,7 +85,7 @@ public class RequestTest
     public void shouldReturnAnEnvironmentWrapper()
     {
         httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "/" );
-        req = new Request( ctx, httpRequest, _runtime );
+        req = new Request( ctx, httpRequest, RUNTIME);
         RackEnvironment env = req.getEnv();
         assertNotNull( env );
     }

@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class RubyUtil
 {
-    private static final Ruby _runtime = Ruby.getGlobalRuntime();
+    private static final Ruby RUNTIME = Ruby.getGlobalRuntime();
 
     private RubyUtil(){}
 
@@ -45,7 +45,7 @@ public class RubyUtil
     {
         InputStream dataStream = new ByteArrayInputStream(
                 input.getBytes( StandardCharsets.UTF_8 ) );
-        return RubyIO.newIO( _runtime, Channels.newChannel( dataStream ) );
+        return RubyIO.newIO(RUNTIME, Channels.newChannel( dataStream ) );
     }
 
     public static void trimEmptyValues( RubyHash env )

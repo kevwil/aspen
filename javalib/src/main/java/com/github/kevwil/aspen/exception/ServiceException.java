@@ -10,7 +10,7 @@ public class ServiceException
 extends RuntimeException
 {
     private static final HttpResponseStatus STATUS = HttpResponseStatus.INTERNAL_SERVER_ERROR;
-    private HttpResponseStatus _status;
+    private HttpResponseStatus status;
 
     public ServiceException()
     {
@@ -59,11 +59,11 @@ extends RuntimeException
 
     public HttpResponseStatus getStatus()
     {
-        return _status;
+        return status;
     }
 
     public void setStatus( final HttpResponseStatus status )
     {
-        _status = status;
+        this.status = status;
     }
 }

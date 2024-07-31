@@ -12,35 +12,46 @@ import io.netty.handler.codec.http.FullHttpRequest;
 public class RackChannelInboundHandler
 extends SimpleChannelInboundHandler<FullHttpRequest>
 {
-    private final RackProxy _rack;
-    private final HttpResponseWriter _responseWriter;
-    private final HttpResponseWriter _errorWriter;
+    private final RackProxy rack;
+    private final HttpResponseWriter responseWriter;
+    private final HttpResponseWriter errorWriter;
 
     public RackChannelInboundHandler(final RackProxy rackProxy )
     {
-        _rack = rackProxy;
-        _responseWriter = new DefaultResponseWriter();
-        _errorWriter = new ErrorResponseWriter();
+        super();
+        rack = rackProxy;
+        responseWriter = new DefaultResponseWriter();
+        errorWriter = new ErrorResponseWriter();
     }
 
     private void writeResponse( final ChannelHandlerContext ctx, final Request request, final Response response )
     {
-        _responseWriter.write( ctx, request, response );
+        responseWriter.write( ctx, request, response );
     }
 
     private void writeError( final ChannelHandlerContext ctx, final Request request, final Response response )
     {
-        _errorWriter.write( ctx, request, response );
+        errorWriter.write( ctx, request, response );
+    }
+
+    @Override
+    public boolean acceptInboundMessage(Object msg) throws Exception {
+        return super.acceptInboundMessage(msg);
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        super.channelRead(ctx, msg);
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest httpRequest) throws Exception
     {
-        Request request = new Request( ctx, httpRequest, _rack.getRuntime() );
+        Request request = new Request( ctx, httpRequest, rack.getRuntime() );
         Response response = new Response( request );
         try
         {
-            response = _rack.process( request );
+            response = rack.process( request );
             if( response == null )
             {
                 response = new Response( request );
@@ -68,5 +79,20 @@ extends SimpleChannelInboundHandler<FullHttpRequest>
                 writeResponse( ctx, request, response );
             }
         }
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        super.channelReadComplete(ctx);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        super.exceptionCaught(ctx, cause);
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        super.handlerAdded(ctx);
     }
 }

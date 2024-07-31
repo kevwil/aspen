@@ -42,16 +42,16 @@ implements RackInput
 
     /* CLASS DATA */
 
-    private ByteBuf _buffer;
+    private ByteBuf buffer;
 
     public ByteBuf getBuffer()
     {
-        return _buffer;
+        return buffer;
     }
 
     public void setBuffer( final ByteBuf buffer )
     {
-        _buffer = buffer;
+        this.buffer = buffer;
     }
 
     /* JRuby Methods */

@@ -17,18 +17,18 @@ import java.net.*;
 public class DefaultRackEnvironment
 implements RackEnvironment
 {
-    private final Ruby _runtime;
-    private final Request _request;
-    private RackInput _input;
-    private final InputStream _stream;
+    private final Ruby runtime;
+    private final Request request;
+    private RackInput input;
+    private final InputStream stream;
 
     public DefaultRackEnvironment( final Ruby runtime, final Request request )
     {
-        _runtime = runtime;
-        _request = request;
-        _stream = new ByteBufInputStream( _request.getBody() );
-        RubyIORackInput input = new RubyIORackInput( _runtime );
-        input.setBuffer( _request.getBody() );
+        this.runtime = runtime;
+        this.request = request;
+        this.stream = new ByteBufInputStream( this.request.getBody() );
+        RubyIORackInput input = new RubyIORackInput(this.runtime);
+        input.setBuffer( this.request.getBody() );
         setRackInput( input );
     }
 
@@ -45,7 +45,7 @@ implements RackEnvironment
     {
         env.put( "rack.version", Version.RACK );
         env.put( "rack.input", getRackInput() );
-        env.put( "rack.errors", new RubyIORackErrors( _runtime ) );
+        env.put( "rack.errors", new RubyIORackErrors(runtime) );
         env.put( "rack.multithread", true );
         env.put( "rack.multiprocess", false );
         env.put( "rack.run_once", false );
@@ -55,31 +55,31 @@ implements RackEnvironment
     @Override
     public InputStream getInput()
     {
-        return _stream;
+        return stream;
     }
 
     @Override
     public int getContentLength()
     {
-        return _request.getBodyString().length();
+        return request.getBodyString().length();
     }
 
     @Override
     public RackInput getRackInput()
     {
-        return _input;
+        return input;
     }
 
     @Override
     public void setRackInput( final RackInput input )
     {
-        _input = input;
+        this.input = input;
     }
 
     @Override
     public RubyHash toRuby()
     {
-        return createRubyHash( _request );
+        return createRubyHash(request);
     }
 
     void assignConnectionRelatedCgiHeaders( final RubyHash env, final Request request )

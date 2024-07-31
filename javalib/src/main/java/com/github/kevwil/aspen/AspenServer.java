@@ -12,8 +12,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  */
 public class AspenServer
 {
-    private Boolean _running;
-    private final ServerBootstrap _bootstrap;
+    private Boolean running;
+    private final ServerBootstrap bootstrap;
     private final EventLoopGroup bossGroup;
     private final EventLoopGroup workerGroup;
 
@@ -25,11 +25,11 @@ public class AspenServer
      */
     public AspenServer( final String host, final int port, final RackProxy rack )
     {
-        _running = false;
+        running = false;
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
-        _bootstrap = new ServerBootstrap();
-        _bootstrap.group(bossGroup, workerGroup)
+        bootstrap = new ServerBootstrap();
+        bootstrap.group(bossGroup, workerGroup)
                   .channel(NioServerSocketChannel.class)
                   .localAddress(host, port)
                   .option(ChannelOption.SO_BACKLOG, 100)
@@ -50,8 +50,8 @@ public class AspenServer
         }
         try
         {
-            ChannelFuture future = _bootstrap.bind().sync();
-            _running = true;
+            ChannelFuture future = bootstrap.bind().sync();
+            running = true;
             future.channel().closeFuture().sync();
         }
         catch( Exception e )
@@ -75,7 +75,7 @@ public class AspenServer
                 workerGroup.shutdownGracefully();
                 bossGroup.terminationFuture().sync();
                 workerGroup.terminationFuture().sync();
-                _running = false;
+                running = false;
             }
             catch( Exception e )
             {
@@ -96,6 +96,6 @@ public class AspenServer
      */
     public boolean isRunning()
     {
-        return _running;
+        return running;
     }
 }

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class DefaultRackEnvironmentTest
 {
-    private final Ruby _runtime = Ruby.getGlobalRuntime();
+    private final Ruby runtime = Ruby.getGlobalRuntime();
     private Request r;
     private DefaultRackEnvironment env;
 
@@ -29,14 +29,14 @@ public class DefaultRackEnvironmentTest
     {
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
         FullHttpRequest hr = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
-        r = new Request( ctx, hr, _runtime );
-        env = new DefaultRackEnvironment( _runtime, r );
+        r = new Request( ctx, hr, runtime);
+        env = new DefaultRackEnvironment(runtime, r );
     }
 
     @Test
     public void shouldUpdateCGIVariables()
     {
-        RubyHash hash = RubyHash.newHash( _runtime );
+        RubyHash hash = RubyHash.newHash(runtime);
         hash.put( "SCRIPT_NAME", "/" );
         hash.put( "PATH_INFO", "" );
 
@@ -51,7 +51,7 @@ public class DefaultRackEnvironmentTest
     @Test
     public void shouldUpdateCGIVariablesWithPathInfo()
     {
-        RubyHash hash = RubyHash.newHash( _runtime );
+        RubyHash hash = RubyHash.newHash(runtime);
         hash.put( "SCRIPT_NAME", "/" );
         hash.put( "PATH_INFO", "/hello" );
 
@@ -69,7 +69,7 @@ public class DefaultRackEnvironmentTest
     {
         String data = "foo=bar";
         r.setBody( Unpooled.copiedBuffer( data+"\n", StandardCharsets.UTF_8 ) );
-        env = new DefaultRackEnvironment( _runtime, r );
+        env = new DefaultRackEnvironment(runtime, r );
 
         InputStream stream = env.getInput();
         assertNotNull( stream );
@@ -84,11 +84,11 @@ public class DefaultRackEnvironmentTest
     @Test
     public void shouldUpdateEnv()
     {
-        RubyHash hash = RubyHash.newHash( _runtime );
+        RubyHash hash = RubyHash.newHash(runtime);
         env.updateEnv( hash, r );
 
         assertEquals( Version.RACK, hash.get( "rack.version" ) );
-        assertEquals( JavaEmbedUtils.javaToRuby( _runtime, env.getRackInput() ), hash.get( "rack.input" ) );
+        assertEquals( JavaEmbedUtils.javaToRuby(runtime, env.getRackInput() ), hash.get( "rack.input" ) );
         assertTrue( hash.get( "rack.errors" ) instanceof RackErrors );
         assertEquals( true, hash.get( "rack.multithread" ) );
         assertEquals( false, hash.get( "rack.multiprocess" ) );

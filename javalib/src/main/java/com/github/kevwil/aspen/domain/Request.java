@@ -22,76 +22,76 @@ public class Request
 {
     public static final String METHOD_OVERRIDE_PARAMETER = "_method";
     public static final String METHOD_OVERRIDE_HEADER = "X-Http-Method-Override";
-    private final ChannelHandlerContext _context;
-    private FullHttpRequest _request;
-    private HttpMethod _realMethod;
-    private URL _url;
-    private String _uri;
-    private RubyHash _rubyHeaders;
-    private final Ruby _runtime;
-    private static final Object _lock = new Object();
+    private final ChannelHandlerContext context;
+    private FullHttpRequest request;
+    private HttpMethod realMethod;
+    private URL url;
+    private String uri;
+    private RubyHash rubyHeaders;
+    private final Ruby runtime;
+    private static final Object LOCK = new Object();
 
     public Request(final ChannelHandlerContext context, final FullHttpRequest request, final Ruby runtime )
     {
-        _context = context;
-        _request = request;
-        _runtime = runtime;
+        this.context = context;
+        this.request = request;
+        this.runtime = runtime;
         initialize();
     }
 
     private void initialize()
     {
-        _uri = _request.uri();
-        _realMethod = parseRealMethod( parseQueryStringParams() );
-        _url = parseUrl();
-        _rubyHeaders = RubyHash.newHash( _runtime );
-        RackUtil.parseHeaders( _context, _request, _rubyHeaders );
+        this.uri = request.uri();
+        this.realMethod = parseRealMethod( parseQueryStringParams() );
+        this.url = parseUrl();
+        this.rubyHeaders = RubyHash.newHash(runtime);
+        RackUtil.parseHeaders(context, request, rubyHeaders);
     }
 
     public Ruby getRuntime()
     {
-        synchronized( _lock )
+        synchronized(LOCK)
         {
-            return _runtime;
+            return runtime;
         }
     }
 
     public URL getUrl()
     {
-        return _url;
+        return url;
     }
 
     public RubyHash getRubyHeaders()
     {
-        return _rubyHeaders;
+        return rubyHeaders;
     }
 
     public FullHttpRequest getHttpRequest()
     {
-        return _request;
+        return request;
     }
 
     public RackEnvironment getEnv()
     {
-        synchronized( _lock )
+        synchronized(LOCK)
         {
-            return new DefaultRackEnvironment( _runtime, this );
+            return new DefaultRackEnvironment(runtime, this );
         }
     }
 
     public HttpMethod getMethod()
     {
-        return _request.method();
+        return request.method();
     }
 
     public HttpMethod getRealMethod()
     {
-        return _realMethod;
+        return realMethod;
     }
 
     public ByteBuf getBody()
     {
-        return _request.content();
+        return request.content();
     }
 
     public String getBodyString()
@@ -101,37 +101,37 @@ public class Request
 
     public void setBody( ByteBuf body )
     {
-        _request = _request.replace(body);
+        request = request.replace(body);
     }
 
     public boolean containsHeader( String name )
     {
-        return _request.headers().contains( name );
+        return request.headers().contains( name );
     }
 
     public String getHeader( String name )
     {
-        return _request.headers().get( name );
+        return request.headers().get( name );
     }
 
     public String getUri()
     {
-        return _uri;
+        return uri;
     }
 
     public SocketAddress getRemoteAddress()
     {
-        return _context.channel().remoteAddress();
+        return context.channel().remoteAddress();
     }
 
     public SocketAddress getLocalAddress()
     {
-        return _context.channel().localAddress();
+        return context.channel().localAddress();
     }
 
     public boolean isKeepAlive()
     {
-        return HttpUtil.isKeepAlive( _request );
+        return HttpUtil.isKeepAlive(request);
     }
 
     private URL parseUrl()
@@ -139,7 +139,7 @@ public class Request
         URL result;
         try
         {
-            result = new URL( _uri );
+            result = new URL(uri);
         }
         catch( MalformedURLException e )
         {
@@ -148,7 +148,7 @@ public class Request
             sb.append( getProtocolFromLocalAddress( local ) )
                     .append( local.getHostName() )
                     .append( getPortFromLocalAddress( local ) )
-                    .append( _request.uri() );
+                    .append( request.uri() );
             try
             {
                 result = new URL( sb.toString() );
@@ -178,27 +178,27 @@ public class Request
 
     private HttpMethod parseRealMethod( Map<String,String> qs )
     {
-        if( ! HttpMethod.POST.equals( _request.method() ) )
-            return _request.method();
+        if( ! HttpMethod.POST.equals( request.method() ) )
+            return request.method();
 
-        if( _request.headers().contains( Request.METHOD_OVERRIDE_HEADER ) )
+        if( request.headers().contains( Request.METHOD_OVERRIDE_HEADER ) )
         {
-            return HttpMethod.valueOf( _request.headers().get( Request.METHOD_OVERRIDE_HEADER ) );
+            return HttpMethod.valueOf( request.headers().get( Request.METHOD_OVERRIDE_HEADER ) );
         }
         if( qs.containsKey( Request.METHOD_OVERRIDE_PARAMETER ) )
         {
             String method = qs.get( Request.METHOD_OVERRIDE_PARAMETER );
-            _request.headers().add( Request.METHOD_OVERRIDE_HEADER, method );
+            request.headers().add( Request.METHOD_OVERRIDE_HEADER, method );
             return HttpMethod.valueOf( method );
         }
-        return _request.method();
+        return request.method();
     }
 
     private Map<String, String> parseQueryStringParams()
     {
         Map<String,String> params = new HashMap<>();
-        int q = _uri.indexOf( "?" );
-        String qs = ( q >= 0 ? _uri.substring( q+1 ) : null );
+        int q = uri.indexOf( "?" );
+        String qs = ( q >= 0 ? uri.substring( q+1 ) : null );
         if( qs != null )
         {
             String[] pairs = qs.split( "&" );

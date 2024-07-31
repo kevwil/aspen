@@ -12,14 +12,14 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 public class RackHttpServerChannelInitializer
 extends ChannelInitializer<Channel>
 {
-    private final RackProxy _rack;
-    private final boolean _compressionEnabled;
+    private final RackProxy rack;
+    private final boolean compressionEnabled;
     // private final int _maxChunkSize;
 
     public RackHttpServerChannelInitializer( final RackProxy rack )
     {
-        _rack = rack;
-        _compressionEnabled = false;
+        this.rack = rack;
+        compressionEnabled = false;
         // _maxChunkSize = 8*1024;
     }
 
@@ -34,11 +34,11 @@ extends ChannelInitializer<Channel>
         pipeline.addLast("decoder", new HttpRequestDecoder())
                 .addLast("encoder", new HttpResponseEncoder())
                 .addLast("chuckedWriter", new ChunkedWriteHandler());
-        if( _compressionEnabled )
+        if(compressionEnabled)
         {
             pipeline.addLast("deflator", new HttpContentCompressor())
                     .addLast("inflator", new HttpContentDecompressor());
         }
-        pipeline.addLast(new RackChannelInboundHandler(_rack));
+        pipeline.addLast(new RackChannelInboundHandler(rack));
     }
 }

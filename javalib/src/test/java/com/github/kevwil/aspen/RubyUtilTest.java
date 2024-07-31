@@ -15,12 +15,12 @@ import static org.junit.Assert.*;
  */
 public class RubyUtilTest
 {
-    private static final Ruby _runtime = Ruby.getGlobalRuntime();
+    private static final Ruby RUNTIME = Ruby.getGlobalRuntime();
 
     @Test
     public void shouldConvertGoodNumberToInt()
     {
-        RubyFixnum ri = _runtime.newFixnum( 100 );
+        RubyFixnum ri = RUNTIME.newFixnum( 100 );
         int result = RubyUtil.toInt( ri );
         assertEquals( 100, result );
     }
@@ -28,7 +28,7 @@ public class RubyUtilTest
     @Test
     public void shouldCallMethodOnObject()
     {
-        IRubyObject value = RubyString.newString( _runtime, "aoeu" );
+        IRubyObject value = RubyString.newString(RUNTIME, "aoeu" );
         IRubyObject result = RubyUtil.call( "upcase", value );
         assertEquals( "AOEU", result.toString() );
     }
@@ -36,9 +36,9 @@ public class RubyUtilTest
     @Test
     public void shouldGetValueFromHash()
     {
-        RubyHash hash = RubyHash.newHash( _runtime );
+        RubyHash hash = RubyHash.newHash(RUNTIME);
         hash.put( "foo", "bar" );
-        IRubyObject key = RubyString.newString( _runtime, "foo" );
+        IRubyObject key = RubyString.newString(RUNTIME, "foo" );
         IRubyObject result = RubyUtil.hashGet( hash, key );
         assertEquals( "bar", result.toString() );
     }
@@ -46,9 +46,9 @@ public class RubyUtilTest
     @Test
     public void shouldDeleteFromHash()
     {
-        RubyHash hash = RubyHash.newHash( _runtime );
+        RubyHash hash = RubyHash.newHash(RUNTIME);
         hash.put( "foo", "bar" );
-        IRubyObject key = RubyString.newString( _runtime, "foo" );
+        IRubyObject key = RubyString.newString(RUNTIME, "foo" );
         RubyUtil.hashDelete( hash, key );
         assertFalse( hash.containsKey( "foo" ) );
         assertTrue( hash.isEmpty() );
@@ -69,7 +69,7 @@ public class RubyUtilTest
     public void shouldEnumerateRubyIntoBuffer()
     {
         String data = "foo\nbar";
-        IRubyObject rubyData = RubyString.newString( _runtime, data );
+        IRubyObject rubyData = RubyString.newString(RUNTIME, data );
         ByteBuf buffer = RubyUtil.bodyToBuffer( rubyData );
         assertNotNull( buffer );
         String bufferData = buffer.toString( StandardCharsets.UTF_8 );
@@ -79,10 +79,10 @@ public class RubyUtilTest
     @Test
     public void shouldTrimEmptyHeaders()
     {
-        RubyHash env = RubyHash.newHash( _runtime );
-        env.op_aset( _runtime.getCurrentContext(), RubyString.newString( _runtime, "FOO" ), _runtime.getNil() );
-        env.op_aset( _runtime.getCurrentContext(), RubyString.newString( _runtime, "BAR" ), RubyString.newString( _runtime, "" ) );
-        env.op_aset( _runtime.getCurrentContext(), RubyString.newString( _runtime, "AOEU" ), RubyString.newString( _runtime, "dvorak" ) );
+        RubyHash env = RubyHash.newHash(RUNTIME);
+        env.op_aset( RUNTIME.getCurrentContext(), RubyString.newString(RUNTIME, "FOO" ), RUNTIME.getNil() );
+        env.op_aset( RUNTIME.getCurrentContext(), RubyString.newString(RUNTIME, "BAR" ), RubyString.newString(RUNTIME, "" ) );
+        env.op_aset( RUNTIME.getCurrentContext(), RubyString.newString(RUNTIME, "AOEU" ), RubyString.newString(RUNTIME, "dvorak" ) );
         RubyUtil.trimEmptyValues( env );
 
         assertFalse( env.containsKey( "FOO" ) );

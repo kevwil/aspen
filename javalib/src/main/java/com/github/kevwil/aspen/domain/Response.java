@@ -13,30 +13,30 @@ import java.util.*;
  */
 public class Response
 {
-    private HttpResponseStatus _statusCode = HttpResponseStatus.OK;
-    private Throwable _exception = null;
-    private Object _body;
-    private final Map<String,List<String>> _headers = new HashMap<>();
-    private final Request _req;
+    private HttpResponseStatus statusCode = HttpResponseStatus.OK;
+    private Throwable exception = null;
+    private Object body;
+    private final Map<String,List<String>> headers = new HashMap<>();
+    private final Request req;
 
     public Response( Request request )
     {
-        _req = request;
+        req = request;
     }
 
     protected Request getRequest()
     {
-        return _req;
+        return req;
     }
 
     public Object getBody()
     {
-        return _body;
+        return body;
     }
 
     public void setBody( Object body )
     {
-        _body = body;
+        this.body = body;
     }
 
     public boolean hasBody()
@@ -61,28 +61,28 @@ public class Response
 
     public List<String> getHeaders( String name )
     {
-        return _headers.get( name );
+        return headers.get( name );
     }
 
     public Set<String> getHeaderNames()
     {
-        return _headers.keySet();
+        return headers.keySet();
     }
 
     public void addHeader( String name, String value )
     {
-        List<String> values = _headers.get( name );
+        List<String> values = headers.get( name );
         if( values == null )
         {
             values = new ArrayList<>();
         }
         values.add( value );
-        _headers.put( name, values );
+        headers.put( name, values );
     }
 
     public void setResponseCode( int code )
     {
-        _statusCode = HttpResponseStatus.valueOf( code );
+        statusCode = HttpResponseStatus.valueOf( code );
     }
 
 //    public void setResponseStatus( HttpResponseStatus responseStatus )
@@ -102,22 +102,22 @@ public class Response
 
     public HttpResponseStatus getResponseStatus()
     {
-        return _statusCode;
+        return statusCode;
     }
 
     public Throwable getException()
     {
-        return _exception;
+        return exception;
     }
 
     public boolean hasException()
     {
-        return ( _exception != null );
+        return ( exception != null );
     }
 
     public void setException( Throwable e )
     {
-        _exception = e;
+        exception = e;
     }
 
     public void addHeaders( final RubyHash headers )

@@ -18,85 +18,85 @@ import static org.easymock.EasyMock.*;
  */
 public class ErrorResponseWriterTest
 {
-    private MockErrorResponseWriter _writer;
-    private FullHttpResponse _httpResponse;
-    private FullHttpRequest _httpRequest;
-    private Request _request;
-    private Response _response;
-    private ChannelHandlerContext _context;
-    private Throwable _exception;
-    private Channel _channel;
-    private ChannelPipeline _pipeline;
-    private ChannelFuture _future;
+    private MockErrorResponseWriter writer;
+    private FullHttpResponse httpResponse;
+    private FullHttpRequest httpRequest;
+    private Request request;
+    private Response response;
+    private ChannelHandlerContext context;
+    private Throwable exception;
+    private Channel channel;
+    private ChannelPipeline pipeline;
+    private ChannelFuture future;
 
     @Before
     public void setUp()
     {
-        _writer = new MockErrorResponseWriter();
-        _channel = createMock(Channel.class);
-        _pipeline = createMock(ChannelPipeline.class);
-        _context = createMock(ChannelHandlerContext.class);
-        _future = createMock(ChannelFuture.class);
-        _httpResponse = createMock( FullHttpResponse.class );
-        _writer.setResponse( _httpResponse );
-        _httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
-        _exception = new ServiceException( "Oops!" );
-        _request = new Request( _context, _httpRequest, Ruby.getGlobalRuntime() );
-        _response = new Response( _request );
-        _response.setException( _exception );
+        writer = new MockErrorResponseWriter();
+        channel = createMock(Channel.class);
+        pipeline = createMock(ChannelPipeline.class);
+        context = createMock(ChannelHandlerContext.class);
+        future = createMock(ChannelFuture.class);
+        httpResponse = createMock( FullHttpResponse.class );
+        writer.setResponse(httpResponse);
+        httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
+        exception = new ServiceException( "Oops!" );
+        request = new Request(context, httpRequest, Ruby.getGlobalRuntime() );
+        response = new Response(request);
+        response.setException(exception);
 
-        expect(_context.channel()).andReturn(_channel);
-        expect(_channel.write(anyObject(FullHttpResponse.class))).andReturn(_future);
-        expect(_future.addListener(anyObject())).andReturn(_future);
-        expect(_httpResponse.touch(anyObject())).andReturn(_httpResponse).anyTimes();
+        expect(context.channel()).andReturn(channel);
+        expect(channel.write(anyObject(FullHttpResponse.class))).andReturn(future);
+        expect(future.addListener(anyObject())).andReturn(future);
+        expect(httpResponse.touch(anyObject())).andReturn(httpResponse).anyTimes();
     }
 
     @After
     public void tearDown()
     {
-        verify( _httpResponse );
-        verify( _channel );
-        verify( _pipeline );
-        verify( _context );
-        verify( _future );
+        verify(httpResponse);
+        verify(channel);
+        verify(pipeline);
+        verify(context);
+        verify(future);
     }
 
     private void replayAll()
     {
-        replay( _httpResponse );
-        replay( _channel );
-        replay( _pipeline );
-        replay( _context );
-        replay( _future );
+        replay(httpResponse);
+        replay(channel);
+        replay(pipeline);
+        replay(context);
+        replay(future);
     }
 
     @Test
     public void shouldSetContentLengthIfKeepAlive()
     {
-        expectContentType( _httpResponse );
-        expectSetContent( _httpResponse, _exception );
+        expectContentType(httpResponse);
+        expectSetContent(httpResponse, exception);
         expectKeepAlive( Unpooled.copiedBuffer( "hello\r\n", StandardCharsets.UTF_8 ),
-                         _httpResponse );
+                httpResponse);
         replayAll();
-        _writer.write( _context, _request, _response );
+        writer.write(context, request, response);
     }
 
     @Test
     public void shouldSetConnectionHeaderIfNotKeepAlive()
     {
-        HttpUtil.setKeepAlive( _httpRequest, false );
-        expectContentType( _httpResponse );
-        expectSetContent( _httpResponse, _exception );
-        expectNonKeepAlive( _httpResponse );
+        HttpUtil.setKeepAlive(httpRequest, false );
+        expectContentType(httpResponse);
+        expectSetContent(httpResponse, exception);
+        expectNonKeepAlive(httpResponse);
         replayAll();
-        _writer.write( _context, _request, _response );
+        writer.write(context, request, response);
     }
 
     private void expectContentType( FullHttpResponse httpResponse )
     {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.set( HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8" );
-        expect(_httpResponse.headers()).andReturn(headers);
+        expect(this.httpResponse.headers()).andReturn(headers);
 //        httpResponse.headers().set( HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8" );
     }
 
@@ -108,14 +108,14 @@ public class ErrorResponseWriterTest
 //		httpResponse.setContent(
 //                ChannelBuffers.copiedBuffer( builder.toString(),
 //                                             Charset.forName( "UTF-8" ) ) );
-        expect(_httpResponse.replace(anyObject(ByteBuf.class))).andReturn(_httpResponse);
+        expect(this.httpResponse.replace(anyObject(ByteBuf.class))).andReturn(this.httpResponse);
     }
 
     private void expectNonKeepAlive( FullHttpResponse httpResponse )
     {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.set( HttpHeaderNames.CONNECTION, "close" );
-        expect(_httpResponse.headers()).andReturn(headers);
+        expect(this.httpResponse.headers()).andReturn(headers);
     }
 
     private void expectKeepAlive(ByteBuf content, FullHttpResponse httpResponse )
@@ -123,7 +123,7 @@ public class ErrorResponseWriterTest
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.set( HttpHeaderNames.CONTENT_LENGTH, content.readableBytes() );
         expect( httpResponse.content() ).andReturn( content );
-        expect(_httpResponse.headers()).andReturn(headers);
+        expect(this.httpResponse.headers()).andReturn(headers);
     }
 
     private static class MockErrorResponseWriter

@@ -17,28 +17,28 @@ import java.nio.charset.StandardCharsets;
 public class JRubyRackProxy
 implements RackProxy
 {
-    private final IRubyObject _app;
-    private static final Object _lock = new Object();
+    private final IRubyObject app;
+    private static final Object LOCK = new Object();
 
     public JRubyRackProxy( final IRubyObject app )
     {
-        _app = app;
+        this.app = app;
     }
 
     public Ruby getRuntime()
     {
-        synchronized( _lock )
+        synchronized(LOCK)
         {
-            return _app.getRuntime();
+            return app.getRuntime();
         }
     }
     
     @Override
     public Response process( final Request request )
     {
-        synchronized( _lock )
+        synchronized(LOCK)
         {
-            if( ! _app.respondsTo( "call" ) )
+            if( ! app.respondsTo( "call" ) )
             {
                 throw new InvalidAppException();
             }
@@ -46,7 +46,7 @@ implements RackProxy
             RubyHash env = request.getEnv().toRuby();
             IRubyObject[] args = { env };
 
-            IRubyObject callResult = _app.callMethod( request.getRuntime().getCurrentContext(),
+            IRubyObject callResult = app.callMethod( request.getRuntime().getCurrentContext(),
                                                            "call",
                                                            args,
                                                            Block.NULL_BLOCK );
