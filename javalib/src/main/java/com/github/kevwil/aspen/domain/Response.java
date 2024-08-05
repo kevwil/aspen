@@ -17,16 +17,10 @@ public class Response
     private Throwable exception = null;
     private Object body;
     private final Map<String,List<String>> headers = new HashMap<>();
-    private final Request req;
 
-    public Response( Request request )
+    public Response()
     {
-        req = request;
-    }
-
-    protected Request getRequest()
-    {
-        return req;
+        super();
     }
 
     public Object getBody()
@@ -85,10 +79,10 @@ public class Response
         statusCode = HttpResponseStatus.valueOf( code );
     }
 
-//    public void setResponseStatus( HttpResponseStatus responseStatus )
-//    {
-//        _statusCode = responseStatus;
-//    }
+    public void setResponseStatus( HttpResponseStatus responseStatus )
+    {
+        statusCode = responseStatus;
+    }
 
 //    public void setResponseCreated()
 //    {

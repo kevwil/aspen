@@ -4,6 +4,8 @@ import com.github.kevwil.aspen.domain.*;
 import com.github.kevwil.aspen.exception.ServiceException;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.util.AttributeKey;
 
 /**
  * @author kevwil
@@ -12,6 +14,8 @@ import io.netty.handler.codec.http.FullHttpRequest;
 public class RackChannelInboundHandler
 extends SimpleChannelInboundHandler<FullHttpRequest>
 {
+    private static final AttributeKey<MessageContext> CONTEXT_KEY = AttributeKey.valueOf("context");
+
     private final RackProxy rack;
     private final HttpResponseWriter responseWriter;
     private final HttpResponseWriter errorWriter;
@@ -34,61 +38,82 @@ extends SimpleChannelInboundHandler<FullHttpRequest>
         errorWriter.write( ctx, request, response );
     }
 
-    @Override
-    public boolean acceptInboundMessage(Object msg) throws Exception {
-        return super.acceptInboundMessage(msg);
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
-    }
+//    @Override
+//    public boolean acceptInboundMessage(Object msg) throws Exception {
+//        return super.acceptInboundMessage(msg);
+//    }
+//
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//        super.channelRead(ctx, msg);
+//    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest httpRequest) throws Exception
     {
-        Request request = new Request( ctx, httpRequest, rack.getRuntime() );
-        Response response = new Response( request );
+        MessageContext context = createInitialContext(ctx, httpRequest);
         try
         {
-            response = rack.process( request );
-            if( response == null )
-            {
-                response = new Response( request );
-                response.setException( new ServiceException( "null response from Rack" ) );
-            }
-            if( !response.hasException() && response.getResponseStatus().code() >= 400 )
-            {
-                response.setException( new ServiceException( response.getResponseStatus() ) );
-            }
+            processRequest(ctx, context);
         }
-        catch( Exception ex )
+        catch( Throwable t )
         {
-            assert response != null;
-            response.setException( ex );
+            handleAspenException(ctx, t);
         }
-        finally
-        {
-            assert response != null;
-            if( response.hasException() )
-            {
-                writeError( ctx, request, response );
-            }
-            else
-            {
-                writeResponse( ctx, request, response );
-            }
+    }
+
+    private MessageContext createInitialContext(ChannelHandlerContext ctx, FullHttpRequest httpRequest) {
+        Request request = createRequest(ctx, httpRequest);
+        Response response = createResponse();
+        MessageContext context = new MessageContext(request, response);
+        ctx.channel().attr(CONTEXT_KEY).set(context);
+        return context;
+    }
+
+    private Request createRequest(ChannelHandlerContext ctx, FullHttpRequest request) {
+        return new Request(ctx, request, rack.getRuntime());
+    }
+
+    private Response createResponse() {
+        return new Response();
+    }
+
+    private void processRequest(ChannelHandlerContext ctx, MessageContext context) {
+        Response result = rack.process(context.getRequest());
+        if (result.hasException()) {
+            writeError(ctx, context.getRequest(), result);
+        } else {
+            writeResponse(ctx, context.getRequest(), result);
         }
+    }
+
+    private void handleAspenException(ChannelHandlerContext ctx, Throwable cause) {
+        MessageContext context = ctx.channel().attr(CONTEXT_KEY).get();
+        // TODO: map exception types to HttpStatus codes
+        if (ServiceException.isAssignableFrom(cause)) {
+            context.setHttpStatus(HttpResponseStatus.INTERNAL_SERVER_ERROR);
+        }
+        context.setException(cause);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
         super.channelReadComplete(ctx);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        super.exceptionCaught(ctx, cause);
+        try {
+            MessageContext context = ctx.channel().attr(CONTEXT_KEY).get();
+            if (context != null) {
+                context.setException(cause.getCause() != null ? cause.getCause() : cause);
+            }
+        } catch (Throwable t) {
+            t.printStackTrace(System.err);
+        } finally {
+            ctx.channel().close();
+        }
     }
 
     @Override

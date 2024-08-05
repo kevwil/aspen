@@ -42,7 +42,7 @@ public class ErrorResponseWriterTest
         httpRequest = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         exception = new ServiceException( "Oops!" );
         request = new Request(context, httpRequest, Ruby.getGlobalRuntime() );
-        response = new Response(request);
+        response = new Response();
         response.setException(exception);
 
         expect(context.channel()).andReturn(channel);

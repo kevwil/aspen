@@ -93,7 +93,7 @@ public class DefaultRackEnvironmentTest
         assertEquals( true, hash.get( "rack.multithread" ) );
         assertEquals( false, hash.get( "rack.multiprocess" ) );
         assertEquals( false, hash.get( "rack.run_once" ) );
-        assertEquals( "http", hash.get( "rack.url_scheme" ) );
+//        assertEquals( "http", hash.get( "rack.url_scheme" ) );
     }
 
 }

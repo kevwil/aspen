@@ -22,11 +22,10 @@ public class ResponseTest
         FullHttpRequest hr = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, "http://localhost/" );
         ChannelHandlerContext ctx = RackUtil.buildDummyChannelHandlerContext( "localhost", "80" );
         Request req = new Request( ctx, hr, Ruby.getGlobalRuntime() );
-        Response resp = new Response( req );
+        Response resp = new Response();
         assertNotNull( resp );
         assertNull( resp.getBody() );
         assertNull( resp.getException() );
         assertTrue( resp.getHeaderNames().isEmpty() );
-        assertEquals( req, resp.getRequest() );
     }
 }

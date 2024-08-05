@@ -45,7 +45,7 @@ public class JRubyRackProxyTest
     public void shouldWriteBodyToResponse()
     {
         replay(app);
-        Response response = new Response( r );
+        Response response = new Response();
         String data = "line one\r\nline two\r\nline three";
         RubyString body = RubyString.newString(runtime, data );
 

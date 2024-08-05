@@ -66,4 +66,8 @@ extends RuntimeException
     {
         this.status = status;
     }
+
+    public static boolean isAssignableFrom(Throwable exception) {
+        return ServiceException.class.isAssignableFrom(exception.getClass());
+    }
 }

@@ -52,7 +52,7 @@ implements RackProxy
                                                            Block.NULL_BLOCK );
             if( callResult.isNil() )
             {
-                Response err = new Response( request );
+                Response err = new Response();
                 err.setException( new ServiceException( "'nil' was returned from the app" ) );
                 return err;
             }
@@ -60,7 +60,7 @@ implements RackProxy
             {
                 System.out.println( callResult.inspect() );
                 // TODO: return a file-based response
-                Response err = new Response( request );
+                Response err = new Response();
                 err.setException( new ServiceException( "body is a Rack::File - need to handle it differently" ) );
                 return err;
             }
@@ -71,7 +71,7 @@ implements RackProxy
             }
             catch( Exception e )
             {
-                Response err = new Response( request );
+                Response err = new Response();
                 err.setException( e );
                 return err;
             }
@@ -80,7 +80,7 @@ implements RackProxy
 
     Response createResponse( final Request request, final RubyArray<IRubyObject> result )
     {
-        Response r = new Response( request );
+        Response r = new Response();
         if( result.size() != 3 )
         {
             r.setException( new ServiceException( "bad rack response: " + result.inspect().toString() ) );

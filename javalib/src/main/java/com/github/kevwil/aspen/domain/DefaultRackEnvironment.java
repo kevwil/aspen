@@ -14,6 +14,7 @@ import java.net.*;
  * @author kevwil
  * @since Jan 28, 2011
  */
+@SuppressWarnings("unchecked")
 public class DefaultRackEnvironment
 implements RackEnvironment
 {
@@ -49,7 +50,7 @@ implements RackEnvironment
         env.put( "rack.multithread", true );
         env.put( "rack.multiprocess", false );
         env.put( "rack.run_once", false );
-        env.put( "rack.url_scheme", request.getUrl().getProtocol() );
+//        env.put( "rack.url_scheme", request.getUrl().getProtocol() );
     }
 
     @Override

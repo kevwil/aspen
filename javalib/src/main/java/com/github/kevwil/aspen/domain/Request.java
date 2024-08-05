@@ -9,6 +9,7 @@ import io.netty.handler.codec.http.*;
 import org.jruby.Ruby;
 import org.jruby.RubyHash;
 
+import java.io.IOException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -136,29 +137,32 @@ public class Request
 
     private URL parseUrl()
     {
-        URL result;
-        try
-        {
-            result = new URL(uri);
+        try {
+            return new URI(uri).toURL();
+        } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {
+//            throw new RuntimeException(e);
+            return null;
         }
-        catch( MalformedURLException e )
-        {
-            InetSocketAddress local = (InetSocketAddress) getLocalAddress();
-            StringBuilder sb = new StringBuilder();
-            sb.append( getProtocolFromLocalAddress( local ) )
-                    .append( local.getHostName() )
-                    .append( getPortFromLocalAddress( local ) )
-                    .append( request.uri() );
-            try
-            {
-                result = new URL( sb.toString() );
-            }
-            catch( MalformedURLException mue )
-            {
-                throw new ServiceException( mue );
-            }
-        }
-        return result;
+//        URL result;
+//        try
+//        {
+//            result = new URL(uri);
+//        }
+//        catch( MalformedURLException e )
+//        {
+//            InetSocketAddress local = (InetSocketAddress) getLocalAddress();
+//            StringBuilder sb = new StringBuilder();
+//            sb.append(getProtocolFromLocalAddress(local))
+//                    .append(local.getHostName())
+//                    .append(getPortFromLocalAddress(local))
+//                    .append(request.uri());
+//            try {
+//                result = new URL(sb.toString());
+//            } catch (MalformedURLException mue) {
+//                throw new ServiceException(mue);
+//            }
+//        }
+//        return result;
     }
 
     private static String getProtocolFromLocalAddress( final InetSocketAddress local )

@@ -69,7 +69,7 @@
             <configuration>
               <outputDirectory>${project.build.directory}</outputDirectory>
               <includeScope>compile</includeScope>
-              <excludeScope>test</excludeScope>
+<!--              <excludeScope>test</excludeScope>-->
               <excludeArtifactIds>jruby</excludeArtifactIds>
               <excludeTransitive>true</excludeTransitive>
             </configuration>
