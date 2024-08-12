@@ -1,4 +1,7 @@
 module Aspen
+  # Raised when a feature is not supported on the
+  # current platform.
+  class PlatformNotSupported < RuntimeError; end
   
   # @author Kevin Williams
   # @since 1.0.0
@@ -22,5 +25,16 @@ module Aspen
   NAME    = 'aspen'.freeze
   # server name and version
   SERVER  = "#{NAME} #{VERSION::STRING}".freeze
+    
+  def self.win?
+    RUBY_PLATFORM =~ /mswin|mingw/
+  end
   
+  def self.linux?
+    RUBY_PLATFORM =~ /linux/
+  end
+  
+  def self.ruby_18?
+    RUBY_VERSION =~ /^1\.8/
+  end
 end

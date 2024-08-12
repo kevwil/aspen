@@ -4,11 +4,13 @@ out
 *.iws
 *.log
 *.gem
-.bundle
+.bundle/
 Gemfile.lock
 pkg/*
 vendor/*
-javalib/target/*
+ext/aspen/target/*
 .rakeTasks
 *.sqlite3
 .ruby-version
+cp.txt
+tmp/

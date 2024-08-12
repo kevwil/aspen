@@ -1,41 +1,19 @@
+require 'rake'
+require 'rake/clean'
+load 'aspen.gemspec'
+
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
-require 'rspec/core/rake_task'
+# load tasks from files in tasks/
+Dir['tasks/**/*.rake'].each { |rake| load rake unless rake == 'tasks/ext.rake' }
+# need to build maven classpath file before loading ext.rake
+system 'pushd ext/aspen;mvn dependency:build-classpath -Dmdep.outputFile=cp.txt;popd'
+load 'tasks/ext.rake'
 
-RSpec::Core::RakeTask.new(:spec)
-
-task :default => ['java:build', :spec]
-task :build => ['java:build', :spec]
-task :clean => ['java:clean', 'java:clobber', 'doc:clean']
-
-require 'fileutils'
-
-namespace :doc do
-  desc "clean up generated docs"
-  task :clean do
-    d = 'doc'
-    y = '.yardoc'
-    FileUtils.rm_rf(d) if File.exist?(d) and File.writable?(d) and File.directory?(d)
-    FileUtils.rm(y) if File.exist?(y) and File.writable?(y)
-  end
-end
-
-namespace :java do
-
-  desc "clean up java tool output"
-  task :clean do
-    system "cd javalib;mvn --offline clean;cd .."
-  end
-
-  desc "delete the generated jar"
-  task :clobber do
-    FileUtils.rm Dir.glob('lib/java/*.jar')
-  end
-
-  desc "build java code and copy jars to lib folder"
-  task :build => :clean do
-    system "cd javalib;mvn --offline package;cp -vX target/*.jar ../lib/java/;cd .."
-  end
-
-end
+# task :default        => ['java:build', :spec]
+# task :build          => ['java:build', :spec]
+# task :clean          => ['java:clean', 'java:clobber', 'doc:clean']
+task :default        => [:build]
+task :build          => [:compile, :spec]
+task :clean          => ['java:clean', 'java:clobber', 'doc:clean']

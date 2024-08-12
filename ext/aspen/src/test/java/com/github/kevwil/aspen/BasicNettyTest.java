@@ -29,11 +29,11 @@ public class BasicNettyTest {
 
     @Test
     public void shouldWork() {
-        assertTrue(channel.writeInbound(Unpooled.copiedBuffer("Line 1\r\nLine 2\r\n", Charset.defaultCharset())));
+        assertTrue(channel.writeInbound("method_missing"));
         assertEquals(1, channel.inboundMessages().size());
-        ByteBuf result = channel.readInbound();
+        String result = channel.readInbound();
         assertEquals(0, channel.inboundMessages().size());
-        System.out.println(result.toString());
+        System.out.println(result);
     }
 
     @Test
@@ -56,8 +56,7 @@ public class BasicNettyTest {
     }
 
     private void setupHandlers() {
-//        pipeline.addLast("frameDecoder", new LineBasedFrameDecoder(80));
-//        pipeline.addLast("stringDecoder", new StringDecoder(StandardCharsets.UTF_8));
+        pipeline.addLast("stringDecoder", new StringDecoder(StandardCharsets.UTF_8));
 //        pipeline.addLast("stringEncoder", new StringEncoder(StandardCharsets.UTF_8));
     }
 
@@ -65,8 +64,8 @@ public class BasicNettyTest {
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {;
             ctx.writeAndFlush(Unpooled.copiedBuffer(msg.toUpperCase(), StandardCharsets.UTF_8));
-//            ChannelFuture cf = ctx.writeAndFlush(msg.toUpperCase());
-//            cf.addListener(ChannelFutureListener.CLOSE);
+            // Doesn't work right without StringEncoder in pipeline
+//            ctx.writeAndFlush(msg.toUpperCase());
         }
     }
 }
