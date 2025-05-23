@@ -27,7 +27,7 @@ module Aspen
       attr_reader :threadpool_size
       def threadpool_size=(size)
         @threadpool_size = size
-        EventMachine.threadpool_size = size
+        # EventMachine.threadpool_size = size
       end
 
       # Allow using threads in the backend.

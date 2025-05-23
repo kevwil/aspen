@@ -1,5 +1,5 @@
 module Aspen
-  # The utterly famous Aspen HTTP server.
+  # The main Aspen HTTP server.
   # It listens for incoming requests through a given +backend+
   # and forwards all requests to +app+.
   #
@@ -117,8 +117,6 @@ module Aspen
 
       # Try to intelligently select which backend to use.
       @backend = select_backend(host, port, options)
-      
-      load_cgi_multipart_eof_fix
       
       @backend.server = self
       
@@ -255,6 +253,7 @@ module Aspen
         when 'USR1'
           reopen_log
         end
+        # TODO: find Netty equivalent
         EM.next_tick { handle_signals } unless @signal_queue.empty?
       end
       
@@ -264,26 +263,11 @@ module Aspen
           raise ArgumentError, ":backend must be a class" unless options[:backend].is_a?(Class)
           options[:backend].new(host, port, options)
         when options.has_key?(:swiftiply)
-          Backends::SwiftiplyClient.new(host, port, options)
+          raise ArgumentError, ":swiftiply is not supported in Aspen"
         when host.include?('/')
           Backends::UnixServer.new(host)
         else
           Backends::TcpServer.new(host, port)
-        end
-      end
-      
-      # Taken from Mongrel cgi_multipart_eof_fix
-      # Ruby 1.8.5 has a security bug in cgi.rb, we need to patch it.
-      def load_cgi_multipart_eof_fix
-        version = RUBY_VERSION.split('.').map { |i| i.to_i }
-        
-        if version[0] <= 1 && version[1] <= 8 && version[2] <= 5 && RUBY_PLATFORM !~ /java/
-          begin
-            require 'cgi_multipart_eof_fix'
-          rescue LoadError
-            log_error "Ruby 1.8.5 is not secure please install cgi_multipart_eof_fix:"
-            log_error "gem install cgi_multipart_eof_fix"
-          end
         end
       end
   end

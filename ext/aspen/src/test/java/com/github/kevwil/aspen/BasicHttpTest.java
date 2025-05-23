@@ -52,7 +52,7 @@ public class BasicHttpTest {
     private void setupHandlers() {
         pipeline.addLast("timeout", new ReadTimeoutHandler(30));
         pipeline.addLast("decoder", new HttpRequestDecoder());
-        pipeline.addLast("inflator", new HttpContentDecompressor());
+        pipeline.addLast("inflator", new HttpContentDecompressor(256));
         pipeline.addLast("URLDecoder", new RequestURLDecoder());
 
         pipeline.addLast(new EchoHandler());

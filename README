@@ -1,60 +1,65 @@
-aspen
+# aspen
+
     by Kevin Williams
     https://kevwil.github.io/aspen/
 
-== DESCRIPTION:
+## DESCRIPTION
 
 Aspen is a web server engine for JRuby. The design is very similar
 to Thin (https://rubygems.org/gems/thin), except
 using Netty (https://netty.io) for high-speed concurrent sockets.
 
-== FEATURES/PROBLEMS:
+## FEATURES/PROBLEMS
 
 * truly concurrent socket model
 * Rack interface support
 * Not all features implemented yet, such as chunked data, different content encodings, etc.
 
-== SYNOPSIS:
+## SYNOPSIS
 
   Sample code can be found in the examples directory.
 
-== REQUIREMENTS:
+## REQUIREMENTS
 
-* Java 8 (I'm using 22 but targeting 8)
-* JRuby (currently 9.4.8.0)
+* Java 21 (I'm using 23 but targeting 21)
+* JRuby (currently 10.0.0.1)
 * Rack >= 1.1 (I'm using 1.2 but trying to retain 1.1 compatibility)
 
-== INSTALL:
+## INSTALL
 
-	# From Gemcutter / Rubyforge ...
-	$ (sudo) jruby -S gem install aspen
-	
-	# if using JRuby via RVM (https://rvm.io/) which I highly recommend doing
-	$ gem install aspen
+```bash
+# From Gemcutter / Rubyforge ...
+$ (sudo) jruby -S gem install aspen
 
-== INSTALL FROM SOURCE:
+# if using JRuby via RVM (https://rvm.io/) which I highly recommend doing
+$ gem install aspen
+```
 
-    # get source from Github
-    $ git clone https://github.com/kevwil/aspen.git
-    $ cd aspen
+## INSTALL FROM SOURCE
 
-    # You must have JRuby set up, with the dependent gems installed.
-    # see the Rakefile for the dev-time dependencies
-    $ jgem install bones-rcov bones-yard bones-extras rspec mocha
+```bash
+# get source from Github
+$ git clone https://github.com/kevwil/aspen.git
+$ cd aspen
 
-    # You must have Ant (https://ant.apache.org) and Maven (https://maven.apache.org) set up.
-    # *note* the Rakefile will call Maven in "offline mode".
-    # If you get any errors about unresolved dependencies, do this:
-    $ cd javalib
-    $ mvn dependency:go-offline (or 'mvn package')
+# You must have JRuby set up, with the dependent gems installed.
+# see the Rakefile for the dev-time dependencies
+$ jgem install bones-rcov bones-yard bones-extras rspec mocha
 
-    # Now you can build and test Aspen
-    $ jruby -S rake
+# You must have Ant (https://ant.apache.org) and Maven (https://maven.apache.org) set up.
+# *note* the Rakefile will call Maven in "offline mode".
+# If you get any errors about unresolved dependencies, do this:
+$ cd javalib
+$ mvn dependency:go-offline (or 'mvn package')
 
-    # Install the gem
-    $ jruby -S rake gem:install
+# Now you can build and test Aspen
+$ jruby -S rake
 
-== LICENSE:
+# Install the gem
+$ jruby -S rake gem:install
+```
+
+## LICENSE
 
 (The MIT License)
 

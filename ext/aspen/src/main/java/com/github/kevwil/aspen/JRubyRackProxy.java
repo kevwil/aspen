@@ -83,7 +83,9 @@ implements RackProxy
         Response r = new Response();
         if( result.size() != 3 )
         {
-            r.setException( new ServiceException( "bad rack response: " + result.inspect().toString() ) );
+            r.setException( new ServiceException( "bad rack response: " + result.inspect(
+                    result.getRuntime().getCurrentContext()
+            ).toString() ) );
             return r;
         }
         IRubyObject body = request.getRuntime().getNil();
@@ -92,7 +94,9 @@ implements RackProxy
             IRubyObject result1 = result.entry( 0 );
             if( result.isNil() )
             {
-                r.setException( new ServiceException( "bad rack response, null status code: " + result.inspect().toString() ) );
+                r.setException( new ServiceException( "bad rack response, null status code: " + result.inspect(
+                        result.getRuntime().getCurrentContext()
+                ).toString() ) );
                 return r;
             }
             int codeInt = RubyInteger.num2int( result1 );

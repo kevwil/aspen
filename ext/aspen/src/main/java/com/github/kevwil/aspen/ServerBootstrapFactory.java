@@ -2,10 +2,10 @@ package com.github.kevwil.aspen;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
 import io.netty.channel.epoll.Epoll;
-import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollIoHandler;
 import io.netty.channel.epoll.EpollServerSocketChannel;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.Future;
 
@@ -31,11 +31,11 @@ public class ServerBootstrapFactory {
 
     private ServerBootstrap newEpollServerBootstrap(int ioThreadCount) {
         if (ioThreadCount > 0) {
-            bossGroup = new EpollEventLoopGroup(ioThreadCount);
-            workerGroup = new EpollEventLoopGroup(ioThreadCount);
+            bossGroup = new MultiThreadIoEventLoopGroup(ioThreadCount, EpollIoHandler.newFactory());
+            workerGroup = new MultiThreadIoEventLoopGroup(ioThreadCount, EpollIoHandler.newFactory());
         } else {
-            bossGroup = new EpollEventLoopGroup();
-            workerGroup = new EpollEventLoopGroup();
+            bossGroup = new MultiThreadIoEventLoopGroup(EpollIoHandler.newFactory());
+            workerGroup = new MultiThreadIoEventLoopGroup(EpollIoHandler.newFactory());
         }
         return new ServerBootstrap()
                 .group(bossGroup, workerGroup)
@@ -44,11 +44,11 @@ public class ServerBootstrapFactory {
 
     private ServerBootstrap newNioServerBootstrap(int ioThreadCount) {
         if (ioThreadCount > 0) {
-            bossGroup = new NioEventLoopGroup(ioThreadCount);
-            workerGroup = new NioEventLoopGroup(ioThreadCount);
+            bossGroup = new MultiThreadIoEventLoopGroup(ioThreadCount, EpollIoHandler.newFactory());
+            workerGroup = new MultiThreadIoEventLoopGroup(ioThreadCount, EpollIoHandler.newFactory());
         } else {
-            bossGroup = new NioEventLoopGroup();
-            workerGroup = new NioEventLoopGroup();
+            bossGroup = new MultiThreadIoEventLoopGroup(EpollIoHandler.newFactory());
+            workerGroup = new MultiThreadIoEventLoopGroup(EpollIoHandler.newFactory());
         }
         return new ServerBootstrap()
                 .group(bossGroup, workerGroup)
